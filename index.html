@@ -1,0 +1,1077 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Nutrióloga Victoria Villalpando Dávalos | Nutrición basada en evidencia y
+      compañía
+    </title>
+    <meta
+      name="description"
+      content="Nutrición basada en evidencia, cercanía y respeto por tu historia. Consulta online y presencial con la Nutrióloga Victoria Villalpando Dávalos, educadora en diabetes."
+    />
+
+    <link rel="icon" href="img/logovd.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+  .hero {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(
+      180deg,
+      rgba(173, 201, 121, 0.95) 0%,
+      rgba(240, 242, 235, 1) 100%
+    );
+  }
+  .hero .container {
+    position: relative;
+    z-index: 2;
+  }
+  .wrap {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+    background: #ffffff;
+    border-radius: 28px;
+    box-shadow: 0 20px 50px rgba(83, 96, 68, 0.08);
+  }
+  .wrap h2 {
+    margin-top: 1.1rem;
+    margin-bottom: 1.8rem;
+    font-size: clamp(2rem, 2.4vw, 2.45rem);
+  }
+  .includes-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 0.9fr;
+    gap: 2rem;
+    align-items: start;
+  }
+  .pill-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 0.85rem;
+    margin-top: 1.4rem;
+  }
+  .pill {
+    padding: 0.9rem 1rem;
+    border-radius: 999px;
+    background: #eef4ff;
+    color: #3c567f;
+    font-size: 0.95rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .pill-green {
+    background: #e9f2e6;
+    color: #345f33;
+  }
+  .price-card {
+    border: 1px solid rgba(124, 135, 87, 0.18);
+    border-radius: 26px;
+    padding: 1.5rem;
+    margin-bottom: 1.25rem;
+    background: #fbfbf8;
+    box-shadow: 0 14px 35px rgba(90, 102, 80, 0.08);
+  }
+  .price-card h4 {
+    margin-bottom: 0.8rem;
+    font-size: 1.05rem;
+  }
+  .price {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #5f6b42;
+    margin: 1rem 0;
+  }
+  .price-note {
+    color: #7d7c69;
+    font-size: 0.95rem;
+  }
+</style>
+  </head>
+  <body>
+    <!-- ================= NAVBAR ================= -->
+    <nav class="navbar-vd">
+      <div class="contenedor-nav">
+        <a href="index.html" class="marca-nav">
+          <img
+            src="img/logovd.png"
+            alt="Logotipo Nutrióloga Victoria D."
+            width="40"
+            height="40"
+          />
+          <span style="color: #fff; font-weight: 700">Victoria VD</span>
+        </a>
+        <button class="btn-menu-movil" aria-label="Abrir menú">
+          <span></span><span></span><span></span>
+        </button>
+        <ul class="menu-nav">
+          <li><a href="index.html" class="activo">Inicio</a></li>
+          <li><a href="sobre-mi.html">Sobre mí</a></li>
+          <li><a href="consulta.html">Consulta</a></li>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+      </div>
+    </nav>
+    <script>
+      // Mobile menu toggle
+      (function () {
+        var btn = document.querySelector(".btn-menu-movil");
+        var menu = document.querySelector(".menu-nav");
+        if (!btn || !menu) return;
+        btn.addEventListener("click", function () {
+          var open = menu.classList.toggle("open");
+          btn.setAttribute("aria-expanded", open ? "true" : "false");
+        });
+      })();
+    </script>
+    <!-- ================= HERO ================= -->
+    <header
+      class="hero"
+      style="position: relative; overflow: hidden; padding: 4rem 0"
+    >
+      <div
+        style="
+          position: absolute;
+          inset: 0;
+          background:
+            radial-gradient(
+              circle at top left,
+              rgba(147, 166, 106, 0.15),
+              transparent 32%
+            ),
+            radial-gradient(
+              circle at bottom right,
+              rgba(237, 228, 207, 0.12),
+              transparent 28%
+            );
+          pointer-events: none;
+          z-index: 0;
+        "
+      ></div>
+      <svg
+        class="hero-hoja"
+        style="
+          position: absolute;
+          width: 420px;
+          top: -50px;
+          right: 20px;
+          z-index: 0;
+        "
+        viewBox="0 0 200 200"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M100 10C130 40 170 60 170 110C170 150 140 180 100 180C60 180 30 150 30 110C30 60 70 40 100 10Z"
+          fill="#93A66A"
+          fill-opacity="0.08"
+        />
+      </svg>
+      <svg
+        class="hero-hoja"
+        style="
+          position: absolute;
+          width: 240px;
+          bottom: -30px;
+          right: 60px;
+          z-index: 0;
+        "
+        viewBox="0 0 200 200"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M100 10C130 40 170 60 170 110C170 150 140 180 100 180C60 180 30 150 30 110C30 60 70 40 100 10Z"
+          fill="#EDE4CF"
+          fill-opacity="0.06"
+        />
+      </svg>
+
+      <div class="container fila-hero" style="position: relative; z-index: 1">
+        <div class="row align-items-center gy-5">
+          <div class="col-lg-6 revelar">
+            <div
+              style="
+                position: relative;
+                padding: 2.5rem 1.5rem 2.5rem;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                border-radius: 28px;
+                box-shadow: 0 28px 80px rgba(32, 56, 97, 0.12);
+              "
+            >
+              <span
+                class="hero-kicker"
+                style="
+                  display: inline-block;
+                  font-weight: 700;
+                  letter-spacing: 0.15em;
+                  text-transform: uppercase;
+                  color: #4f657f;
+                "
+              >
+                Nutrición · Ciencia · Empatía
+              </span>
+              <h1
+                style="
+                  margin-top: 1rem;
+                  line-height: 1.03;
+                  font-size: clamp(2.6rem, 5vw, 3.8rem);
+                  color: #16263d;
+                "
+              >
+                Nutrición para disfrutar la comida
+                <em style="color: #4c7bb5; font-style: normal"
+                  >sin estigmas.</em
+                >
+              </h1>
+              <p
+                class="lead-hero"
+                style="
+                  max-width: 38rem;
+                  color: #5b6d84;
+                  font-size: 1.05rem;
+                  margin-top: 1rem;
+                "
+              >
+                Te acompaño a construir hábitos sostenibles desde la ciencia, la
+                empatía y el respeto por tu historia.
+              </p>
+              <div class="d-flex flex-wrap gap-3" style="margin-top: 1.75rem">
+                <button
+                  onclick="window.location.href = 'consulta.html'"
+                  style="
+                    background-color: #688ccf;
+                    color: white;
+                    border: none;
+                    padding: 0.95rem 1.8rem;
+                    border-radius: 999px;
+                    cursor: pointer;
+                    box-shadow: 0 16px 32px rgba(104, 140, 207, 0.22);
+                  "
+                >
+                  <i class="bi bi-calendar-heart"></i> Agenda tu consulta
+                </button>
+                <button
+                  onclick="window.location.href = 'sobre-mi.html'"
+                  style="
+                    background-color: transparent;
+                    color: #2f4f7c;
+                    border: 2px solid rgba(104, 144, 203, 0.9);
+                    padding: 0.95rem 1.8rem;
+                    border-radius: 999px;
+                    cursor: pointer;
+                  "
+                >
+                  Conoce mi historia
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 revelar revelar-retraso-1">
+            <div
+              class="hero-foto"
+              style="
+                position: relative;
+                border-radius: 28px;
+                overflow: hidden;
+                box-shadow: 0 30px 90px rgba(20, 33, 61, 0.16);
+              "
+            >
+              <img
+                src="img/Nutrivichospi.png"
+                alt="Nutrióloga Victoria D. en hospital Fray Antonio Alcalde"
+                style="
+                  width: 100%;
+                  height: auto;
+                  display: block;
+                  object-fit: cover;
+                "
+              />
+              <div
+                class="hero-badge d-flex align-items-center"
+                style="
+                  position: absolute;
+                  left: 1rem;
+                  bottom: 1rem;
+                  padding: 1rem 1.25rem;
+                  border-radius: 999px;
+                  background: rgba(255, 255, 255, 0.9);
+                  box-shadow: 0 16px 36px rgba(20, 33, 61, 0.1);
+                "
+              >
+                <span
+                  class="icono-hoja"
+                  style="
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 3rem;
+                    height: 3rem;
+                    margin-right: 1rem;
+                    border-radius: 50%;
+                    background: rgba(104, 144, 203, 0.16);
+                    color: #3d6aa1;
+                    font-size: 1.2rem;
+                  "
+                  ><i class="bi bi-award"></i
+                ></span>
+                <div>
+                  <strong style="display: block; color: #19263d">
+                    Educadora en Diabetes
+                  </strong>
+                  <span
+                    style="display: block; color: #5b6d84; font-size: 0.95rem"
+                  >
+                    Certificación clínica avalada
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ================= ÁREAS DE ENFOQUE ================= -->
+    <section class="seccion">
+      <div class="container">
+        <div class="text-center mb-5 revelar">
+          <div style="height: 3rem"></div>
+          <hr />
+          <span class="eyebrow">Áreas de acompañamiento</span>
+          <h2 class="mt-3">Un enfoque para cada etapa de tu vida</h2>
+        </div>
+        <div class="row g-4">
+          <div class="col-md-6 col-lg-3 revelar">
+            <div class="tarjeta-enfoque">
+              <div
+                class="tarjeta-enfoque-fondo"
+                style="
+                  background-image: url(&quot;https://plus.unsplash.com/premium_photo-1733513144325-bea511336e77?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&quot;);
+                  background-size: cover;
+                  background-position: center;
+                  min-height: 220px;
+                  display: flex;
+                  align-items: flex-end;
+                  padding: 1rem;
+                  color: #000000;
+                  border-radius: 0.5rem;
+                "
+              >
+                <div
+                  style="
+                    background-color: rgba(255, 255, 255, 0.5);
+                    padding: 1rem;
+                    border-radius: 0.5rem;
+                  "
+                >
+                  <h3 style="margin: 0">Nutrición Infantil</h3>
+                </div>
+              </div>
+              <p>
+                Alimentación consciente desde los primeros años, con respeto al
+                ritmo de cada niño.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 revelar revelar-retraso-1">
+            <div class="tarjeta-enfoque">
+              <div
+                class="tarjeta-enfoque-fondo"
+                style="
+                  background-image: url(&quot;https://plus.unsplash.com/premium_photo-1669243652420-c87cd133e959?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&quot;);
+                  background-size: cover;
+                  background-position: center;
+                  min-height: 220px;
+                  display: flex;
+                  align-items: flex-end;
+                  padding: 1rem;
+                  color: #000000;
+                  border-radius: 0.5rem;
+                "
+              >
+                <div
+                  style="
+                    background-color: rgba(255, 255, 255, 0.5);
+                    padding: 1rem;
+                    border-radius: 0.5rem;
+                  "
+                >
+                  <h3 style="margin: 0">Salud Digestiva</h3>
+                </div>
+              </div>
+              <p>
+                Estrategias basadas en medicina funcional para restaurar el
+                equilibrio intestinal.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 revelar revelar-retraso-2">
+            <div class="tarjeta-enfoque">
+              <div
+                class="tarjeta-enfoque-fondo"
+                style="
+                  background-image: url(&quot;https://plus.unsplash.com/premium_photo-1663047583289-93415cd1174d?q=80&w=1155&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&quot;);
+                  background-size: cover;
+                  background-position: center;
+                  min-height: 220px;
+                  display: flex;
+                  align-items: flex-end;
+                  padding: 1rem;
+                  color: #000000;
+                  border-radius: 0.5rem;
+                "
+              >
+                <div
+                  style="
+                    background-color: rgba(255, 255, 255, 0.5);
+                    padding: 1rem;
+                    border-radius: 0.5rem;
+                  "
+                >
+                  <h3 style="margin: 0">Educación en Diabetes</h3>
+                </div>
+              </div>
+              <p>
+                Herramientas prácticas y claras para vivir con diabetes sin
+                miedo a la comida.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 revelar revelar-retraso-3">
+            <div class="tarjeta-enfoque">
+              <div
+                class="tarjeta-enfoque-fondo"
+                style="
+                  background-image: url(&quot;https://plus.unsplash.com/premium_photo-1713908832384-55726490c8e2?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&quot;);
+                  background-size: cover;
+                  background-position: center;
+                  min-height: 220px;
+                  display: flex;
+                  align-items: flex-end;
+                  padding: 1rem;
+                  color: #000000;
+                  border-radius: 0.5rem;
+                "
+              >
+                <div
+                  style="
+                    background-color: rgba(255, 255, 255, 0.5);
+                    padding: 1rem;
+                    border-radius: 0.5rem;
+                  "
+                >
+                  <h3 style="margin: 0">Hábitos Saludables</h3>
+                </div>
+              </div>
+              <p>
+                Cambios sostenibles, sin dietas restrictivas ni promesas vacías.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="height: 3rem"></div>
+    </section>
+
+    <!-- ================= QUIÉN ES VICTORIA ================= -->
+    <section class="seccion fondo-beige">
+      <div class="container">
+        <div class="row align-items-center gy-5">
+          <div class="col-lg-5 revelar">
+            <div class="hero-foto">
+              <img
+                src="img/vickycetoteam.png"
+                alt="Victoria D. en su consultorio"
+              />
+            </div>
+          </div>
+          <div class="col-lg-7 revelar revelar-retraso-1">
+            <div
+              class="texto-sobre-mi"
+              style="position: relative; z-index: 2; padding: 2rem"
+            >
+              <div
+                style="
+                  position: absolute;
+                  top: 0;
+                  left: -2rem;
+                  width: calc(100% + 2rem);
+                  height: 100%;
+                  background: rgba(237, 228, 207, 0.8);
+                  border-radius: 1.5rem;
+                  z-index: -1;
+                "
+              ></div>
+              <span class="eyebrow">¿Quién es Victoria?</span>
+              <h2 class="mt-3 mb-4">Ciencia y cercanía en cada consulta</h2>
+              <p class="fs-5">
+                Soy licenciada en Nutrición y educadora en diabetes. Me encanta
+                hablar de alimentación y que en cada sesión aprendas más de ti,
+                para que puedas tomar decisiones conscientes sobre tu
+                autocuidado.
+              </p>
+              <p>
+                Mi camino comenzó con la historia de mi hermana menor y su
+                nutrición enteral en casa — desde entonces, la nutrición clínica
+                y la empatía han caminado juntas en mi trabajo.
+              </p>
+              <a
+                href="sobre-mi.html"
+                class="btn-vd btn-secundario-vd mt-2"
+                style="
+                  background-color: #de8404;
+                  color: #fff;
+                  border-radius: 0.5rem;
+                  text-decoration: none;
+                  display: inline-block;
+                  padding: 0.5rem 1rem;
+                "
+                >Conoce mi trayectoria completa <i class="bi bi-arrow-right"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SERVICIOS ================= -->
+    <style>
+      .tarjeta-servicio-img {
+        background: #fff;
+        border-radius: 1rem;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+      .tarjeta-servicio-img:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+      }
+      .imagen-servicio-wrap {
+        height: 200px;
+        overflow: hidden;
+      }
+      .imagen-servicio {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.4s ease;
+      }
+      .tarjeta-servicio-img:hover .imagen-servicio {
+        transform: scale(1.06);
+      }
+      .contenido-servicio {
+        padding: 1.75rem;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+      }
+      .icono-servicio-sm {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #ede4cf;
+        color: #93a66a;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+        margin-bottom: 0.85rem;
+      }
+      .contenido-servicio h3 {
+        font-family: "Poppins", sans-serif;
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-bottom: 0.6rem;
+      }
+      .contenido-servicio p {
+        font-family: "Nunito", sans-serif;
+        font-size: 0.95rem;
+        opacity: 0.85;
+        margin-bottom: 1rem;
+      }
+      .contenido-servicio ul {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 1.5rem;
+      }
+      .contenido-servicio ul li {
+        font-family: "Nunito", sans-serif;
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+        padding-left: 1.4rem;
+        position: relative;
+        opacity: 0.9;
+      }
+      .contenido-servicio ul li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0.5rem;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #93a66a;
+      }
+      .btn-servicio {
+        margin-top: auto;
+        align-self: flex-start;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: #93a66a;
+        color: #fff !important;
+        border: none;
+        padding: 0.6rem 1.4rem;
+        border-radius: 50px;
+        font-family: "Poppins", sans-serif;
+        font-weight: 600;
+        font-size: 0.9rem;
+        text-decoration: none;
+        transition:
+          background 0.2s ease,
+          transform 0.2s ease;
+      }
+      .btn-servicio:hover {
+        background: #7c8f5a;
+        transform: translateX(3px);
+        color: #fff;
+      }
+    </style>
+
+    <section class="seccion">
+      <div class="container">
+        <div style="height: 6rem"></div>
+        <div class="text-center mb-5 revelar">
+          <span class="eyebrow">¿Cómo te puedo ayudar?</span>
+          <h2 class="mt-3">Servicios pensados para ti y tu entorno</h2>
+        </div>
+        <div class="row g-4">
+          <div class="col-lg-4 revelar">
+            <div class="tarjeta-servicio-img">
+              <div class="imagen-servicio-wrap">
+                <!-- Reemplaza con tu foto real, p. ej. img/servicio-infantil.jpg -->
+                <img
+                  src="img/taller-ac.jpg"
+                  alt="Consulta nutricional infantil"
+                  class="imagen-servicio"
+                />
+              </div>
+              <div class="contenido-servicio">
+                <div class="icono-servicio-sm">
+                  <i class="bi bi-balloon-heart"></i>
+                </div>
+                <h3>Consulta Infantil</h3>
+                <p>
+                  Acompañamiento nutricional para niñas y niños, incluyendo food
+                  chaining y selectividad alimentaria.
+                </p>
+                <ul>
+                  <li>Valoración del crecimiento</li>
+                  <li>Introducción alimentaria</li>
+                  <li>Plan para familias</li>
+                </ul>
+                <a href="consulta.html" class="btn-servicio"
+                  >Conocer más <i class="bi bi-arrow-right"></i
+                ></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 revelar revelar-retraso-1">
+            <div class="tarjeta-servicio-img">
+              <div class="imagen-servicio-wrap">
+                <!-- Reemplaza con tu foto real, p. ej. img/servicio-adultos.jpg -->
+                <img
+                  src="img/consultaonlin.jpeg"
+                  alt="Consulta nutricional para adultos"
+                  class="imagen-servicio"
+                />
+              </div>
+              <div class="contenido-servicio">
+                <div class="icono-servicio-sm">
+                  <i class="bi bi-person-heart"></i>
+                </div>
+                <h3>Consulta Adultos</h3>
+                <p>
+                  Planes personalizados para salud digestiva, control de peso,
+                  diabetes y bienestar general.
+                </p>
+                <ul>
+                  <li>Historia clínica completa</li>
+                  <li>Plan de alimentación realista</li>
+                  <li>Seguimiento continuo</li>
+                </ul>
+                <a href="consulta.html" class="btn-servicio"
+                  >Conocer más <i class="bi bi-arrow-right"></i
+                ></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 revelar revelar-retraso-2">
+            <div class="tarjeta-servicio-img">
+              <div class="imagen-servicio-wrap">
+                <!-- Reemplaza con tu foto real, p. ej. img/servicio-talleres.jpg -->
+                <img
+                  src="img/taller2.jpg"
+                  alt="Talleres y charlas de nutrición"
+                  class="imagen-servicio"
+                />
+              </div>
+              <div class="contenido-servicio">
+                <div class="icono-servicio-sm">
+                  <i class="bi bi-mortarboard"></i>
+                </div>
+                <h3>Talleres y Charlas</h3>
+                <p>
+                  Talleres y sesiones educativas para grupos, escuelas y
+                  empresas sobre alimentación consciente.
+                </p>
+                <ul>
+                  <li>Talleres presenciales u online</li>
+                  <li>Material descargable</li>
+                  <li>Dinámicas prácticas</li>
+                </ul>
+                <a href="consulta.html" class="btn-servicio"
+                  >Conocer más <i class="bi bi-arrow-right"></i
+                ></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="height: 6rem"></div>
+    </section>
+
+    <!-- ================= TESTIMONIOS ================= -->
+    <section
+      class="seccion"
+      id="testimonios"
+      style="background-color: #f1e9d9; color: #000000; padding: 3rem 0"
+    >
+      <div class="container">
+        <div
+          class="titulo-seccion text-center revelar mb-5"
+          style="margin-top: 2.5rem"
+        >
+          <span class="eyebrow text-salvia"></span>
+          <h2>Cuando nos acompañamos ganamos todos</h2>
+        </div>
+
+        <div
+          id="carouselTestimonios"
+          class="carousel slide"
+          data-bs-ride="carousel"
+          data-bs-interval="5000"
+        >
+          <div class="carousel-inner">
+            <!-- Testimonio 1 -->
+            <div class="carousel-item active">
+              <div
+                class="tarjeta-testimonio"
+                style="
+                  background-color: #ffffff;
+                  padding: 2rem;
+                  border-radius: 8px;
+                  text-align: center;
+                "
+              >
+                <p>
+                  "Victoria me ayudó a encontrar un plan realista y a sentirme
+                  mejor con mi cuerpo. Su acompañamiento fue clave."
+                </p>
+
+                <h3>María G.</h3>
+                <span>Paciente</span>
+              </div>
+            </div>
+
+            <!-- Testimonio 2 -->
+            <div class="carousel-item">
+              <div
+                class="tarjeta-testimonio"
+                style="
+                  background-color: #ffffff;
+                  padding: 2rem;
+                  border-radius: 8px;
+                  text-align: center;
+                "
+              >
+                <p>
+                  "Aprendí a comer con más consciencia y dejé de sentir culpa en
+                  cada comida. La atención fue muy amable."
+                </p>
+
+                <h3>Carlos L.</h3>
+                <span>Paciente</span>
+              </div>
+            </div>
+
+            <!-- Testimonio 3 -->
+            <div class="carousel-item">
+              <div
+                class="tarjeta-testimonio"
+                style="
+                  background-color: #ffffff;
+                  padding: 2rem;
+                  border-radius: 8px;
+                  text-align: center;
+                "
+              >
+                <p>
+                  "Las sesiones online son prácticas y bien adaptadas a mi
+                  ritmo. Recomiendo a Victoria 100%."
+                </p>
+
+                <h3>Lucía M.</h3>
+                <span>Paciente</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Flechas -->
+          <button
+            class="carousel-control-prev"
+            type="button"
+            data-bs-target="#carouselTestimonios"
+            data-bs-slide="prev"
+          >
+            <span
+              class="carousel-control-prev-icon"
+              aria-hidden="true"
+              style="background-image: none; display: inline-block"
+            >
+              <svg
+                width="32"
+                height="32"
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+              >
+                <path
+                  d="M11 1L4 8L11 15"
+                  stroke="#de8404"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+          </button>
+
+          <button
+            class="carousel-control-next"
+            type="button"
+            data-bs-target="#carouselTestimonios"
+            data-bs-slide="next"
+          >
+            <span
+              class="carousel-control-next-icon"
+              aria-hidden="true"
+              style="background-image: none; display: inline-block"
+            >
+              <svg
+                width="32"
+                height="32"
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+              >
+                <path
+                  d="M5 1L12 8L5 15"
+                  stroke="#de8404"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+          </button>
+        </div>
+      </div>
+      <div class="container">
+        <div class="cta-final revelar" style="text-align: center">
+          <span class="eyebrow text-salvia justify-content-center"></span>
+          <a
+            href="consulta.html"
+            class="btn-vd btn-primario-vd"
+            style="
+              background-color: #de8404;
+              border-color: #de8404;
+              color: #fff;
+              border-radius: 32px;
+              padding: 1rem 2rem;
+              margin: 1rem 0.75rem;
+              display: inline-block;
+              text-decoration: none;
+            "
+            ><i class="bi bi-calendar-heart"></i> Agenda tu consulta</a
+          >
+        </div>
+      </div>
+    </section>
+    <!-- ================= FOOTER ================= -->
+    <footer class="footer-vd" style="background: #788757; color: #fff">
+      <div class="container">
+        <div class="row gy-4">
+          <div class="col-lg-4">
+            <a
+              href="index.html"
+              class="marca-nav mb-3 d-inline-flex"
+              style="text-decoration: none"
+            >
+              <img
+                src="img/logovd.png"
+                alt="Logotipo Victoria D."
+                style="width: 44px; height: 44px"
+              />
+              <span style="color: #fff"
+                >Nutrióloga Victoria Villalpando Dávalos.</span
+              >
+            </a>
+            <p class="mt-3" style="max-width: 320px; color: #fff">
+              Nutrición basada en evidencia, cercanía y respeto por tu historia.
+              Consulta online y presencial.
+            </p>
+            <div class="redes-footer mt-3">
+              <a
+                href="https://www.instagram.com/nutrivictoriavd/"
+                aria-label="Instagram"
+                style="text-decoration: none; color: #fff"
+                ><i class="bi bi-instagram"></i
+              ></a>
+              <a
+                href="https://www.tiktok.com/@nutvictoriavd"
+                aria-label="TikTok"
+                style="text-decoration: none; color: #fff"
+                ><i class="bi bi-tiktok"></i
+              ></a>
+              <a
+                href="https://wa.me/523310256779"
+                aria-label="WhatsApp"
+                style="text-decoration: none; color: #fff"
+                ><i class="bi bi-whatsapp"></i
+              ></a>
+            </div>
+          </div>
+          <div class="col-6 col-lg-2">
+            <h5 style="color: #fff; margin-bottom: 0.75rem">Explorar</h5>
+            <ul style="list-style: none; padding: 0; margin: 0">
+              <li style="margin-bottom: 0.5rem">
+                <a
+                  href="sobre-mi.html"
+                  style="text-decoration: none; color: #fff"
+                  >Sobre mí</a
+                >
+              </li>
+              <li style="margin-bottom: 0.5rem">
+                <a
+                  href="consulta.html"
+                  style="text-decoration: none; color: #fff"
+                  >Consulta</a
+                >
+              </li>
+              <li style="margin-bottom: 0.5rem">
+                <a href="blog.html" style="text-decoration: none; color: #fff"
+                  >Blog</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-lg-4">
+            <h5 style="color: #fff">Contacto</h5>
+            <ul style="list-style: none; padding: 0">
+              <li style="color: #fff">
+                <i class="bi bi-envelope me-2"></i> nut.victoriavd@gmail.com
+              </li>
+              <li style="color: #fff">
+                <i class="bi bi-geo-alt me-2"></i> Colomos 2181, Ayuntamiento,
+                44500 Gdl, Jal.
+              </li>
+              <li style="color: #fff">
+                <i class="bi bi-whatsapp me-2"></i> Agenda por WhatsApp
+              </li>
+            </ul>
+          </div>
+        </div>
+        <hr class="footer-divisor" />
+        <div class="footer-legal">
+          <span style="color: #fff"
+            >© 2026 Nutrióloga Victoria Villalpando Dávalos. Todos los derechos
+            reservados.</span
+          >
+          <div class="enlaces-legales">
+            <a
+              href="aviso-privacidad.html"
+              style="text-decoration: none; color: #fff"
+              >Aviso de privacidad</a
+            >
+            <a
+              href="politica-cookies.html"
+              style="text-decoration: none; color: #fff"
+              >Política de cookies</a
+            >
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <a
+      href="https://wa.me/523310256779"
+      class="whatsapp-flotante"
+      aria-label="Escribir por WhatsApp"
+      title="Escríbenos por WhatsApp"
+      style="
+        position: fixed;
+        right: 16px;
+        bottom: 24px;
+        z-index: 9999;
+        width: 64px;
+        height: 64px;
+        background: #25d366;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        color: #fff;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+      "
+      ><i class="bi bi-whatsapp"></i
+    ></a>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>

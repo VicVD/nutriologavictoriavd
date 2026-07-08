@@ -1,0 +1,855 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Nutrióloga Victoria Villalpando Dávalos | Nutrición basada en evidencia y
+      compañía
+    </title>
+    <meta
+      name="description"
+      content="Nutrición basada en evidencia, cercanía y respeto por tu historia. Consulta online y presencial con la Nutrióloga Victoria Villalpando Dávalos, educadora en diabetes."
+    />
+
+    <link rel="icon" href="img/logovd.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+  .hero {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(
+      180deg,
+      rgba(173, 201, 121, 0.95) 0%,
+      rgba(240, 242, 235, 1) 100%
+    );
+  }
+  .hero .container {
+    position: relative;
+    z-index: 2;
+  }
+  .wrap {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+    background: #ffffff;
+    border-radius: 28px;
+    box-shadow: 0 20px 50px rgba(83, 96, 68, 0.08);
+  }
+  .wrap h2 {
+    margin-top: 1.1rem;
+    margin-bottom: 1.8rem;
+    font-size: clamp(2rem, 2.4vw, 2.45rem);
+  }
+  .includes-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 0.9fr;
+    gap: 2rem;
+    align-items: start;
+  }
+  .pill-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 0.85rem;
+    margin-top: 1.4rem;
+  }
+  .pill {
+    padding: 0.9rem 1rem;
+    border-radius: 999px;
+    background: #eef4ff;
+    color: #3c567f;
+    font-size: 0.95rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .pill-green {
+    background: #e9f2e6;
+    color: #345f33;
+  }
+  .price-card {
+    border: 1px solid rgba(124, 135, 87, 0.18);
+    border-radius: 26px;
+    padding: 1.5rem;
+    margin-bottom: 1.25rem;
+    background: #fbfbf8;
+    box-shadow: 0 14px 35px rgba(90, 102, 80, 0.08);
+  }
+  .price-card h4 {
+    margin-bottom: 0.8rem;
+    font-size: 1.05rem;
+  }
+  .price {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #5f6b42;
+    margin: 1rem 0;
+  }
+  .price-note {
+    color: #7d7c69;
+    font-size: 0.95rem;
+  }
+</style>
+  </head>
+  <body>
+    <!-- ================= NAVBAR ================= -->
+    <nav class="navbar-vd">
+      <div class="contenedor-nav">
+        <a href="index.html" class="marca-nav">
+          <img
+            src="img/logovd.png"
+            alt="Logotipo Nutrióloga Victoria D."
+            width="40"
+            height="40"
+          />
+          <span style="color: #fff; font-weight: 700">Victoria VD</span>
+        </a>
+        <button class="btn-menu-movil" aria-label="Abrir menú">
+          <span></span><span></span><span></span>
+        </button>
+        <ul class="menu-nav">
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="sobre-mi.html">Sobre mí</a></li>
+          <li><a href="consulta.html" class="activo">Consulta</a></li>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+      </div>
+    </nav>
+    <script>
+      // Mobile menu toggle
+      (function () {
+        var btn = document.querySelector(".btn-menu-movil");
+        var menu = document.querySelector(".menu-nav");
+        if (!btn || !menu) return;
+        btn.addEventListener("click", function () {
+          var open = menu.classList.toggle("open");
+          btn.setAttribute("aria-expanded", open ? "true" : "false");
+        });
+      })();
+    </script>
+
+    <!-- ================= ENCABEZADO ================= -->
+    <header
+      class="seccion fondo-bosque text-center"
+      style="position: relative; padding-top: 9rem"
+    >
+      <!-- blurred background layer -->
+      <div
+        aria-hidden="true"
+        style="
+          position: absolute;
+          inset: 0;
+          background-image: url(&quot;img/tellerespublic.jpg&quot;);
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+          filter: blur(7px);
+          transform: scale(1.03);
+          z-index: 0;
+        "
+      ></div>
+      <div class="container revelar" style="position: relative; z-index: 1">
+        <span class="eyebrow justify-content-center"></span>
+        <h1
+          class="mt-3 mb-3"
+          style="color: #ffffff; font-size: clamp(2rem, 4vw, 2.8rem)"
+        >
+          Un espacio pensado para tu etapa de vida
+        </h1>
+        <p class="fs-5 mx-auto" style="color: #ffffff; max-width: 560px">
+          Ya sea que busques acompañamiento para tu familia o para ti, cada
+          consulta parte de escucharte primero.
+        </p>
+      </div>
+    </header>
+
+    <!-- ================= SERVICIOS DETALLE (unificado) ================= -->
+    <section class="seccion" style="background: transparent">
+      <div class="wrap">
+        <div class="includes-grid">
+          <div style="align-self: start">
+            <span class="eyebrow">Información de consulta</span>
+            <h2>Lo que incluye tu proceso</h2>
+            <p style="color: var(--ink-soft); max-width: 48ch">
+              Nuestros servicios se enfocan en brindarte estrategias claras y
+              aplicables a tu día a día, abordando temas clínicos, sociales y
+              emocionales relacionados con tu salud.
+            </p>
+            <div class="pill-list">
+              <div class="pill pill-blue">Diagnóstico nutricional</div>
+              <div class="pill pill-blue">Intervención personalizada</div>
+              <div class="pill pill-blue">Recursos educativos</div>
+              <div class="pill pill-blue">Revisión de laboratoriales</div>
+              <div class="pill pill-blue">Recomendación de suplementos</div>
+            </div>
+            <p
+              style="
+                font-size: 0.85rem;
+                color: var(--gold);
+                font-weight: 600;
+                margin-top: 16px;
+              "
+            >
+              Lo anterior se brinda según diagnóstico y tratamiento.
+            </p>
+            <div class="price-card" style="margin-top: 18px">
+              <h4>Consulta virtual</h4>
+              <div class="price">$500</div>
+              <p>
+                Se realiza por medio de <strong>Google Meet</strong> y se
+                liquida 24 hrs antes de la consulta.
+              </p>
+            </div>
+            <div class="price-card" style="margin-top: 10px">
+              <h4>Consulta presencial</h4>
+              <div class="price">$700</div>
+              <p>
+                <strong>Ubicación:</strong> C. Colomos 2181, Ayuntamiento, 44500
+                Guadalajara, Jal.
+              </p>
+              <p style="margin-top: 8px">
+                <strong>WhatsApp:</strong>
+                33 26 11 78 26
+              </p>
+            </div>
+            <p class="price-note">Precios vigentes a partir de enero 2025</p>
+          </div>
+          <div
+            style="
+              background: var(--paper);
+              padding: 24px;
+              border-radius: 8px;
+              align-self: start;
+            "
+          >
+            <h2>Durante la consulta trabajamos</h2>
+            <div class="pill-list" style="max-width: 520px">
+              <div class="pill pill-green">Cambio de hábitos</div>
+              <div class="pill pill-green">
+                Crecimiento y desarrollo infantil
+              </div>
+              <div class="pill pill-green">
+                Alteraciones hormonales y metabólicas
+              </div>
+              <div class="pill pill-green">Alteraciones digestivas</div>
+              <div class="pill pill-green">Resistencia a la insulina</div>
+              <div class="pill pill-green">Diabetes</div>
+            </div>
+            <h2>Enfoque de la consulta</h2>
+            <p style="font-size: 0.85rem; color: var(--gold); font-weight: 600">
+              Cada persona es diferente, pero los principios para tratarte
+              siempre serán los mismos:
+            </p>
+            <div class="pill-list">
+              <div class="pill pill-orange">Escucha activa</div>
+              <div class="pill pill-orange">Sin estigmas</div>
+              <div class="pill pill-orange">Alejada de prohibiciones</div>
+              <div class="pill pill-orange">Adaptada a tu ritmo</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- ================= CÓMO FUNCIONA ================= -->
+    <section
+      style="
+        position: relative;
+        overflow: hidden;
+        padding: 5rem 0;
+        background: #fff8e7;
+      "
+    >
+      <div class="container" style="position: relative; z-index: 1">
+        <div class="text-center mb-5 revelar">
+          <span class="eyebrow">Proceso</span>
+          <h2 class="mt-3">Así es una consulta conmigo</h2>
+        </div>
+        <div
+          class="row g-4 text-center justify-content-center align-items-stretch"
+        >
+          <div class="col-md-3 revelar">
+            <div
+              class="step-card mx-auto"
+              style="
+                border: 1px solid rgba(255, 166, 45, 0.2);
+                background: #fff8e7;
+                padding: 1.6rem;
+                border-radius: 18px;
+                min-height: 180px;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 1rem;
+                box-shadow: 0 16px 32px rgba(255, 166, 45, 0.12);
+                backdrop-filter: blur(6px);
+              "
+            >
+              <div
+                class="step-badge"
+                style="
+                  width: 40px;
+                  height: 40px;
+                  border-radius: 12px;
+                  background: #ff9f00;
+                  color: #1f1200;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  font-weight: 700;
+                "
+              >
+                1
+              </div>
+              <h4 class="fs-6" style="margin: 0">Agenda tu cita</h4>
+              <p
+                class="small"
+                style="margin: 0; color: #5f5a4e; font-size: 0.95rem"
+              >
+                Elige servicio y horario. Luego recibirás un formulario previo
+                para conocerte y optimizar la primera sesión.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-3 revelar revelar-retraso-1">
+            <div
+              class="step-card mx-auto"
+              style="
+                border: 1px solid rgba(126, 211, 33, 0.2);
+                background: #f0ffed;
+                padding: 1.6rem;
+                border-radius: 18px;
+                min-height: 180px;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 1rem;
+                box-shadow: 0 16px 32px rgba(126, 211, 33, 0.12);
+              "
+            >
+              <div
+                class="step-badge"
+                style="
+                  width: 40px;
+                  height: 40px;
+                  border-radius: 12px;
+                  background: #86c232;
+                  color: #1f2a0f;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  font-weight: 700;
+                "
+              >
+                2
+              </div>
+              <h4 class="fs-6" style="margin: 0">Cuéntame tu historia</h4>
+              <p
+                class="small"
+                style="margin: 0; color: #5f5a4e; font-size: 0.95rem"
+              >
+                En la sesión exploramos tu salud, hábitos y metas sin juicios
+                para crear estrategias realistas y adaptadas a tu vida.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-3 revelar revelar-retraso-2">
+            <div
+              class="step-card mx-auto"
+              style="
+                border: 1px solid rgba(56, 144, 255, 0.2);
+                background: #eaf4ff;
+                padding: 1.6rem;
+                border-radius: 18px;
+                min-height: 180px;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 1rem;
+                box-shadow: 0 16px 32px rgba(56, 144, 255, 0.12);
+              "
+            >
+              <div
+                class="step-badge"
+                style="
+                  width: 40px;
+                  height: 40px;
+                  border-radius: 12px;
+                  background: #3b82f6;
+                  color: #0f172a;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  font-weight: 700;
+                "
+              >
+                3
+              </div>
+              <h4 class="fs-6" style="margin: 0">Recibe tu material</h4>
+              <p
+                class="small"
+                style="margin: 0; color: #5f5a4e; font-size: 0.95rem"
+              >
+                Material práctico para aplicar lo hablado: guías, recetas y
+                hojas de monitoreo personalizadas a tu caso.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-3 revelar revelar-retraso-3">
+            <div
+              class="step-card mx-auto"
+              style="
+                border: 1px solid rgba(168, 85, 247, 0.2);
+                background: #f7edff;
+                padding: 1.6rem;
+                border-radius: 18px;
+                min-height: 180px;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 1rem;
+                box-shadow: 0 16px 32px rgba(168, 85, 247, 0.12);
+              "
+            >
+              <div
+                class="step-badge"
+                style="
+                  width: 40px;
+                  height: 40px;
+                  border-radius: 12px;
+                  background: #a855f7;
+                  color: #111827;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  font-weight: 700;
+                "
+              >
+                4
+              </div>
+              <h4 class="fs-6" style="margin: 0">Damos seguimiento</h4>
+              <p
+                class="small"
+                style="margin: 0; color: #5f5a4e; font-size: 0.95rem"
+              >
+                Ajustes continuos en sesiones posteriores según tus avances y
+                necesidades para mantener el progreso.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- ================= FORMULARIO DE AGENDA ================= -->
+    <section
+      class="seccion"
+      id="agendar"
+      style="background: rgba(120, 135, 87, 0.05)"
+    >
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <div
+              class="tarjeta-formulario revelar"
+              style="
+                padding: 2.5rem;
+                border-radius: 24px;
+                box-shadow: 0 24px 60px rgba(0, 0, 0, 0.08);
+                border: 1px solid rgba(120, 135, 87, 0.16);
+                background: #fff;
+              "
+            >
+              <div class="text-center mb-4">
+                <span class="eyebrow justify-content-center"
+                  >Reserva tu espacio</span
+                >
+                <h2 class="mt-3">Agenda tu consulta</h2>
+                <p
+                  class="text-muted mx-auto"
+                  style="max-width: 540px; line-height: 1.7"
+                >
+                  Completa el formulario y te contactaré para confirmar fecha y
+                  horario. Listo para conectarse a un sistema de citas en línea.
+                </p>
+              </div>
+
+              <form class="form-vd row g-3" data-form-vd>
+                <!-- === Configuración Web3Forms === -->
+                <input
+                  type="hidden"
+                  name="access_key"
+                  value="2f99aeb8-2519-41f6-acfe-bf7c7b3487ce"
+                />
+                <input
+                  type="hidden"
+                  name="subject"
+                  value="Nueva solicitud de cita - Sitio web"
+                />
+                <input
+                  type="hidden"
+                  name="from_name"
+                  value="Formulario de Agenda"
+                />
+                <!-- Honeypot anti-spam (debe quedar vacío) -->
+                <input
+                  type="checkbox"
+                  name="botcheck"
+                  class="d-none"
+                  style="display: none"
+                />
+
+                <div class="col-md-6">
+                  <label for="nombre">Nombre completo</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="nombre"
+                    name="nombre"
+                    placeholder="Ej. Ana Pérez Rodríguez"
+                    autocomplete="name"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="correo">Correo electrónico</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="correo"
+                    name="correo"
+                    placeholder="Ej. correo@ejemplo.com"
+                    autocomplete="email"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="telefono">Teléfono / WhatsApp</label>
+                  <input
+                    type="tel"
+                    class="form-control"
+                    id="telefono"
+                    name="telefono"
+                    placeholder="Ej. +52 55 1234 5678"
+                    autocomplete="tel"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="servicio">Tipo de consulta</label>
+                  <select
+                    class="form-select"
+                    id="servicio"
+                    name="servicio"
+                    required
+                  >
+                    <option value="" disabled selected>
+                      Selecciona una opción
+                    </option>
+                    <option>Consulta a menor de 3 años</option>
+                    <option>Consulta infantil - mayor a 3 años</option>
+                    <option>Consulta Adultos</option>
+                    <option>Educación Nutricional</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label for="modalidad">Modalidad</label>
+                  <select
+                    class="form-select"
+                    id="modalidad"
+                    name="modalidad"
+                    required
+                  >
+                    <option value="" disabled selected>
+                      Selecciona una opción
+                    </option>
+                    <option>Online</option>
+                    <option>Presencial — Clínica UDONI</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label for="fecha">Fecha tentativa</label>
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="fecha"
+                    name="fecha"
+                  />
+                </div>
+                <div class="col-12">
+                  <label for="mensaje"
+                    >Cuéntame brevemente qué te gustaría trabajar</label
+                  >
+                  <textarea
+                    class="form-control"
+                    id="mensaje"
+                    name="mensaje"
+                    rows="4"
+                    placeholder="Describe tus objetivos o dudas principales"
+                  ></textarea>
+                </div>
+                <div class="col-12 text-center mt-4">
+                  <button type="submit" class="btn-vd btn-primario-vd">
+                    <i class="bi bi-send-check"></i> Enviar solicitud
+                  </button>
+                  <p class="small text-muted mt-3" style="margin-bottom: 0">
+                    Responderé en un plazo de 24-48 horas hábiles.
+                  </p>
+                </div>
+              </form>
+
+              <div
+                class="mensaje-exito-form d-none text-center py-4"
+                style="
+                  background: #f6f7f1;
+                  border-radius: 20px;
+                  border: 1px solid rgba(120, 135, 87, 0.18);
+                "
+              >
+                <i
+                  class="bi bi-check-circle text-salvia"
+                  style="font-size: 2.5rem"
+                ></i>
+                <h3 class="mt-3">¡Solicitud enviada!</h3>
+                <p>
+                  Gracias por escribirme. Te contactaré muy pronto para
+                  confirmar tu cita.
+                </p>
+              </div>
+
+              <div
+                class="mensaje-error-form d-none text-center py-4"
+                style="
+                  background: #fdf3f3;
+                  border-radius: 20px;
+                  border: 1px solid rgba(200, 60, 60, 0.18);
+                "
+              >
+                <i
+                  class="bi bi-exclamation-circle"
+                  style="font-size: 2.5rem; color: #c83c3c"
+                ></i>
+                <h3 class="mt-3">Algo salió mal</h3>
+                <p>
+                  No pudimos enviar tu solicitud. Por favor intenta de nuevo o
+                  escríbeme directamente por WhatsApp.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      // === Envío del formulario a Web3Forms ===
+      document.addEventListener("DOMContentLoaded", function () {
+        const form = document.querySelector("[data-form-vd]");
+        const mensajeExito = document.querySelector(".mensaje-exito-form");
+        const mensajeError = document.querySelector(".mensaje-error-form");
+
+        if (!form) return;
+
+        form.addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          const boton = form.querySelector('button[type="submit"]');
+          const textoOriginal = boton.innerHTML;
+          boton.disabled = true;
+          boton.innerHTML = "Enviando...";
+
+          const formData = new FormData(form);
+          const object = Object.fromEntries(formData);
+          const json = JSON.stringify(object);
+
+          fetch("https://api.web3forms.com/submit", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+            body: json,
+          })
+            .then(async (response) => {
+              let jsonResponse = await response.json();
+              if (response.status === 200) {
+                form.classList.add("d-none");
+                mensajeExito.classList.remove("d-none");
+                mensajeError.classList.add("d-none");
+                form.reset();
+              } else {
+                console.error("Error de Web3Forms:", jsonResponse);
+                mensajeError.classList.remove("d-none");
+                mensajeExito.classList.add("d-none");
+              }
+            })
+            .catch((error) => {
+              console.error("Error de red:", error);
+              mensajeError.classList.remove("d-none");
+              mensajeExito.classList.add("d-none");
+            })
+            .finally(() => {
+              boton.disabled = false;
+              boton.innerHTML = textoOriginal;
+            });
+        });
+      });
+    </script>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="footer-vd" style="margin-top: 80px; background: #788757; color: #fff">
+      <div class="container">
+        <div class="row gy-4">
+          <div class="col-lg-4">
+            <a
+              href="index.html"
+              class="marca-nav mb-3 d-inline-flex"
+              style="text-decoration: none"
+            >
+              <img
+                src="img/logovd.png"
+                alt="Logotipo Victoria D."
+                style="width: 44px; height: 44px"
+              />
+              <span style="color: #fff"
+                >Nutrióloga Victoria Villalpando Dávalos.</span
+              >
+            </a>
+            <p class="mt-3" style="max-width: 320px; color: #fff">
+              Nutrición basada en evidencia, cercanía y respeto por tu historia.
+              Consulta online y presencial.
+            </p>
+            <div class="redes-footer mt-3">
+              <a
+                href="https://www.instagram.com/nutrivictoriavd/"
+                aria-label="Instagram"
+                style="text-decoration: none; color: #fff"
+                ><i class="bi bi-instagram"></i
+              ></a>
+              <a
+                href="https://www.tiktok.com/@nutvictoriavd"
+                aria-label="TikTok"
+                style="text-decoration: none; color: #fff"
+                ><i class="bi bi-tiktok"></i
+              ></a>
+              <a
+                href="https://wa.me/523310256779"
+                aria-label="WhatsApp"
+                style="text-decoration: none; color: #fff"
+                ><i class="bi bi-whatsapp"></i
+              ></a>
+            </div>
+          </div>
+          <div class="col-6 col-lg-2">
+            <h5 style="color: #fff; margin-bottom: 0.75rem">Explorar</h5>
+            <ul style="list-style: none; padding: 0; margin: 0">
+              <li style="margin-bottom: 0.5rem">
+                <a
+                  href="sobre-mi.html"
+                  style="text-decoration: none; color: #fff"
+                  >Sobre mí</a
+                >
+              </li>
+              <li style="margin-bottom: 0.5rem">
+                <a
+                  href="consulta.html"
+                  style="text-decoration: none; color: #fff"
+                  >Consulta</a
+                >
+              </li>
+              <li style="margin-bottom: 0.5rem">
+                <a href="blog.html" style="text-decoration: none; color: #fff"
+                  >Blog</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-lg-4">
+            <h5 style="color: #fff">Contacto</h5>
+            <ul style="list-style: none; padding: 0">
+              <li style="color: #fff">
+                <i class="bi bi-envelope me-2"></i> nut.victoriavd@gmail.com
+              </li>
+              <li style="color: #fff">
+                <i class="bi bi-geo-alt me-2"></i> Colomos 2181, Ayuntamiento,
+                44500 Gdl, Jal.
+              </li>
+              <li style="color: #fff">
+                <i class="bi bi-whatsapp me-2"></i> Agenda por WhatsApp
+              </li>
+            </ul>
+          </div>
+        </div>
+        <hr class="footer-divisor" />
+        <div class="footer-legal">
+          <span style="color: #fff"
+            >© 2026 Nutrióloga Victoria Villalpando Dávalos. Todos los derechos
+            reservados.</span
+          >
+          <div class="enlaces-legales">
+            <a
+              href="aviso-privacidad.html"
+              style="text-decoration: none; color: #fff"
+              >Aviso de privacidad</a
+            >
+            <a
+              href="politica-cookies.html"
+              style="text-decoration: none; color: #fff"
+              >Política de cookies</a
+            >
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <a
+      href="https://wa.me/523310256779"
+      class="whatsapp-flotante"
+      aria-label="Escribir por WhatsApp"
+      style="
+        position: fixed;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 9999;
+        width: 64px;
+        height: 64px;
+        background: #d5e7f2;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        color: #6890cb(7, 94, 84, 1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+      "
+      ><i class="bi bi-whatsapp"></i
+    ></a>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>

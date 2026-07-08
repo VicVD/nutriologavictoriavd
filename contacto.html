@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Nutrióloga Victoria Villalpando Dávalos | Nutrición basada en evidencia y
+      compañía
+    </title>
+    <meta
+      name="description"
+      content="Nutrición basada en evidencia, cercanía y respeto por tu historia. Consulta online y presencial con la Nutrióloga Victoria Villalpando Dávalos, educadora en diabetes."
+    />
+
+    <link rel="icon" href="img/logovd.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+  .hero {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(
+      180deg,
+      rgba(173, 201, 121, 0.95) 0%,
+      rgba(240, 242, 235, 1) 100%
+    );
+  }
+  .hero .container {
+    position: relative;
+    z-index: 2;
+  }
+  .wrap {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+    background: #ffffff;
+    border-radius: 28px;
+    box-shadow: 0 20px 50px rgba(83, 96, 68, 0.08);
+  }
+  .wrap h2 {
+    margin-top: 1.1rem;
+    margin-bottom: 1.8rem;
+    font-size: clamp(2rem, 2.4vw, 2.45rem);
+  }
+  .includes-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 0.9fr;
+    gap: 2rem;
+    align-items: start;
+  }
+  .pill-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 0.85rem;
+    margin-top: 1.4rem;
+  }
+  .pill {
+    padding: 0.9rem 1rem;
+    border-radius: 999px;
+    background: #eef4ff;
+    color: #3c567f;
+    font-size: 0.95rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .pill-green {
+    background: #e9f2e6;
+    color: #345f33;
+  }
+  .price-card {
+    border: 1px solid rgba(124, 135, 87, 0.18);
+    border-radius: 26px;
+    padding: 1.5rem;
+    margin-bottom: 1.25rem;
+    background: #fbfbf8;
+    box-shadow: 0 14px 35px rgba(90, 102, 80, 0.08);
+  }
+  .price-card h4 {
+    margin-bottom: 0.8rem;
+    font-size: 1.05rem;
+  }
+  .price {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #5f6b42;
+    margin: 1rem 0;
+  }
+  .price-note {
+    color: #7d7c69;
+    font-size: 0.95rem;
+  }
+</style>
+  </head>
+  <body>
+    <!-- ================= NAVBAR ================= -->
+    <nav class="navbar-vd">
+      <div class="contenedor-nav">
+        <a href="index.html" class="marca-nav">
+          <img
+            src="img/logovd.png"
+            alt="Logotipo Nutrióloga Victoria D."
+            width="40"
+            height="40"
+          />
+          <span style="color: #fff; font-weight: 700">Victoria VD</span>
+        </a>
+        <button class="btn-menu-movil" aria-label="Abrir menú">
+          <span></span><span></span><span></span>
+        </button>
+        <ul class="menu-nav">
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="sobre-mi.html">Sobre mí</a></li>
+          <li><a href="consulta.html">Consulta</a></li>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="contacto.html" class="activo">Contacto</a></li>
+        </ul>
+      </div>
+    </nav>
+    <script>
+      // Mobile menu toggle
+      (function () {
+        var btn = document.querySelector(".btn-menu-movil");
+        var menu = document.querySelector(".menu-nav");
+        if (!btn || !menu) return;
+        btn.addEventListener("click", function () {
+          var open = menu.classList.toggle("open");
+          btn.setAttribute("aria-expanded", open ? "true" : "false");
+        });
+      })();
+    </script>
+    <!-- ================= ENCABEZADO ================= -->
+    <header
+      class="seccion fondo-bosque text-center"
+      style="padding-top: 9rem; padding-bottom: 3rem"
+    >
+      <div class="container revelar">
+        <span class="eyebrow justify-content-center">Contacto</span>
+        <h1 class="mt-3 mb-3" style="font-size: clamp(2rem, 4vw, 2.8rem)">
+          Hablemos de tu alimentación
+        </h1>
+        <p class="fs-5 mx-auto" style="max-width: 560px">
+          Escríbeme por el medio que prefieras, con gusto te responderé.
+        </p>
+      </div>
+    </header>
+
+    <!-- ================= FORMULARIO + INFO ================= -->
+    <section class="seccion">
+      <div class="container">
+        <div class="row g-5">
+          <div class="col-lg-7 revelar">
+            <div class="tarjeta-formulario">
+              <h3 class="mb-4">Envíame un mensaje</h3>
+              <form class="form-vd row g-3" data-form-vd>
+                <!-- === Configuración Web3Forms === -->
+                <input
+                  type="hidden"
+                  name="access_key"
+                  value="2f99aeb8-2519-41f6-acfe-bf7c7b3487ce"
+                />
+                <input
+                  type="hidden"
+                  name="subject"
+                  value="Nuevo mensaje de contacto - Sitio web"
+                />
+                <input
+                  type="hidden"
+                  name="from_name"
+                  value="Formulario de Contacto"
+                />
+                <!-- Honeypot anti-spam (debe quedar vacío) -->
+                <input
+                  type="checkbox"
+                  name="botcheck"
+                  class="d-none"
+                  style="display: none"
+                />
+
+                <div class="col-md-6">
+                  <label for="c-nombre">Nombre</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="c-nombre"
+                    name="nombre"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="c-correo">Correo electrónico</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="c-correo"
+                    name="correo"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="c-telefono">Teléfono</label>
+                  <input
+                    type="tel"
+                    class="form-control"
+                    id="c-telefono"
+                    name="telefono"
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="c-asunto">Asunto</label>
+                  <select class="form-select" id="c-asunto" name="asunto">
+                    <option>Agendar consulta</option>
+                    <option>Duda sobre servicios</option>
+                    <option>Colaboración / prensa</option>
+                    <option>Otro</option>
+                  </select>
+                </div>
+                <div class="col-12">
+                  <label for="c-mensaje">Mensaje</label>
+                  <textarea
+                    class="form-control"
+                    id="c-mensaje"
+                    name="mensaje"
+                    rows="5"
+                    required
+                  ></textarea>
+                </div>
+                <div class="col-12 mt-3">
+                  <button type="submit" class="btn-vd btn-primario-vd">
+                    <i class="bi bi-send-check"></i> Enviar mensaje
+                  </button>
+                </div>
+              </form>
+              <div class="mensaje-exito-form d-none text-center py-4">
+                <i
+                  class="bi bi-check-circle text-salvia"
+                  style="font-size: 2.5rem"
+                ></i>
+                <h3 class="mt-3">¡Mensaje enviado!</h3>
+                <p>Gracias por escribirme, te responderé a la brevedad.</p>
+              </div>
+              <div class="mensaje-error-form d-none text-center py-4">
+                <i
+                  class="bi bi-exclamation-circle"
+                  style="font-size: 2.5rem; color: #c83c3c"
+                ></i>
+                <h3 class="mt-3">Algo salió mal</h3>
+                <p>
+                  No pudimos enviar tu mensaje. Por favor intenta de nuevo o
+                  escríbeme por WhatsApp.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-5 revelar revelar-retraso-1">
+            <div class="d-flex flex-column gap-3 h-100">
+              <div class="tarjeta-enfoque d-flex align-items-center gap-3">
+                <div class="icono mb-0"><i class="bi bi-whatsapp"></i></div>
+                <div>
+                  <h3 class="fs-6 mb-1">WhatsApp</h3>
+                  <a
+                    href="https://wa.me/523310256779"
+                    class="text-decoration-none"
+                    style="color: var(--verde-oliva); font-weight: 700"
+                    >Escríbeme directo</a
+                  >
+                </div>
+              </div>
+              <div class="tarjeta-enfoque d-flex align-items-center gap-3">
+                <div class="icono mb-0"><i class="bi bi-envelope"></i></div>
+                <div>
+                  <h3 class="fs-6 mb-1">Correo electrónico</h3>
+                  <a
+                    href="mailto:nut.victoriavd@gmail.com"
+                    class="text-decoration-none"
+                    style="color: var(--verde-oliva); font-weight: 700"
+                    >nut.victoriavd@gmail.com</a
+                  >
+                </div>
+              </div>
+              <div class="tarjeta-enfoque d-flex align-items-center gap-3">
+                <div class="icono mb-0"><i class="bi bi-instagram"></i></div>
+                <div>
+                  <h3 class="fs-6 mb-1">Redes sociales</h3>
+                  <div class="d-flex gap-3 mt-1">
+                    <a
+                      href="https://www.instagram.com/nut.victoriavd"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style="color: var(--verde-oliva)"
+                      ><i class="bi bi-instagram fs-5"></i
+                    ></a>
+                    <a
+                      href="https://www.tiktok.com/@nut.victoriavd"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style="color: var(--verde-oliva)"
+                      ><i class="bi bi-tiktok fs-5"></i
+                    ></a>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="tarjeta-enfoque flex-grow-1 p-0"
+                style="overflow: hidden; min-height: 220px"
+              >
+                <iframe
+                  title="Mapa de ubicación"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3732.443937998266!2d-103.3718832!3d20.6921899!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8428af17a98830d7%3A0xe9ca49d470499d56!2sUDONI%20Unidad%20de%20Diabetes%2C%20Obesidad%20y%20Nutrici%C3%B3n%20Infantil!5e0!3m2!1ses!2smx!4v1783489119730!5m2!1ses!2smx"
+                  width="100%"
+                  height="100%"
+                  style="border: 0; min-height: 220px"
+                  loading="lazy"
+                ></iframe>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      // === Envío del formulario de contacto a Web3Forms ===
+      document.addEventListener("DOMContentLoaded", function () {
+        const form = document.querySelector("[data-form-vd]");
+        const mensajeExito = document.querySelector(".mensaje-exito-form");
+        const mensajeError = document.querySelector(".mensaje-error-form");
+
+        if (!form) return;
+
+        form.addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          const boton = form.querySelector('button[type="submit"]');
+          const textoOriginal = boton.innerHTML;
+          boton.disabled = true;
+          boton.innerHTML = "Enviando...";
+
+          const formData = new FormData(form);
+          const object = Object.fromEntries(formData);
+          const json = JSON.stringify(object);
+
+          fetch("https://api.web3forms.com/submit", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+            body: json,
+          })
+            .then(async (response) => {
+              let jsonResponse = await response.json();
+              if (response.status === 200) {
+                form.classList.add("d-none");
+                mensajeExito.classList.remove("d-none");
+                mensajeError.classList.add("d-none");
+                form.reset();
+              } else {
+                console.error("Error de Web3Forms:", jsonResponse);
+                mensajeError.classList.remove("d-none");
+                mensajeExito.classList.add("d-none");
+              }
+            })
+            .catch((error) => {
+              console.error("Error de red:", error);
+              mensajeError.classList.remove("d-none");
+              mensajeExito.classList.add("d-none");
+            })
+            .finally(() => {
+              boton.disabled = false;
+              boton.innerHTML = textoOriginal;
+            });
+        });
+      });
+    </script>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="footer-vd" style="background: #788757; color: #fff">
+      <div class="container">
+        <div class="row gy-4">
+          <div class="col-lg-4">
+            <a
+              href="index.html"
+              class="marca-nav mb-3 d-inline-flex"
+              style="text-decoration: none"
+            >
+              <img
+                src="img/logovd.png"
+                alt="Logotipo Victoria D."
+                style="width: 44px; height: 44px"
+              />
+              <span style="color: #fff"
+                >Nutrióloga Victoria Villalpando Dávalos.</span
+              >
+            </a>
+            <p class="mt-3" style="max-width: 320px; color: #fff">
+              Nutrición basada en evidencia, cercanía y respeto por tu historia.
+              Consulta online y presencial.
+            </p>
+            <div class="redes-footer mt-3">
+              <a
+                href="https://www.instagram.com/nutrivictoriavd/"
+                aria-label="Instagram"
+                style="text-decoration: none; color: #fff"
+                ><i class="bi bi-instagram"></i
+              ></a>
+              <a
+                href="https://www.tiktok.com/@nutvictoriavd"
+                aria-label="TikTok"
+                style="text-decoration: none; color: #fff"
+                ><i class="bi bi-tiktok"></i
+              ></a>
+              <a
+                href="https://wa.me/523310256779"
+                aria-label="WhatsApp"
+                style="text-decoration: none; color: #fff"
+                ><i class="bi bi-whatsapp"></i
+              ></a>
+            </div>
+          </div>
+          <div class="col-6 col-lg-2">
+            <h5 style="color: #fff; margin-bottom: 0.75rem">Explorar</h5>
+            <ul style="list-style: none; padding: 0; margin: 0">
+              <li style="margin-bottom: 0.5rem">
+                <a
+                  href="sobre-mi.html"
+                  style="text-decoration: none; color: #fff"
+                  >Sobre mí</a
+                >
+              </li>
+              <li style="margin-bottom: 0.5rem">
+                <a
+                  href="consulta.html"
+                  style="text-decoration: none; color: #fff"
+                  >Consulta</a
+                >
+              </li>
+              <li style="margin-bottom: 0.5rem">
+                <a href="blog.html" style="text-decoration: none; color: #fff"
+                  >Blog</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-lg-4">
+            <h5 style="color: #fff">Contacto</h5>
+            <ul style="list-style: none; padding: 0">
+              <li style="color: #fff">
+                <i class="bi bi-envelope me-2"></i> nut.victoriavd@gmail.com
+              </li>
+              <li style="color: #fff">
+                <i class="bi bi-geo-alt me-2"></i> Colomos 2181, Ayuntamiento,
+                44500 Gdl, Jal.
+              </li>
+              <li style="color: #fff">
+                <i class="bi bi-whatsapp me-2"></i>
+                <a
+                  href="https://wa.me/523310256779"
+                  style="text-decoration: none; color: #fff"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Agenda por WhatsApp</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+        <hr class="footer-divisor" />
+        <div class="footer-legal">
+          <span style="color: #fff"
+            >© 2026 Nutrióloga Victoria Villalpando Dávalos. Todos los derechos
+            reservados.</span
+          >
+          <div class="enlaces-legales">
+            <a
+              href="aviso-privacidad.html"
+              style="text-decoration: none; color: #fff"
+              >Aviso de privacidad</a
+            >
+            <a
+              href="politica-cookies.html"
+              style="text-decoration: none; color: #fff"
+              >Política de cookies</a
+            >
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <a
+      href="https://wa.me/523310256779"
+      class="whatsapp-flotante"
+      aria-label="Escribir por WhatsApp"
+      style="
+        position: fixed;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 9999;
+        width: 64px;
+        height: 64px;
+        background: #d5e7f2;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        color: #6890cb(7, 94, 84, 1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+      "
+      ><i class="bi bi-whatsapp"></i
+    ></a>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
