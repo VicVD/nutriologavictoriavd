@@ -766,3 +766,100 @@ img {
   color: #777;
   font-size: .9rem;
 }
+/* ===== PÁGINA DE ARTÍCULO ===== */
+.articulo-contenedor {
+  max-width: 800px;
+  margin: 2rem auto 4rem;
+  padding: 2.5rem 3rem;
+  background: #ffffff;
+  border-radius: 28px;
+  box-shadow: 0 20px 50px rgba(83, 96, 68, 0.08);
+}
+
+.articulo-etiqueta {
+  display: inline-block;
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  background: #e9f2e6;
+  color: #345f33;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.articulo-contenedor h1 {
+  font-size: clamp(1.8rem, 2.6vw, 2.4rem);
+  color: #3c3c3c;
+  line-height: 1.25;
+}
+
+.articulo-meta {
+  color: #7d7c69;
+  font-size: 0.95rem;
+  margin-bottom: 1.75rem;
+}
+
+.articulo-imagen {
+  width: 100%;
+  height: auto;
+  max-height: 420px;
+  object-fit: cover;
+  border-radius: 20px;
+  margin-bottom: 2rem;
+}
+
+.articulo-cuerpo {
+  color: #45483d;
+  font-size: 1.05rem;
+  line-height: 1.75;
+}
+
+.articulo-cuerpo h2 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-size: 1.35rem;
+  color: #345f33;
+}
+
+.articulo-cuerpo p {
+  margin-bottom: 1.1rem;
+}
+
+.articulo-cuerpo ul,
+.articulo-cuerpo ol {
+  margin-bottom: 1.1rem;
+  padding-left: 1.4rem;
+}
+
+.articulo-cuerpo li {
+  margin-bottom: 0.5rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .articulo-contenedor {
+    padding: 1.75rem 1.5rem;
+    margin: 1rem auto 3rem;
+    border-radius: 20px;
+  }
+}
+@media (max-width: 768px) {
+  .includes-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .wrap {
+    padding: 2rem 1.25rem;
+    border-radius: 20px;
+  }
+
+  .pill-list {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 0.6rem;
+  }
+
+  .price-card {
+    padding: 1.25rem;
+  }
+}
