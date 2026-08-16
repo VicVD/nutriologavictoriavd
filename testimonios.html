@@ -1,0 +1,707 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Testimonios | Nutrióloga Victoria Villalpando Dávalos
+    </title>
+    <meta
+      name="description"
+      content="Testimonios de pacientes y momentos especiales en consulta con la Nutrióloga Victoria Villalpando Dávalos."
+    />
+
+    <link rel="icon" href="img/logovd.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      .hero-testimonios {
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(
+          120deg,
+          rgba(222, 132, 4, 0.55) 0%,
+          rgba(173, 201, 121, 0.85) 45%,
+          rgba(76, 123, 181, 0.55) 100%
+        );
+        padding: 4rem 0 3rem;
+      }
+      .hero-testimonios .container {
+        position: relative;
+        z-index: 2;
+      }
+      .hero-testimonios-caja {
+        max-width: 760px;
+        margin: 0 auto;
+        text-align: center;
+        padding: 2.5rem 1.5rem;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 28px;
+        box-shadow: 0 28px 80px rgba(32, 56, 97, 0.12);
+      }
+      .tarjeta-dibujo {
+        background: #fff;
+        border-radius: 1rem;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+        height: 100%;
+        border-bottom: 6px solid var(--acento-dibujo);
+      }
+      .col-dibujo:nth-child(3n+1) .tarjeta-dibujo {
+        --acento-dibujo: #de8404;
+      }
+      .col-dibujo:nth-child(3n+2) .tarjeta-dibujo {
+        --acento-dibujo: #4c7bb5;
+      }
+      .col-dibujo:nth-child(3n+3) .tarjeta-dibujo {
+        --acento-dibujo: #d4537e;
+      }
+      .tarjeta-dibujo:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+      }
+      .imagen-dibujo-wrap {
+        height: 220px;
+        overflow: hidden;
+        background: #f1e9d9;
+      }
+      .imagen-dibujo {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.4s ease;
+      }
+      .tarjeta-dibujo:hover .imagen-dibujo {
+        transform: scale(1.06);
+      }
+      .pie-dibujo {
+        padding: 0.9rem 1.1rem;
+        text-align: center;
+      }
+      .pie-dibujo span {
+        font-family: "Nunito", sans-serif;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--acento-dibujo);
+      }
+      .cascada-testimonios {
+        column-count: 1;
+        column-gap: 1.5rem;
+      }
+      @media (min-width: 768px) {
+        .cascada-testimonios {
+          column-count: 2;
+        }
+      }
+      @media (min-width: 1200px) {
+        .cascada-testimonios {
+          column-count: 3;
+        }
+      }
+      .tarjeta-testimonio-txt {
+        background-color: #ffffff;
+        padding: 1.9rem 1.75rem 1.75rem;
+        border-radius: 1.1rem;
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+        break-inside: avoid;
+        margin: 0 0 1.5rem;
+        display: inline-block;
+        width: 100%;
+        border-top: 6px solid var(--acento);
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+      }
+      .tarjeta-testimonio-txt:hover {
+        transform: translateY(-5px) rotate(0deg) !important;
+        box-shadow: 0 18px 38px rgba(0, 0, 0, 0.14);
+      }
+      .cascada-testimonios .col-testimonio:nth-child(4n+1) .tarjeta-testimonio-txt {
+        --acento: #de8404;
+        transform: rotate(-0.6deg);
+      }
+      .cascada-testimonios .col-testimonio:nth-child(4n+2) .tarjeta-testimonio-txt {
+        --acento: #4c7bb5;
+        transform: rotate(0.5deg);
+      }
+      .cascada-testimonios .col-testimonio:nth-child(4n+3) .tarjeta-testimonio-txt {
+        --acento: #d4537e;
+        transform: rotate(-0.4deg);
+      }
+      .cascada-testimonios .col-testimonio:nth-child(4n+4) .tarjeta-testimonio-txt {
+        --acento: #639922;
+        transform: rotate(0.6deg);
+      }
+      .icono-comillas {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--acento);
+        opacity: 0.15;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 0.75rem;
+      }
+      .icono-comillas i {
+        font-size: 1.1rem;
+        color: var(--acento);
+        opacity: 1;
+      }
+      .fila-firma-testimonio {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        margin-top: 1rem;
+      }
+      .avatar-testimonio {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: var(--acento);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Poppins", sans-serif;
+        font-weight: 700;
+        font-size: 0.9rem;
+        flex-shrink: 0;
+      }
+      .tarjeta-testimonio-txt p {
+        font-family: "Nunito", sans-serif;
+        font-size: 0.98rem;
+        color: #3f4a3d;
+      }
+      .tarjeta-testimonio-txt h3 {
+        font-family: "Poppins", sans-serif;
+        font-size: 1.02rem;
+        margin: 0;
+      }
+      .tarjeta-testimonio-txt span {
+        font-family: "Nunito", sans-serif;
+        font-size: 0.85rem;
+        color: #7d7c69;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ================= NAVBAR ================= -->
+    <nav class="navbar-vd">
+      <div class="contenedor-nav">
+        <a href="index.html" class="marca-nav">
+          <img
+            src="img/logovd.png"
+            alt="Logotipo Nutrióloga Victoria D."
+            width="40"
+            height="40"
+          />
+          <span style="color: #fff; font-weight: 700">Victoria VD</span>
+        </a>
+        <button class="btn-menu-movil" aria-label="Abrir menú">
+          <span></span><span></span><span></span>
+        </button>
+        <ul class="menu-nav">
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="sobre-mi.html">Sobre mí</a></li>
+          <li><a href="consulta.html">Consulta</a></li>
+          <li><a href="testimonios.html" class="activo">Testimonios</a></li>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+      </div>
+    </nav>
+    <script>
+      (function () {
+        var btn = document.querySelector(".btn-menu-movil");
+        var menu = document.querySelector(".menu-nav");
+        if (!btn || !menu) return;
+        btn.addEventListener("click", function () {
+          var open = menu.classList.toggle("open");
+          btn.setAttribute("aria-expanded", open ? "true" : "false");
+        });
+      })();
+    </script>
+
+    <!-- ================= HERO ================= -->
+    <header class="hero-testimonios">
+      <div class="container">
+        <div class="hero-testimonios-caja">
+          <span
+            style="
+              display: inline-block;
+              font-weight: 700;
+              letter-spacing: 0.15em;
+              text-transform: uppercase;
+              color: #4f657f;
+              font-size: 0.85rem;
+            "
+          >
+            Cariño en cada consulta
+          </span>
+          <h1
+            style="
+              margin-top: 1rem;
+              line-height: 1.1;
+              font-size: clamp(2rem, 4vw, 2.9rem);
+              color: #16263d;
+            "
+          >
+            Testimonios que nos impulsan a seguir creciendo
+          </h1>
+          <p
+            style="
+              max-width: 34rem;
+              margin: 1rem auto 0;
+              color: #5b6d84;
+              font-size: 1.02rem;
+            "
+          >
+            Lo que dicen las familias que me han acompañado, y algunos
+            dibujos que mis pacientes más peques me han regalado en consulta.
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <!-- ================= TESTIMONIOS DE TEXTO ================= -->
+    <section class="seccion">
+      <div class="container">
+        <div style="height: 3rem"></div>
+        <div class="text-center mb-5 revelar">
+          <span class="eyebrow">Lo que dicen las familias</span>
+          <h2 class="mt-3">Cuando nos acompañamos ganamos todos</h2>
+        </div>
+        <div class="cascada-testimonios">
+          <div class="col-testimonio revelar">
+            <div class="tarjeta-testimonio-txt">
+              <div class="icono-comillas"><i class="bi bi-quote"></i></div>
+              <p>
+                "La seguridad, atención y el cariño que le da a mi hija en
+                cada consulta es preciosa, mi hija sale siempre feliz."
+              </p>
+              <div class="fila-firma-testimonio">
+                <div class="avatar-testimonio">W</div>
+                <div>
+                  <h3>Wendolyne</h3>
+                  <span>Mamá de paciente</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-testimonio revelar revelar-retraso-1">
+            <div class="tarjeta-testimonio-txt">
+              <div class="icono-comillas"><i class="bi bi-quote"></i></div>
+              <p>
+                "Aprendí a comer con más consciencia y dejé de sentir culpa
+                en cada comida. La atención fue muy amable y clara desde la
+                primera sesión."
+              </p>
+              <div class="fila-firma-testimonio">
+                <div class="avatar-testimonio">C</div>
+                <div>
+                  <h3>Luis </h3>
+                  <span>Paciente adulto</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-testimonio revelar revelar-retraso-2">
+            <div class="tarjeta-testimonio-txt">
+              <div class="icono-comillas"><i class="bi bi-quote"></i></div>
+              <p>
+                "Siempre obtengo una explicación clara y siento que el
+                tiempo de mi consulta está bien utilizado. Recomiendo a
+                Victoria 100%."
+              </p>
+              <div class="fila-firma-testimonio">
+                <div class="avatar-testimonio">Y</div>
+                <div>
+                  <h3>Yazmin</h3>
+                  <span>Paciente adulta</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-testimonio revelar revelar-retraso-3">
+            <div class="tarjeta-testimonio-txt">
+              <div class="icono-comillas"><i class="bi bi-quote"></i></div>
+              <p>
+                "Lo que más valoro de la consulta con Victoria son los
+                aprendizajes de alimentos saludables y el apoyo en consultas
+                de los productos más comunes en el mercado. Se nota que le
+                gusta lo que hace."
+              </p>
+              <div class="fila-firma-testimonio">
+                <div class="avatar-testimonio">J</div>
+                <div>
+                  <h3>July</h3>
+                  <span>Mamá de paciente</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-testimonio revelar">
+            <div class="tarjeta-testimonio-txt">
+              <div class="icono-comillas"><i class="bi bi-quote"></i></div>
+              <p>
+                "Mi hijo dejó de tenerle miedo a probar cosas nuevas.
+                Victoria tiene mucha paciencia con los niños."
+              </p>
+              <div class="fila-firma-testimonio">
+                <div class="avatar-testimonio">A</div>
+                <div>
+                  <h3>Ana P.</h3>
+                  <span>Mamá de paciente</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-testimonio revelar revelar-retraso-1">
+            <div class="tarjeta-testimonio-txt">
+              <div class="icono-comillas"><i class="bi bi-quote"></i></div>
+              <p>
+                "Me encantan sus explicaciones, las opciones de alimentos para animar a mi hija
+                y apertura a resolución de dudas."
+              </p>
+              <div class="fila-firma-testimonio">
+                <div class="avatar-testimonio">M</div>
+                <div>
+                  <h3>Gisela M.</h3>
+                  <span>Mamá de paciente</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="height: 3rem"></div>
+      </div>
+    </section>
+<!-- ================= GALERÍA DE DIBUJOS ================= -->
+<section class="seccion fondo-beige" id="galeria-dibujos">
+  <div class="container">
+    <div style="height: 3rem"></div>
+    <div class="text-center mb-5 revelar">
+      <span class="eyebrow">Momentos en consulta</span>
+      <h2 class="mt-3">Lo que dibujan mis peques</h2>
+      <p
+        class="fs-6 mx-auto"
+        style="max-width: 40rem; color: #5b6d84"
+      >
+        Cada dibujo cuenta algo sobre su proceso vivido en consulta.
+        Compartido con el permiso de sus papás.
+      </p>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-4 col-dibujo revelar">
+        <div class="tarjeta-dibujo" data-bs-toggle="modal" data-bs-target="#modalDibujo1">
+          <div class="imagen-dibujo-wrap">
+            <img src="img/dibujos/nuevosaliemntos.jpg" alt="Dibujo hecho por paciente" class="imagen-dibujo" />
+          </div>
+          <div class="pie-dibujo">
+            <span>Paciente que probó nuevos alimentos 🥗</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 col-dibujo revelar revelar-retraso-1">
+        <div class="tarjeta-dibujo" data-bs-toggle="modal" data-bs-target="#modalDibujo2">
+          <div class="imagen-dibujo-wrap">
+            <img src="img/dibujos/pesoprogreso.jpg" alt="Dibujo hecho por paciente" class="imagen-dibujo" />
+          </div>
+          <div class="pie-dibujo">
+            <span>Paciente, le encanta dibujar y jugar!</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 col-dibujo revelar revelar-retraso-2">
+        <div class="tarjeta-dibujo" data-bs-toggle="modal" data-bs-target="#modalDibujo3">
+          <div class="imagen-dibujo-wrap">
+            <img src="img/dibujos/graciasporcuidarme.jpg" alt="Dibujo hecho por paciente" class="imagen-dibujo" />
+          </div>
+          <div class="pie-dibujo">
+            <span>Paciente, agradece por el cuidado recibido ❤️</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 col-dibujo revelar">
+        <div class="tarjeta-dibujo" data-bs-toggle="modal" data-bs-target="#modalDibujo4">
+          <div class="imagen-dibujo-wrap">
+            <img src="img/dibujos/dibujosobreprogresomar.jpg" alt="Dibujo hecho por paciente" class="imagen-dibujo" />
+          </div>
+          <div class="pie-dibujo">
+            <span>Paciente compartiendo su progreso</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 col-dibujo revelar revelar-retraso-1">
+        <div class="tarjeta-dibujo" data-bs-toggle="modal" data-bs-target="#modalDibujo5">
+          <div class="imagen-dibujo-wrap">
+            <img src="img/dibujos/frutas.jpg" alt="Dibujo hecho por paciente" class="imagen-dibujo" />
+          </div>
+          <div class="pie-dibujo">
+            <span>Paciente dibujando sus frutas favoritas</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 col-dibujo revelar revelar-retraso-2">
+        <div class="tarjeta-dibujo" data-bs-toggle="modal" data-bs-target="#modalDibujo6">
+          <div class="imagen-dibujo-wrap">
+            <img src="img/dibujos/alimentofavorito.jpg" alt="Dibujo hecho por paciente" class="imagen-dibujo" />
+          </div>
+          <div class="pie-dibujo">
+            <span>Paciente y su alimento favorito del mes 🥕</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="height: 3rem"></div>
+  </div>
+</section>
+
+<!-- Modales para ver cada dibujo en grande -->
+<div class="modal fade" id="modalDibujo1" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="border-radius: 1rem; overflow: hidden">
+      <button type="button" class="btn-close m-2" data-bs-dismiss="modal" aria-label="Cerrar"
+        style="position: absolute; right: 0; z-index: 2; background-color: #fff; border-radius: 50%; padding: 0.5rem;"></button>
+      <img src="img/dibujos/nuevosaliemntos.jpg" alt="Dibujo hecho por paciente" style="width: 100%; height: auto; display: block" />
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalDibujo2" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="border-radius: 1rem; overflow: hidden">
+      <button type="button" class="btn-close m-2" data-bs-dismiss="modal" aria-label="Cerrar"
+        style="position: absolute; right: 0; z-index: 2; background-color: #fff; border-radius: 50%; padding: 0.5rem;"></button>
+      <img src="img/dibujos/pesoprogreso.jpg" alt="Dibujo hecho por paciente" style="width: 100%; height: auto; display: block" />
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalDibujo3" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="border-radius: 1rem; overflow: hidden">
+      <button type="button" class="btn-close m-2" data-bs-dismiss="modal" aria-label="Cerrar"
+        style="position: absolute; right: 0; z-index: 2; background-color: #fff; border-radius: 50%; padding: 0.5rem;"></button>
+      <img src="img/dibujos/graciasporcuidarme.jpg" alt="Dibujo hecho por paciente" style="width: 100%; height: auto; display: block" />
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalDibujo4" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="border-radius: 1rem; overflow: hidden">
+      <button type="button" class="btn-close m-2" data-bs-dismiss="modal" aria-label="Cerrar"
+        style="position: absolute; right: 0; z-index: 2; background-color: #fff; border-radius: 50%; padding: 0.5rem;"></button>
+      <img src="img/dibujos/dibujosobreprogresomar.jpg" alt="Dibujo hecho por paciente" style="width: 100%; height: auto; display: block" />
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalDibujo5" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="border-radius: 1rem; overflow: hidden">
+      <button type="button" class="btn-close m-2" data-bs-dismiss="modal" aria-label="Cerrar"
+        style="position: absolute; right: 0; z-index: 2; background-color: #fff; border-radius: 50%; padding: 0.5rem;"></button>
+      <img src="img/dibujos/frutas.jpg" alt="Dibujo hecho por paciente" style="width: 100%; height: auto; display: block" />
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalDibujo6" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="border-radius: 1rem; overflow: hidden">
+      <button type="button" class="btn-close m-2" data-bs-dismiss="modal" aria-label="Cerrar"
+        style="position: absolute; right: 0; z-index: 2; background-color: #fff; border-radius: 50%; padding: 0.5rem;"></button>
+      <img src="img/dibujos/alimentofavorito.jpg" alt="Dibujo hecho por paciente" style="width: 100%; height: auto; display: block" />
+    </div>
+  </div>
+</div>
+
+    <!-- ================= CTA FINAL ================= -->
+    <section class="seccion">
+      <div class="container">
+        <div class="cta-final revelar" style="text-align: center">
+          <a
+            href="consulta.html"
+            class="btn-vd btn-primario-vd"
+            style="
+              background-color: #de8404;
+              border-color: #de8404;
+              color: #fff;
+              border-radius: 32px;
+              padding: 1rem 2rem;
+              margin: 1rem 0.75rem;
+              display: inline-block;
+              text-decoration: none;
+            "
+            ><i class="bi bi-calendar-heart"></i> Agenda tu consulta</a
+          >
+        </div>
+      </div>
+      <div style="height: 3rem"></div>
+    </section>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="footer-vd" style="background: #788757; color: #fff">
+      <div class="container">
+        <div class="row gy-4">
+          <div class="col-lg-4">
+            <a
+              href="index.html"
+              class="marca-nav mb-3 d-inline-flex"
+              style="text-decoration: none"
+            >
+              <img
+                src="img/logovd.png"
+                alt="Logotipo Victoria D."
+                style="width: 44px; height: 44px"
+              />
+              <span style="color: #fff"
+                >Nutrióloga Victoria Villalpando Dávalos.</span
+              >
+            </a>
+            <p class="mt-3" style="max-width: 320px; color: #fff">
+              Nutrición basada en evidencia, cercanía y respeto por tu
+              historia. Consulta online y presencial.
+            </p>
+            <div class="redes-footer mt-3">
+              <a
+                href="https://www.instagram.com/nutrivictoriavd/"
+                aria-label="Instagram"
+                style="text-decoration: none; color: #fff"
+                ><i class="bi bi-instagram"></i
+              ></a>
+              <a
+                href="https://www.tiktok.com/@nutvictoriavd"
+                aria-label="TikTok"
+                style="text-decoration: none; color: #fff"
+                ><i class="bi bi-tiktok"></i
+              ></a>
+              <a
+                href="https://wa.me/523310256779"
+                aria-label="WhatsApp"
+                style="text-decoration: none; color: #fff"
+                ><i class="bi bi-whatsapp"></i
+              ></a>
+            </div>
+          </div>
+          <div class="col-6 col-lg-2">
+            <h5 style="color: #fff; margin-bottom: 0.75rem">Explorar</h5>
+            <ul style="list-style: none; padding: 0; margin: 0">
+              <li style="margin-bottom: 0.5rem">
+                <a
+                  href="sobre-mi.html"
+                  style="text-decoration: none; color: #fff"
+                  >Sobre mí</a
+                >
+              </li>
+              <li style="margin-bottom: 0.5rem">
+                <a
+                  href="consulta.html"
+                  style="text-decoration: none; color: #fff"
+                  >Consulta</a
+                >
+              </li>
+              <li style="margin-bottom: 0.5rem">
+                <a
+                  href="testimonios.html"
+                  style="text-decoration: none; color: #fff"
+                  >Testimonios</a
+                >
+              </li>
+              <li style="margin-bottom: 0.5rem">
+                <a href="blog.html" style="text-decoration: none; color: #fff"
+                  >Blog</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-lg-4">
+            <h5 style="color: #fff">Contacto</h5>
+            <ul style="list-style: none; padding: 0">
+              <li style="color: #fff">
+                <i class="bi bi-envelope me-2"></i> nut.victoriavd@gmail.com
+              </li>
+              <li style="color: #fff">
+                <i class="bi bi-geo-alt me-2"></i> Colomos 2181, Ayuntamiento,
+                44500 Gdl, Jal.
+              </li>
+              <li style="color: #fff">
+                <i class="bi bi-whatsapp me-2"></i> Agenda por WhatsApp
+              </li>
+            </ul>
+          </div>
+        </div>
+        <hr class="footer-divisor" />
+        <div class="footer-legal">
+          <span style="color: #fff"
+            >© 2026 Nutrióloga Victoria Villalpando Dávalos. Todos los
+            derechos reservados.</span
+          >
+          <div class="enlaces-legales">
+            <a
+              href="aviso-privacidad.html"
+              style="text-decoration: none; color: #fff"
+              >Aviso de privacidad</a
+            >
+            <a
+              href="politica-cookies.html"
+              style="text-decoration: none; color: #fff"
+              >Política de cookies</a
+            >
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <a
+      href="https://wa.me/523310256779"
+      class="whatsapp-flotante"
+      aria-label="Escribir por WhatsApp"
+      title="Escríbenos por WhatsApp"
+      style="
+        position: fixed;
+        right: 16px;
+        bottom: 24px;
+        z-index: 9999;
+        width: 64px;
+        height: 64px;
+        background: #25d366;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        color: #fff;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+      "
+      ><i class="bi bi-whatsapp"></i
+    ></a>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
