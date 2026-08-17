@@ -48,17 +48,81 @@
     background: #ffffff;
     border-radius: 28px;
     box-shadow: 0 20px 50px rgba(83, 96, 68, 0.08);
+    position: relative;
+    overflow: hidden;
+  }
+  .wrap::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background: linear-gradient(
+      90deg,
+      #ff9f00 0%,
+      #ffd23f 34%,
+      #86c232 67%,
+      #3b82f6 100%
+    );
+  }
+  .servicios-fondo {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(
+      160deg,
+      #fef6e4 0%,
+      #eefaf1 45%,
+      #eaf3ff 100%
+    );
+  }
+  .servicios-fondo .blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(50px);
+    opacity: 0.45;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .servicios-fondo .blob-1 {
+    width: 320px;
+    height: 320px;
+    top: -100px;
+    left: -100px;
+    background: #ffca6b;
+  }
+  .servicios-fondo .blob-2 {
+    width: 280px;
+    height: 280px;
+    bottom: -90px;
+    right: -80px;
+    background: #7ed6a5;
+  }
+  .servicios-fondo .blob-3 {
+    width: 220px;
+    height: 220px;
+    top: 40%;
+    right: 8%;
+    background: #a3c9ff;
+    opacity: 0.3;
+  }
+  .eyebrow-color {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.9rem;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #fff1d6, #eafbe7);
+    color: #6b6118;
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
   }
   .wrap h2 {
     margin-top: 1.1rem;
     margin-bottom: 1.8rem;
     font-size: clamp(2rem, 2.4vw, 2.45rem);
-  }
-  .includes-grid {
-    display: grid;
-    grid-template-columns: 1.3fr 0.9fr;
-    gap: 2rem;
-    align-items: start;
   }
   .pill-list {
     display: grid;
@@ -76,11 +140,32 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 0.45rem;
     text-align: center;
+    border: 1px solid transparent;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .pill:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+  }
+  .pill i {
+    font-size: 1rem;
+  }
+  .pill-blue {
+    background: #eaf3ff;
+    color: #2f5fac;
+    border-color: rgba(59, 130, 246, 0.18);
   }
   .pill-green {
-    background: #e9f2e6;
-    color: #345f33;
+    background: #e9f7ec;
+    color: #2f7a44;
+    border-color: rgba(46, 160, 67, 0.18);
+  }
+  .pill-orange {
+    background: #fff3e0;
+    color: #b96a05;
+    border-color: rgba(255, 159, 0, 0.22);
   }
   .price-card {
     border: 1px solid rgba(124, 135, 87, 0.18);
@@ -89,10 +174,55 @@
     margin-bottom: 1.25rem;
     background: #fbfbf8;
     box-shadow: 0 14px 35px rgba(90, 102, 80, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+  .price-card-body {
+    flex: 1;
+    min-width: 0;
   }
   .price-card h4 {
     margin-bottom: 0.8rem;
     font-size: 1.05rem;
+  }
+  .price-card-media {
+    flex-shrink: 0;
+    width: 110px;
+    height: 110px;
+    border-radius: 18px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+  }
+  .price-card-media.media-virtual {
+    background: linear-gradient(145deg, #dbeafe, #eef2ff);
+    color: #3b6fd6;
+  }
+  .price-card-media.media-presencial {
+    background: linear-gradient(145deg, #dcf5e3, #f0fbe9);
+    color: #3f9d5c;
+  }
+  .price-card-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .price-card.card-virtual {
+    border-left: 4px solid #3b82f6;
+  }
+  .price-card.card-presencial {
+    border-left: 4px solid #86c232;
+  }
+  .price-card.card-virtual .price {
+    color: #3b6fd6;
+  }
+  .price-card.card-presencial .price {
+    color: #4e8a2f;
   }
   .price {
     font-size: 2rem;
@@ -103,6 +233,99 @@
   .price-note {
     color: #7d7c69;
     font-size: 0.95rem;
+  }
+
+  /* ===================== RESPONSIVIDAD MÓVIL ===================== */
+
+  /* La cabecera tenía demasiado padding-top fijo, aplastando el hero en pantallas chicas */
+  header.seccion.fondo-bosque {
+    padding-top: clamp(5.5rem, 18vw, 9rem) !important;
+    padding-bottom: 3rem;
+  }
+
+  /* El botón flotante de WhatsApp tapaba contenido en móvil: se reduce y se mueve a una esquina inferior */
+  .whatsapp-flotante {
+    width: 64px;
+    height: 64px;
+    font-size: 28px;
+  }
+
+  @media (max-width: 991px) {
+    .wrap {
+      padding: 2.25rem 1.25rem;
+      border-radius: 20px;
+    }
+
+    /* La rejilla de 2 columnas fijas (1.3fr / 0.9fr) se apilaba mal en tablets/móvil */
+    .includes-grid {
+      grid-template-columns: 1fr;
+      gap: 1.75rem;
+    }
+
+    .pill-list {
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    }
+  }
+
+  @media (max-width: 576px) {
+    .wrap {
+      padding: 1.75rem 1rem;
+      border-radius: 16px;
+      margin: 0 0.5rem;
+    }
+
+    .wrap h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .pill-list {
+      grid-template-columns: 1fr 1fr;
+      gap: 0.6rem;
+    }
+
+    .pill {
+      padding: 0.75rem 0.6rem;
+      font-size: 0.85rem;
+    }
+
+    .price-card {
+      padding: 1.25rem;
+      border-radius: 20px;
+      gap: 1rem;
+    }
+
+    .price-card-media {
+      width: 76px;
+      height: 76px;
+      border-radius: 14px;
+      font-size: 1.2rem;
+    }
+
+    .price {
+      font-size: 1.7rem;
+    }
+
+    .step-card {
+      padding: 1.25rem !important;
+      min-height: unset !important;
+    }
+
+    .tarjeta-formulario {
+      padding: 1.5rem !important;
+      border-radius: 18px !important;
+    }
+
+    /* El botón de WhatsApp a media altura tapaba texto en pantallas angostas: se lleva a la esquina inferior */
+    .whatsapp-flotante {
+      width: 54px;
+      height: 54px;
+      font-size: 24px;
+      top: auto !important;
+      bottom: 16px;
+      right: 12px;
+      transform: none !important;
+    }
   }
 </style>
   </head>
@@ -169,7 +392,7 @@
         <span class="eyebrow justify-content-center"></span>
         <h1
           class="mt-3 mb-3"
-          style="color: #ffffff; font-size: clamp(2rem, 4vw, 2.8rem)"
+          style="color: #ffffff; font-size: clamp(1.8rem, 6vw, 2.8rem)"
         >
           Un espacio pensado para tu etapa de vida
         </h1>
@@ -181,11 +404,16 @@
     </header>
 
     <!-- ================= SERVICIOS DETALLE (unificado) ================= -->
-    <section class="seccion" style="background: transparent">
-      <div class="wrap">
+    <section class="seccion servicios-fondo">
+      <span class="blob blob-1" aria-hidden="true"></span>
+      <span class="blob blob-2" aria-hidden="true"></span>
+      <span class="blob blob-3" aria-hidden="true"></span>
+      <div class="wrap" style="position: relative; z-index: 1">
         <div class="includes-grid">
           <div style="align-self: start">
-            <span class="eyebrow">Información de consulta</span>
+            <span class="eyebrow-color"
+              ><i class="bi bi-stars"></i> Información de consulta</span
+            >
             <h2>Lo que incluye tu proceso</h2>
             <p style="color: var(--ink-soft); max-width: 48ch">
               Nuestros servicios se enfocan en brindarte estrategias claras y
@@ -193,11 +421,22 @@
               emocionales relacionados con tu salud.
             </p>
             <div class="pill-list">
-              <div class="pill pill-blue">Diagnóstico nutricional</div>
-              <div class="pill pill-blue">Intervención personalizada</div>
-              <div class="pill pill-blue">Recursos educativos</div>
-              <div class="pill pill-blue">Revisión de laboratoriales</div>
-              <div class="pill pill-blue">Recomendación de suplementos</div>
+              <div class="pill pill-blue">
+                <i class="bi bi-clipboard2-pulse"></i> Diagnóstico nutricional
+              </div>
+              <div class="pill pill-blue">
+                <i class="bi bi-person-check"></i> Intervención personalizada
+              </div>
+              <div class="pill pill-blue">
+                <i class="bi bi-book"></i> Recursos educativos
+              </div>
+              <div class="pill pill-blue">
+                <i class="bi bi-file-earmark-medical"></i> Revisión de
+                laboratoriales
+              </div>
+              <div class="pill pill-blue">
+                <i class="bi bi-capsule"></i> Recomendación de suplementos
+              </div>
             </div>
             <p
               style="
@@ -209,59 +448,98 @@
             >
               Lo anterior se brinda según diagnóstico y tratamiento.
             </p>
-            <div class="price-card" style="margin-top: 18px">
-              <h4>Consulta virtual</h4>
-              <div class="price">$500</div>
-              <p>
-                Se realiza por medio de <strong>Google Meet</strong> y se
-                liquida 24 hrs antes de la consulta.
-              </p>
+            <div class="price-card card-virtual" style="margin-top: 18px">
+              <div class="price-card-body">
+                <h4><i class="bi bi-camera-video-fill" style="color: #3b6fd6"></i> Consulta virtual</h4>
+                <div class="price">$700</div>
+                <p>
+                  Se realiza por medio de <strong>Google Meet</strong> y se
+                  liquida 24 hrs antes de la consulta.
+                </p>
+              </div>
+              <div class="price-card-media media-virtual">
+                <!-- Reemplaza el ícono por una imagen real, ej: -->
+                <!-- <img src="img/consulta-virtual.jpg" alt="Consulta virtual por Google Meet" /> -->
+                <i class="bi bi-camera-video"></i>
+              </div>
             </div>
-            <div class="price-card" style="margin-top: 10px">
-              <h4>Consulta presencial</h4>
-              <div class="price">$700</div>
-              <p>
-                <strong>Ubicación:</strong> C. Colomos 2181, Ayuntamiento, 44500
-                Guadalajara, Jal.
-              </p>
-              <p style="margin-top: 8px">
-                <strong>WhatsApp:</strong>
-                33 26 11 78 26
-              </p>
+            <div class="price-card card-presencial" style="margin-top: 10px">
+              <div class="price-card-body">
+                <h4><i class="bi bi-geo-alt-fill" style="color: #4e8a2f"></i> Consulta presencial</h4>
+                <div class="price">$700</div>
+                <p>
+                  <strong>Ubicación:</strong> C. Colomos 2181, Ayuntamiento,
+                  44500 Guadalajara, Jal.
+                </p>
+                <p style="margin-top: 8px">
+                  <strong>WhatsApp:</strong>
+                  33 26 11 78 26
+                </p>
+              </div>
+              <div class="price-card-media media-presencial">
+                <!-- Reemplaza el ícono por una imagen real, ej: -->
+                <!-- <img src="img/consulta-presencial.jpg" alt="Consultorio en Colomos 2181" /> -->
+                <i class="bi bi-geo-alt"></i>
+              </div>
             </div>
-            <p class="price-note">Precios vigentes a partir de enero 2025</p>
+            <p class="price-note">Precios vigentes a partir de agosto 2026</p>
           </div>
           <div
             style="
-              background: var(--paper);
+              background: linear-gradient(165deg, #f3faf1 0%, #fefaf0 100%);
               padding: 24px;
-              border-radius: 8px;
+              border-radius: 20px;
               align-self: start;
+              border: 1px solid rgba(134, 194, 50, 0.15);
             "
           >
-            <h2>Durante la consulta trabajamos</h2>
+            <h2 style="font-size: 1.3rem">
+              <i class="bi bi-heart-pulse-fill" style="color: #86c232"></i>
+              Durante la consulta trabajamos
+            </h2>
             <div class="pill-list" style="max-width: 520px">
-              <div class="pill pill-green">Cambio de hábitos</div>
               <div class="pill pill-green">
-                Crecimiento y desarrollo infantil
+                <i class="bi bi-arrow-repeat"></i> Cambio de hábitos
               </div>
               <div class="pill pill-green">
-                Alteraciones hormonales y metabólicas
+                <i class="bi bi-emoji-smile"></i> Crecimiento y desarrollo
+                infantil
               </div>
-              <div class="pill pill-green">Alteraciones digestivas</div>
-              <div class="pill pill-green">Resistencia a la insulina</div>
-              <div class="pill pill-green">Diabetes</div>
+              <div class="pill pill-green">
+                <i class="bi bi-activity"></i> Alteraciones hormonales y
+                metabólicas
+              </div>
+              <div class="pill pill-green">
+                <i class="bi bi-droplet-half"></i> Alteraciones digestivas
+              </div>
+              <div class="pill pill-green">
+                <i class="bi bi-graph-down"></i> Resistencia a la insulina
+              </div>
+              <div class="pill pill-green">
+                <i class="bi bi-heart"></i> Diabetes
+              </div>
             </div>
-            <h2>Enfoque de la consulta</h2>
-            <p style="font-size: 0.85rem; color: var(--gold); font-weight: 600">
+            <h2 style="font-size: 1.3rem; margin-top: 2rem">
+              <i class="bi bi-compass-fill" style="color: #ff9f00"></i> Enfoque
+              de la consulta
+            </h2>
+            <p style="font-size: 0.85rem; color: #b96a05; font-weight: 600">
               Cada persona es diferente, pero los principios para tratarte
               siempre serán los mismos:
             </p>
             <div class="pill-list">
-              <div class="pill pill-orange">Escucha activa</div>
-              <div class="pill pill-orange">Sin estigmas</div>
-              <div class="pill pill-orange">Alejada de prohibiciones</div>
-              <div class="pill pill-orange">Adaptada a tu ritmo</div>
+              <div class="pill pill-orange">
+                <i class="bi bi-ear"></i> Escucha activa
+              </div>
+              <div class="pill pill-orange">
+                <i class="bi bi-shield-check"></i> Sin estigmas
+              </div>
+              <div class="pill pill-orange">
+                <i class="bi bi-x-octagon"></i> Alejada de prohibiciones
+              </div>
+              <div class="pill pill-orange">
+                <i class="bi bi-speedometer2"></i> Adaptada a tu ritmo
+              </div>
             </div>
           </div>
         </div>
@@ -844,7 +1122,7 @@
         align-items: center;
         justify-content: center;
         font-size: 28px;
-        color: #6890cb(7, 94, 84, 1);
+        color: #075e54;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
       "
       ><i class="bi bi-whatsapp"></i
