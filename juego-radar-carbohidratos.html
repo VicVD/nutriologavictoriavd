@@ -1,0 +1,564 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Radar de Carbohidratos · Nivel 0</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,800&family=Work+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #10233b;
+      --cream: #f2f7fb;
+      --navy: #1f4a7a;
+      --sky: #2f8fc0;
+      --coral: #ef6a4c;
+      --amber: #f2b33d;
+      --violet: #7c5cbf;
+      --green: #2f9e56;
+      --line: #dbe6ef;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; width: 100%; color: var(--ink); font-family: "Work Sans", sans-serif; background: var(--cream); }
+    .shell {
+      width: 100%; min-height: 100vh; position: relative; overflow: hidden;
+      background-image: radial-gradient(circle, rgba(31,74,122,.06) 1.4px, transparent 1.4px);
+      background-size: 22px 22px;
+    }
+    .shell::before, .shell::after { content: ""; position: absolute; z-index: 0; border-radius: 999px; pointer-events: none; }
+    .shell::before { width: 280px; height: 280px; right: -110px; top: 70px; background: rgba(242,179,61,.25); }
+    .shell::after { width: 230px; height: 230px; left: -110px; bottom: 40px; background: rgba(31,74,122,.10); }
+    header, main, footer { position: relative; z-index: 1; }
+    .display { font-family: "Fraunces", serif; letter-spacing: -.04em; }
+    .stripe { height: 8px; background: repeating-linear-gradient(90deg, #1f4a7a 0 30px, #f2f7fb 30px 45px, #f2b33d 45px 75px, #f2f7fb 75px 90px); }
+    .progress-track { background: #dde8f2; }
+    .progress-fill { width: 0%; background: linear-gradient(90deg, #1f4a7a, #2f8fc0); transition: width .45s ease; }
+    .card { box-shadow: 0 16px 0 rgba(16,35,59,.08), 0 22px 42px rgba(16,35,59,.12); }
+    .food-tile { background: #fff; border: 5px solid #fff; box-shadow: 0 8px 0 rgba(16,35,59,.09); }
+    .food-emoji { font-size: 3.4rem; line-height: 1; }
+    .food-emoji-sm { font-size: 2rem; line-height: 1; }
+
+    .route-tag { display: inline-flex; align-items: center; gap: .4rem; border-radius: 999px; padding: .35rem .8rem; font-size: .75rem; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; color: #fff; }
+    .route-clasifica { background: var(--navy); }
+    .route-carbo { background: var(--amber); color: #4a3200; }
+    .route-intruso { background: var(--coral); }
+    .route-multi { background: var(--violet); }
+    .route-vofa { background: var(--green); }
+
+    .choice-tile {
+      border: 3px solid var(--line); background: #fff; color: var(--ink);
+      transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease, background .16s ease;
+    }
+    .choice-tile:hover:not(:disabled), .choice-tile:focus-visible:not(:disabled) {
+      transform: translateY(-3px); border-color: var(--navy); box-shadow: 0 7px 0 rgba(31,74,122,.16); outline: none;
+    }
+    .choice-tile:disabled { cursor: default; }
+    .choice-tile.pick-correct, .choice-tile.reveal-correct { background: #e1f4e7; border-color: var(--green); }
+    .choice-tile.pick-wrong { background: #fde3dd; border-color: var(--coral); }
+    .choice-tile.selected { background: #efe8fb; border-color: var(--violet); }
+
+    .fb-correct { background: #e1f4e7; color: #1c6b3a; border: 2px solid #7fc998; }
+    .fb-wrong { background: #fde3dd; color: #a13d24; border: 2px solid #f2a48f; }
+    .solution { background: #fef3d9; border: 2px dashed #d9a52e; }
+
+    .btn-next, .btn-check { box-shadow: 0 6px 0 #123055; transition: transform .15s ease, box-shadow .15s ease; }
+    .btn-next:hover, .btn-next:focus-visible, .btn-check:hover, .btn-check:focus-visible { transform: translateY(-2px); box-shadow: 0 8px 0 #123055; outline: 3px solid var(--ink); outline-offset: 3px; }
+    .btn-next:active, .btn-check:active { transform: translateY(4px); box-shadow: 0 2px 0 #123055; }
+    .btn-check:disabled { opacity: .5; cursor: not-allowed; transform: none; box-shadow: 0 6px 0 #123055; }
+
+    .q-panel, .result-panel { display: none; }
+    .q-panel.active, .result-panel.active { display: block; animation: rise .35s ease both; }
+    @keyframes rise { from { opacity: 0; transform: translateX(16px) scale(.985); } to { opacity: 1; transform: translateX(0) scale(1); } }
+    .badge-wobble { animation: wobble 2.4s ease-in-out infinite; }
+    @keyframes wobble { 50% { transform: translateY(-4px) rotate(-3deg); } }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    .q-heading:focus { outline: none; }
+
+    .routes-legend { display: flex; flex-wrap: wrap; gap: .5rem; }
+    .routes-legend span { font-size: .72rem; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .badge-wobble { animation: none; }
+      .q-panel.active, .result-panel.active { animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+   <div class="stripe"></div>
+   <header class="w-full px-4 pt-5 sm:px-8">
+    <div class="mx-auto flex max-w-4xl flex-col gap-4 rounded-[1.7rem] bg-[#1f4a7a] px-5 py-4 text-white shadow-lg sm:flex-row sm:items-center sm:justify-between">
+     <div class="flex items-center gap-3">
+      <div class="badge-wobble flex h-12 w-12 items-center justify-center rounded-2xl bg-[#f2b33d] text-[#10233b]"><i data-lucide="radar" aria-hidden="true"></i></div>
+      <div>
+       <p class="m-0 text-xs font-bold uppercase tracking-[.18em]">Nivel 0 · Diabetes tipo 1</p>
+       <h1 class="display m-0 leading-tight text-3xl">Radar de Carbohidratos</h1>
+      </div>
+     </div>
+     <div class="flex items-center gap-3">
+      <div class="rounded-xl bg-white/15 px-3 py-2 text-center">
+       <p class="m-0 text-xs font-semibold uppercase tracking-wider">Puntos</p>
+       <p id="score-display" class="m-0 text-xl font-extrabold" aria-live="polite">0 / 10</p>
+      </div>
+      <button id="header-restart" class="rounded-xl bg-[#f2b33d] px-4 py-3 font-bold text-[#10233b] transition hover:bg-[#fbdb8f] focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2" type="button">Reiniciar</button>
+     </div>
+    </div>
+    <div class="mx-auto mt-4 max-w-4xl">
+     <div class="mb-2 flex items-center justify-between">
+      <p class="m-0 text-sm font-bold uppercase tracking-wider">Tu radar</p>
+      <p id="progress-text" class="m-0 text-sm font-bold" aria-live="polite">1 / 10</p>
+     </div>
+     <div class="progress-track h-4 overflow-hidden rounded-full border-2 border-white shadow-sm" aria-label="Progreso de la actividad">
+      <div id="progress-fill" class="progress-fill h-full rounded-full"></div>
+     </div>
+    </div>
+   </header>
+   <main class="w-full px-4 py-7 sm:px-8 sm:py-10">
+    <section id="quiz-stage" class="mx-auto max-w-4xl" aria-label="Preguntas del radar de carbohidratos">
+     <p id="live-status" class="sr-only" aria-live="polite"></p>
+     <aside class="mx-auto mb-6 max-w-4xl rounded-2xl border-2 border-[#dbe6ef] bg-white px-5 py-4 text-sm leading-relaxed shadow-sm">
+      <p class="m-0">Antes de contar gramos de HC, ayuda mucho reconocer el grupo de cada alimento y saber si aporta carbohidratos o no. Este radar mezcla 5 tipos de reto distintos:</p>
+      <div class="routes-legend mt-3">
+       <span class="route-tag route-clasifica"><i data-lucide="layout-grid" style="width:14px;height:14px;" aria-hidden="true"></i>Clasifica el grupo</span>
+       <span class="route-tag route-carbo"><i data-lucide="wheat" style="width:14px;height:14px;" aria-hidden="true"></i>¿Tiene HC?</span>
+       <span class="route-tag route-intruso"><i data-lucide="shuffle" style="width:14px;height:14px;" aria-hidden="true"></i>Encuentra el intruso</span>
+       <span class="route-tag route-multi"><i data-lucide="check-square" style="width:14px;height:14px;" aria-hidden="true"></i>Selecciona todos</span>
+       <span class="route-tag route-vofa"><i data-lucide="scale" style="width:14px;height:14px;" aria-hidden="true"></i>Verdadero o falso</span>
+      </div>
+     </aside>
+     <div id="panels-container"></div>
+    </section>
+    <section id="result-panel" class="result-panel mx-auto max-w-3xl" aria-labelledby="result-title">
+     <div class="card overflow-hidden rounded-[2rem] bg-white text-center">
+      <div class="bg-[#f2b33d] px-6 py-9">
+       <div class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-[#1f4a7a] text-white shadow-lg"><i data-lucide="radar" class="h-10 w-10" aria-hidden="true"></i></div>
+       <p class="mt-5 text-sm font-extrabold uppercase tracking-[.18em]">¡Radar completo!</p>
+       <h2 id="result-title" class="display mt-2 text-2xl font-extrabold leading-tight">Así distinguiste grupos y carbohidratos</h2>
+      </div>
+      <div class="p-7 sm:p-10">
+       <p id="final-score" class="m-0 text-6xl font-extrabold text-[#1f4a7a]" aria-live="polite">0 / 10</p>
+       <p class="mt-2 text-lg font-semibold text-[#1f4a7a]">respuestas correctas</p>
+       <p class="mx-auto mt-5 max-w-xl text-lg font-normal">Cuando te sientas segura reconociendo esto, sigue con Detective de Carbohidratos y el Carrito SMAE para trabajar los gramos exactos.</p>
+       <div class="mt-8 grid gap-3 sm:grid-cols-2">
+        <button id="try-again-button" class="rounded-2xl bg-[#1f4a7a] px-5 py-4 text-lg font-extrabold text-white transition hover:brightness-95 focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2" type="button">Volver a intentar</button>
+        <a href="juego-detective-carbohidratos.html" class="rounded-2xl bg-[#f2b33d] px-5 py-4 text-lg font-extrabold text-[#10233b] transition hover:brightness-95 focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2" style="text-decoration:none;display:block;">Siguiente reto →</a>
+       </div>
+      </div>
+     </div>
+    </section>
+   </main>
+   <footer class="w-full px-4 pb-7 text-center sm:px-8">
+    <p class="mx-auto max-w-3xl text-sm leading-relaxed" style="color:#48566b">Clasificación con fines educativos, basada en los grupos de alimentos del SMAE. Para el manejo real de tu alimentación y de tu insulina, sigue el plan indicado por tu médico o educador en diabetes.</p>
+   </footer>
+  </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+
+      // ---------- Ruta 1: Clasifica el grupo ----------
+      const CLASIFICA = [
+        { emoji: "🫓", food: "Tortilla", choices: ["Cereales y tubérculos", "Verduras", "Grasas"], correctIndex: 0,
+          correctFeedback: "¡Correcto! La tortilla es un cereal.",
+          solution: "La tortilla se hace de maíz, por eso pertenece al grupo de cereales y tubérculos, uno de los que más aporta hidratos de carbono." },
+        { emoji: "🍗", food: "Pollo", choices: ["Alimentos de origen animal", "Cereales y tubérculos", "Frutas"], correctIndex: 0,
+          correctFeedback: "¡Correcto! El pollo es un alimento de origen animal.",
+          solution: "Carnes, pescado y aves pertenecen al grupo de alimentos de origen animal, que aporta poco o nada de hidratos de carbono." },
+        { emoji: "🫘", food: "Frijol", choices: ["Leguminosas", "Cereales y tubérculos", "Verduras"], correctIndex: 0,
+          correctFeedback: "¡Correcto! El frijol es una leguminosa.",
+          solution: "Frijoles, lentejas, habas y garbanzos forman el grupo de leguminosas, que aporta tanto HC como proteína." },
+        { emoji: "🥦", food: "Brócoli", choices: ["Verduras", "Frutas", "Cereales y tubérculos"], correctIndex: 0,
+          correctFeedback: "¡Correcto! El brócoli es una verdura.",
+          solution: "El brócoli pertenece al grupo de verduras, con muy poco aporte de hidratos de carbono." },
+        { emoji: "🥛", food: "Leche entera", choices: ["Leche", "Alimentos de origen animal", "Azúcares"], correctIndex: 0,
+          correctFeedback: "¡Correcto! La leche forma su propio grupo.",
+          solution: "La leche y sus derivados líquidos forman el grupo de leche, que aporta HC por la lactosa." },
+        { emoji: "🥑", food: "Aguacate", choices: ["Grasas", "Frutas", "Verduras"], correctIndex: 0,
+          correctFeedback: "¡Correcto! El aguacate se clasifica como grasa.",
+          solution: "Aunque crece como fruta, por su composición el aguacate se agrupa con las grasas, con muy poco HC." }
+      ];
+
+      // ---------- Ruta 2: ¿Tiene o no tiene carbohidratos? ----------
+      const CARBOHIDRATOS = [
+        { emoji: "🍎", food: "Manzana", tieneHC: true,
+          correctFeedback: "¡Correcto! La fruta aporta hidratos de carbono.",
+          solution: "Las frutas, como la manzana, aportan hidratos de carbono en forma de azúcares naturales y fibra." },
+        { emoji: "🫒", food: "Aceite de oliva", tieneHC: false,
+          correctFeedback: "¡Correcto! El aceite es prácticamente 100% grasa.",
+          solution: "Los aceites y grasas puros no aportan hidratos de carbono." },
+        { emoji: "🍚", food: "Arroz", tieneHC: true,
+          correctFeedback: "¡Correcto! El arroz es un cereal.",
+          solution: "El arroz pertenece al grupo de cereales, uno de los que más aporta hidratos de carbono por porción." },
+        { emoji: "🧀", food: "Queso panela", tieneHC: false,
+          correctFeedback: "¡Correcto! El queso panela aporta principalmente proteína.",
+          solution: "El queso panela es un alimento de origen animal: aporta proteína y grasa, con muy poco o nada de HC." },
+        { emoji: "🍌", food: "Plátano", tieneHC: true,
+          correctFeedback: "¡Correcto! El plátano es una fruta energética.",
+          solution: "El plátano pertenece al grupo de frutas y aporta una buena cantidad de hidratos de carbono." },
+        { emoji: "🍗", food: "Pollo", tieneHC: false,
+          correctFeedback: "¡Correcto! El pollo aporta principalmente proteína.",
+          solution: "El pollo es un alimento de origen animal: su aporte principal es proteína, prácticamente sin hidratos de carbono." }
+      ];
+
+      // ---------- Ruta 3: Encuentra el intruso (por aporte de HC) ----------
+      const INTRUSO = [
+        { items: [ {emoji:"🍚", food:"Arroz"}, {emoji:"🫓", food:"Tortilla"}, {emoji:"🥚", food:"Huevo"} ], oddIndex: 2,
+          correctFeedback: "¡Correcto! Arroz y tortilla aportan HC; el huevo prácticamente no.",
+          solution: "Arroz y tortilla son cereales, ricos en hidratos de carbono. El huevo es un alimento de origen animal y aporta muy poco HC." },
+        { items: [ {emoji:"🫘", food:"Frijol"}, {emoji:"🌱", food:"Lenteja"}, {emoji:"🫒", food:"Aceite"} ], oddIndex: 2,
+          correctFeedback: "¡Correcto! Frijol y lenteja aportan HC; el aceite no.",
+          solution: "Las leguminosas como frijol y lenteja aportan hidratos de carbono además de proteína. El aceite es grasa pura, sin HC." },
+        { items: [ {emoji:"🍞", food:"Pan"}, {emoji:"🥔", food:"Papa"}, {emoji:"🐟", food:"Pescado"} ], oddIndex: 2,
+          correctFeedback: "¡Correcto! Pan y papa aportan HC; el pescado prácticamente no.",
+          solution: "Pan (cereal) y papa (tubérculo) aportan hidratos de carbono. El pescado es un alimento de origen animal, casi sin HC." },
+        { items: [ {emoji:"🌽", food:"Elote"}, {emoji:"🍠", food:"Camote"}, {emoji:"🧀", food:"Queso"} ], oddIndex: 2,
+          correctFeedback: "¡Correcto! Elote y camote aportan HC; el queso prácticamente no.",
+          solution: "Elote y camote pertenecen a cereales y tubérculos. El queso es un alimento de origen animal, con poco o nada de HC." },
+        { items: [ {emoji:"🍊", food:"Naranja"}, {emoji:"🍌", food:"Plátano"}, {emoji:"🍗", food:"Pollo"} ], oddIndex: 2,
+          correctFeedback: "¡Correcto! Naranja y plátano aportan HC; el pollo prácticamente no.",
+          solution: "Naranja y plátano son frutas, con hidratos de carbono. El pollo aporta principalmente proteína." }
+      ];
+
+      // ---------- Ruta 4: Selecciona todos los que aportan HC ----------
+      const MULTISELECT = [
+        { prompt: "Toca todos los alimentos que SÍ aportan hidratos de carbono", items: [
+            {emoji:"🍚", food:"Arroz", tieneHC:true}, {emoji:"🍗", food:"Pollo", tieneHC:false},
+            {emoji:"🍌", food:"Plátano", tieneHC:true}, {emoji:"🫒", food:"Aceite", tieneHC:false}
+          ],
+          correctFeedback: "¡Correcto! Arroz y plátano aportan HC; pollo y aceite, prácticamente nada.",
+          solution: "Arroz (cereal) y plátano (fruta) aportan hidratos de carbono. Pollo (proteína) y aceite (grasa) prácticamente no aportan HC." },
+        { prompt: "Toca todos los alimentos que SÍ aportan hidratos de carbono", items: [
+            {emoji:"🍞", food:"Pan", tieneHC:true}, {emoji:"🧀", food:"Queso panela", tieneHC:false},
+            {emoji:"🥔", food:"Papa", tieneHC:true}, {emoji:"🥚", food:"Huevo", tieneHC:false}
+          ],
+          correctFeedback: "¡Correcto! Pan y papa aportan HC; queso panela y huevo, prácticamente nada.",
+          solution: "Pan (cereal) y papa (tubérculo) aportan hidratos de carbono. Queso panela y huevo son alimentos de origen animal, con poco o nada de HC." },
+        { prompt: "Toca todos los alimentos que SÍ aportan hidratos de carbono", items: [
+            {emoji:"🫘", food:"Frijol", tieneHC:true}, {emoji:"🥑", food:"Aguacate", tieneHC:false},
+            {emoji:"🌽", food:"Elote", tieneHC:true}, {emoji:"🐟", food:"Pescado", tieneHC:false}
+          ],
+          correctFeedback: "¡Correcto! Frijol y elote aportan HC; aguacate y pescado, prácticamente nada.",
+          solution: "Frijol (leguminosa) y elote (cereal) aportan hidratos de carbono. Aguacate (grasa) y pescado (proteína) prácticamente no aportan HC." },
+        { prompt: "Toca todos los alimentos que SÍ aportan hidratos de carbono", items: [
+            {emoji:"🍎", food:"Manzana", tieneHC:true}, {emoji:"🐟", food:"Atún", tieneHC:false},
+            {emoji:"🫓", food:"Tortilla", tieneHC:true}, {emoji:"🧀", food:"Queso", tieneHC:false}
+          ],
+          correctFeedback: "¡Correcto! Manzana y tortilla aportan HC; atún y queso, prácticamente nada.",
+          solution: "Manzana (fruta) y tortilla (cereal) aportan hidratos de carbono. Atún y queso son alimentos de origen animal, con poco o nada de HC." }
+      ];
+
+      // ---------- Ruta 5: Verdadero o falso ----------
+      const VOFA = [
+        { emoji: "🥑", food: "Aguacate", statement: "El aguacate aporta una cantidad importante de hidratos de carbono.", correcto: false,
+          correctFeedback: "¡Correcto, es falso! El aguacate se clasifica como grasa.",
+          solution: "Aunque crece como fruta, por su composición el SMAE clasifica al aguacate en el grupo de grasas, con muy poco HC." },
+        { emoji: "🥛", food: "Leche", statement: "La leche aporta hidratos de carbono.", correcto: true,
+          correctFeedback: "¡Correcto, es verdadero! La leche aporta HC por la lactosa.",
+          solution: "La leche contiene lactosa, un azúcar natural, por lo que sí aporta hidratos de carbono." },
+        { emoji: "🍗", food: "Pollo", statement: "El pollo aporta una cantidad importante de hidratos de carbono.", correcto: false,
+          correctFeedback: "¡Correcto, es falso! El pollo aporta principalmente proteína.",
+          solution: "El pollo es un alimento de origen animal: aporta proteína, prácticamente sin hidratos de carbono." },
+        { emoji: "🫘", food: "Frijol", statement: "El frijol aporta hidratos de carbono, además de proteína.", correcto: true,
+          correctFeedback: "¡Correcto, es verdadero! Las leguminosas aportan ambos.",
+          solution: "El frijol es una leguminosa: a diferencia de otras fuentes de proteína, sí aporta una cantidad considerable de hidratos de carbono." },
+        { emoji: "🍇", food: "Uvas", statement: "Las uvas prácticamente no aportan hidratos de carbono.", correcto: false,
+          correctFeedback: "¡Correcto, es falso! Las uvas sí aportan HC, como toda fruta.",
+          solution: "Las uvas, como cualquier fruta, aportan hidratos de carbono en forma de azúcares naturales." }
+      ];
+
+      function shuffle(array) {
+        const copy = array.slice();
+        for (let i = copy.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [copy[i], copy[j]] = [copy[j], copy[i]];
+        }
+        return copy;
+      }
+
+      const TOTAL_QUESTIONS = 10;
+
+      function buildClasificaPanel(q, index, isLast) {
+        const order = shuffle(q.choices.map((label, i) => ({ label, correct: i === q.correctIndex })));
+        const correctLabel = q.choices[q.correctIndex];
+        const optionsHtml = order.map(o =>
+          `<button class="choice-tile rounded-2xl px-5 py-5 text-left text-lg font-bold" type="button" data-correct="${o.correct}">${o.label}</button>`
+        ).join(" ");
+        return `
+      <article class="q-panel" data-index="${index}" data-type="single">
+       <div class="card overflow-hidden rounded-[2rem] bg-white p-6 sm:p-9">
+        <span class="route-tag route-clasifica"><i data-lucide="layout-grid" style="width:14px;height:14px;" aria-hidden="true"></i>Clasifica el grupo</span>
+        <p class="m-0 mt-2 text-sm font-extrabold uppercase tracking-[.16em] text-[#1f4a7a]">Reactivo ${index + 1} de ${TOTAL_QUESTIONS}</p>
+        <div class="mt-4 flex items-center gap-4">
+         <div class="food-tile flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl"><span class="food-emoji" aria-hidden="true">${q.emoji}</span></div>
+         <h2 tabindex="-1" class="q-heading text-2xl font-extrabold leading-tight">¿A qué grupo pertenece: ${q.food}?</h2>
+        </div>
+        <div class="mt-6 grid gap-3 sm:grid-cols-3" role="group" aria-label="Opciones de grupo">${optionsHtml}</div>
+        <div class="mt-5 space-y-3">
+         <div class="fb-correct hidden rounded-2xl p-4 font-semibold" data-feedback="correct"><span>${q.correctFeedback}</span></div>
+         <div class="fb-wrong hidden rounded-2xl p-4 font-semibold" data-feedback="wrong"><span>No esta vez. El grupo correcto es "${correctLabel}".</span></div>
+         <div data-solution="" class="solution hidden rounded-2xl p-4">
+          <p class="m-0 text-xs font-extrabold uppercase tracking-wider text-[#8a6214]">Por qué</p>
+          <p class="mt-1 mb-0 font-bold">${q.solution}</p>
+         </div>
+        </div>
+        <button class="btn-next mt-5 hidden w-full rounded-2xl bg-[#1f4a7a] px-5 py-4 text-lg font-extrabold text-white sm:w-auto" type="button" data-next="">${isLast ? "Ver mi resultado" : "Siguiente reactivo"}</button>
+       </div>
+      </article>`;
+      }
+
+      function buildCarboPanel(q, index, isLast) {
+        const opts = shuffle([
+          { label: "Sí, tiene HC", correct: q.tieneHC === true },
+          { label: "No tiene HC", correct: q.tieneHC === false }
+        ]);
+        const optionsHtml = opts.map(o =>
+          `<button class="choice-tile rounded-2xl px-5 py-6 text-center text-lg font-bold" type="button" data-correct="${o.correct}">${o.label}</button>`
+        ).join(" ");
+        return `
+      <article class="q-panel" data-index="${index}" data-type="single">
+       <div class="card overflow-hidden rounded-[2rem] bg-white p-6 sm:p-9">
+        <span class="route-tag route-carbo"><i data-lucide="wheat" style="width:14px;height:14px;" aria-hidden="true"></i>¿Tiene o no tiene HC?</span>
+        <p class="m-0 mt-2 text-sm font-extrabold uppercase tracking-[.16em] text-[#1f4a7a]">Reactivo ${index + 1} de ${TOTAL_QUESTIONS}</p>
+        <div class="mt-4 flex items-center gap-4">
+         <div class="food-tile flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl"><span class="food-emoji" aria-hidden="true">${q.emoji}</span></div>
+         <h2 tabindex="-1" class="q-heading text-2xl font-extrabold leading-tight">${q.food}, ¿aporta hidratos de carbono?</h2>
+        </div>
+        <div class="mt-6 grid gap-3 sm:grid-cols-2" role="group" aria-label="Opciones sí o no">${optionsHtml}</div>
+        <div class="mt-5 space-y-3">
+         <div class="fb-correct hidden rounded-2xl p-4 font-semibold" data-feedback="correct"><span>${q.correctFeedback}</span></div>
+         <div class="fb-wrong hidden rounded-2xl p-4 font-semibold" data-feedback="wrong"><span>No esta vez. ${q.food} ${q.tieneHC ? "sí aporta" : "no aporta"} hidratos de carbono.</span></div>
+         <div data-solution="" class="solution hidden rounded-2xl p-4">
+          <p class="m-0 text-xs font-extrabold uppercase tracking-wider text-[#8a6214]">Por qué</p>
+          <p class="mt-1 mb-0 font-bold">${q.solution}</p>
+         </div>
+        </div>
+        <button class="btn-next mt-5 hidden w-full rounded-2xl bg-[#1f4a7a] px-5 py-4 text-lg font-extrabold text-white sm:w-auto" type="button" data-next="">${isLast ? "Ver mi resultado" : "Siguiente reactivo"}</button>
+       </div>
+      </article>`;
+      }
+
+      function buildIntrusoPanel(q, index, isLast) {
+        const order = shuffle(q.items.map((item, i) => ({ ...item, correct: i === q.oddIndex })));
+        const correctFood = q.items[q.oddIndex].food;
+        const optionsHtml = order.map(o =>
+          `<button class="choice-tile flex flex-col items-center gap-2 rounded-2xl px-4 py-6 text-center text-lg font-bold" type="button" data-correct="${o.correct}"><span class="food-emoji-sm" aria-hidden="true">${o.emoji}</span>${o.food}</button>`
+        ).join(" ");
+        return `
+      <article class="q-panel" data-index="${index}" data-type="single">
+       <div class="card overflow-hidden rounded-[2rem] bg-white p-6 sm:p-9">
+        <span class="route-tag route-intruso"><i data-lucide="shuffle" style="width:14px;height:14px;" aria-hidden="true"></i>Encuentra el intruso</span>
+        <p class="m-0 mt-2 text-sm font-extrabold uppercase tracking-[.16em] text-[#1f4a7a]">Reactivo ${index + 1} de ${TOTAL_QUESTIONS}</p>
+        <h2 tabindex="-1" class="q-heading mt-3 text-2xl font-extrabold leading-tight">Dos de estos aportan HC, uno prácticamente no. ¿Cuál es?</h2>
+        <div class="mt-6 grid gap-3 sm:grid-cols-3" role="group" aria-label="Opciones de alimentos">${optionsHtml}</div>
+        <div class="mt-5 space-y-3">
+         <div class="fb-correct hidden rounded-2xl p-4 font-semibold" data-feedback="correct"><span>${q.correctFeedback}</span></div>
+         <div class="fb-wrong hidden rounded-2xl p-4 font-semibold" data-feedback="wrong"><span>No esta vez. El intruso es "${correctFood}".</span></div>
+         <div data-solution="" class="solution hidden rounded-2xl p-4">
+          <p class="m-0 text-xs font-extrabold uppercase tracking-wider text-[#8a6214]">Por qué</p>
+          <p class="mt-1 mb-0 font-bold">${q.solution}</p>
+         </div>
+        </div>
+        <button class="btn-next mt-5 hidden w-full rounded-2xl bg-[#1f4a7a] px-5 py-4 text-lg font-extrabold text-white sm:w-auto" type="button" data-next="">${isLast ? "Ver mi resultado" : "Siguiente reactivo"}</button>
+       </div>
+      </article>`;
+      }
+
+      function buildMultiPanel(q, index, isLast) {
+        const order = shuffle(q.items.map((item, i) => ({ ...item, i })));
+        const tilesHtml = order.map(o =>
+          `<button class="choice-tile flex flex-col items-center gap-2 rounded-2xl px-4 py-6 text-center text-lg font-bold" type="button" data-select="" data-correct="${o.tieneHC}"><span class="food-emoji-sm" aria-hidden="true">${o.emoji}</span>${o.food}</button>`
+        ).join(" ");
+        return `
+      <article class="q-panel" data-index="${index}" data-type="multi">
+       <div class="card overflow-hidden rounded-[2rem] bg-white p-6 sm:p-9">
+        <span class="route-tag route-multi"><i data-lucide="check-square" style="width:14px;height:14px;" aria-hidden="true"></i>Selecciona todos</span>
+        <p class="m-0 mt-2 text-sm font-extrabold uppercase tracking-[.16em] text-[#1f4a7a]">Reactivo ${index + 1} de ${TOTAL_QUESTIONS}</p>
+        <h2 tabindex="-1" class="q-heading mt-3 text-2xl font-extrabold leading-tight">${q.prompt}</h2>
+        <p class="mt-1 text-sm" style="color:#5a6a80;">Puedes tocar más de uno. Cuando termines, presiona "Comprobar".</p>
+        <div class="mt-6 grid gap-3 sm:grid-cols-4" role="group" aria-label="Opciones para seleccionar">${tilesHtml}</div>
+        <button class="btn-check mt-5 w-full rounded-2xl bg-[#7c5cbf] px-5 py-4 text-lg font-extrabold text-white sm:w-auto" type="button" data-check="" disabled>Comprobar</button>
+        <div class="mt-5 space-y-3">
+         <div class="fb-correct hidden rounded-2xl p-4 font-semibold" data-feedback="correct"><span>${q.correctFeedback}</span></div>
+         <div class="fb-wrong hidden rounded-2xl p-4 font-semibold" data-feedback="wrong"><span>Casi. Revisa las marcas en verde y rojo.</span></div>
+         <div data-solution="" class="solution hidden rounded-2xl p-4">
+          <p class="m-0 text-xs font-extrabold uppercase tracking-wider text-[#8a6214]">Por qué</p>
+          <p class="mt-1 mb-0 font-bold">${q.solution}</p>
+         </div>
+        </div>
+        <button class="btn-next mt-5 hidden w-full rounded-2xl bg-[#1f4a7a] px-5 py-4 text-lg font-extrabold text-white sm:w-auto" type="button" data-next="">${isLast ? "Ver mi resultado" : "Siguiente reactivo"}</button>
+       </div>
+      </article>`;
+      }
+
+      function buildVofaPanel(q, index, isLast) {
+        const opts = shuffle([
+          { label: "Verdadero", correct: q.correcto === true },
+          { label: "Falso", correct: q.correcto === false }
+        ]);
+        const optionsHtml = opts.map(o =>
+          `<button class="choice-tile rounded-2xl px-5 py-6 text-center text-lg font-bold" type="button" data-correct="${o.correct}">${o.label}</button>`
+        ).join(" ");
+        return `
+      <article class="q-panel" data-index="${index}" data-type="single">
+       <div class="card overflow-hidden rounded-[2rem] bg-white p-6 sm:p-9">
+        <span class="route-tag route-vofa"><i data-lucide="scale" style="width:14px;height:14px;" aria-hidden="true"></i>Verdadero o falso</span>
+        <p class="m-0 mt-2 text-sm font-extrabold uppercase tracking-[.16em] text-[#1f4a7a]">Reactivo ${index + 1} de ${TOTAL_QUESTIONS}</p>
+        <div class="mt-4 flex items-center gap-4">
+         <div class="food-tile flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl"><span class="food-emoji" aria-hidden="true">${q.emoji}</span></div>
+         <h2 tabindex="-1" class="q-heading text-xl font-extrabold leading-snug">${q.statement}</h2>
+        </div>
+        <div class="mt-6 grid gap-3 sm:grid-cols-2" role="group" aria-label="Opciones verdadero o falso">${optionsHtml}</div>
+        <div class="mt-5 space-y-3">
+         <div class="fb-correct hidden rounded-2xl p-4 font-semibold" data-feedback="correct"><span>${q.correctFeedback}</span></div>
+         <div class="fb-wrong hidden rounded-2xl p-4 font-semibold" data-feedback="wrong"><span>No esta vez. La afirmación es ${q.correcto ? "verdadera" : "falsa"}.</span></div>
+         <div data-solution="" class="solution hidden rounded-2xl p-4">
+          <p class="m-0 text-xs font-extrabold uppercase tracking-wider text-[#8a6214]">Por qué</p>
+          <p class="mt-1 mb-0 font-bold">${q.solution}</p>
+         </div>
+        </div>
+        <button class="btn-next mt-5 hidden w-full rounded-2xl bg-[#1f4a7a] px-5 py-4 text-lg font-extrabold text-white sm:w-auto" type="button" data-next="">${isLast ? "Ver mi resultado" : "Siguiente reactivo"}</button>
+       </div>
+      </article>`;
+      }
+
+      const panelsContainer = document.getElementById("panels-container");
+      const resultPanel = document.getElementById("result-panel");
+      const scoreDisplay = document.getElementById("score-display");
+      const finalScore = document.getElementById("final-score");
+      const progressText = document.getElementById("progress-text");
+      const progressFill = document.getElementById("progress-fill");
+      const liveStatus = document.getElementById("live-status");
+
+      let panels = [];
+      let currentIndex = 0;
+      let score = 0;
+      let answered = new Set();
+
+      function updateDashboard() {
+        scoreDisplay.textContent = score + " / " + TOTAL_QUESTIONS;
+        progressText.textContent = Math.min(currentIndex + 1, TOTAL_QUESTIONS) + " / " + TOTAL_QUESTIONS;
+        progressFill.style.width = (Math.min(currentIndex + 1, TOTAL_QUESTIONS) / TOTAL_QUESTIONS * 100) + "%";
+      }
+
+      function showPanel(index) {
+        panels.forEach((panel, i) => panel.classList.toggle("active", i === index));
+        currentIndex = index;
+        updateDashboard();
+        const heading = panels[index].querySelector(".q-heading");
+        if (heading) heading.focus({ preventScroll: true });
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      function lockPanel(panel, isCorrect) {
+        panel.querySelector('[data-feedback="' + (isCorrect ? "correct" : "wrong") + '"]').classList.remove("hidden");
+        panel.querySelector("[data-solution]").classList.remove("hidden");
+        panel.querySelector("[data-next]").classList.remove("hidden");
+        if (isCorrect) score += 1;
+        updateDashboard();
+      }
+
+      function answerSingle(button) {
+        const panel = button.closest(".q-panel");
+        const index = Number(panel.dataset.index);
+        if (answered.has(index)) return;
+        answered.add(index);
+        const isCorrect = button.dataset.correct === "true";
+        const options = Array.from(panel.querySelectorAll(".choice-tile"));
+        options.forEach(opt => {
+          opt.disabled = true;
+          if (opt.dataset.correct === "true") opt.classList.add("reveal-correct");
+        });
+        if (isCorrect) { button.classList.add("pick-correct"); liveStatus.textContent = "Respuesta correcta. Se muestra la explicación."; }
+        else { button.classList.add("pick-wrong"); liveStatus.textContent = "Respuesta incorrecta. Se muestra la respuesta correcta y la explicación."; }
+        lockPanel(panel, isCorrect);
+      }
+
+      function toggleSelect(button) {
+        button.classList.toggle("selected");
+        const panel = button.closest(".q-panel");
+        const anySelected = panel.querySelectorAll(".choice-tile.selected").length > 0;
+        panel.querySelector("[data-check]").disabled = !anySelected;
+      }
+
+      function checkMulti(button) {
+        const panel = button.closest(".q-panel");
+        const index = Number(panel.dataset.index);
+        if (answered.has(index)) return;
+        answered.add(index);
+        const tiles = Array.from(panel.querySelectorAll(".choice-tile"));
+        let allCorrect = true;
+        tiles.forEach(tile => {
+          tile.disabled = true;
+          const deberiaEstar = tile.dataset.correct === "true";
+          const estaSeleccionado = tile.classList.contains("selected");
+          if (deberiaEstar && estaSeleccionado) tile.classList.add("pick-correct");
+          else if (deberiaEstar && !estaSeleccionado) { tile.classList.add("reveal-correct"); allCorrect = false; }
+          else if (!deberiaEstar && estaSeleccionado) { tile.classList.add("pick-wrong"); allCorrect = false; }
+        });
+        button.disabled = true;
+        if (allCorrect) liveStatus.textContent = "Selección correcta. Se muestra la explicación.";
+        else liveStatus.textContent = "Selección incompleta o incorrecta. Se muestra la explicación.";
+        lockPanel(panel, allCorrect);
+      }
+
+      panelsContainer.addEventListener("click", (event) => {
+        const checkButton = event.target.closest("[data-check]");
+        if (checkButton) { checkMulti(checkButton); return; }
+
+        const selectButton = event.target.closest("[data-select]");
+        if (selectButton && !selectButton.disabled) { toggleSelect(selectButton); return; }
+
+        const choiceButton = event.target.closest(".choice-tile");
+        if (choiceButton && !choiceButton.hasAttribute("data-select") && !choiceButton.disabled) { answerSingle(choiceButton); return; }
+
+        const nextButton = event.target.closest("[data-next]");
+        if (nextButton) {
+          if (currentIndex < panels.length - 1) { showPanel(currentIndex + 1); return; }
+          panels.forEach(panel => panel.classList.remove("active"));
+          resultPanel.classList.add("active");
+          finalScore.textContent = score + " / " + TOTAL_QUESTIONS;
+          progressText.textContent = TOTAL_QUESTIONS + " / " + TOTAL_QUESTIONS;
+          progressFill.style.width = "100%";
+          liveStatus.textContent = "Actividad completada. Resultado: " + score + " de " + TOTAL_QUESTIONS + ".";
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      });
+
+      function newRound() {
+        score = 0; currentIndex = 0; answered = new Set();
+        resultPanel.classList.remove("active");
+
+        const PER_ROUTE = 2;
+        const tipos = shuffle([
+          ...shuffle(CLASIFICA).slice(0, PER_ROUTE).map(q => ({ type: "clasifica", data: q })),
+          ...shuffle(CARBOHIDRATOS).slice(0, PER_ROUTE).map(q => ({ type: "carbo", data: q })),
+          ...shuffle(INTRUSO).slice(0, PER_ROUTE).map(q => ({ type: "intruso", data: q })),
+          ...shuffle(MULTISELECT).slice(0, PER_ROUTE).map(q => ({ type: "multi", data: q })),
+          ...shuffle(VOFA).slice(0, PER_ROUTE).map(q => ({ type: "vofa", data: q }))
+        ]);
+
+        let html = "";
+        tipos.forEach((q, i) => {
+          const isLast = i === tipos.length - 1;
+          if (q.type === "clasifica") html += buildClasificaPanel(q.data, i, isLast);
+          else if (q.type === "carbo") html += buildCarboPanel(q.data, i, isLast);
+          else if (q.type === "intruso") html += buildIntrusoPanel(q.data, i, isLast);
+          else if (q.type === "multi") html += buildMultiPanel(q.data, i, isLast);
+          else if (q.type === "vofa") html += buildVofaPanel(q.data, i, isLast);
+        });
+
+        panelsContainer.innerHTML = html;
+        panels = Array.from(panelsContainer.querySelectorAll(".q-panel"));
+        lucide.createIcons();
+        showPanel(0);
+        liveStatus.textContent = "Actividad lista.";
+      }
+
+      document.getElementById("header-restart").addEventListener("click", newRound);
+      document.getElementById("try-again-button").addEventListener("click", newRound);
+
+      lucide.createIcons();
+      newRound();
+    });
+  </script>
+</body>
+</html>
