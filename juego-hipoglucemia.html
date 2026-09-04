@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reconoce la Hipoglucemia</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,800&family=Work+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--ink:#14332b;--cream:#fff9e8;--tomato:#ef4d3f;--leaf:#16845b;--yellow:#ffd633;--line:#d7e2c2;}
+    *{box-sizing:border-box;}
+    body{margin:0;width:100%;color:var(--ink);font-family:"Work Sans",sans-serif;background:var(--cream);}
+    .market-shell{width:100%;min-height:100vh;position:relative;overflow:hidden;background-image:linear-gradient(90deg,rgba(22,132,91,.05) 1px,transparent 1px),linear-gradient(rgba(22,132,91,.05) 1px,transparent 1px);background-size:28px 28px;}
+    .market-shell::before,.market-shell::after{content:"";position:absolute;z-index:0;border-radius:999px;pointer-events:none;}
+    .market-shell::before{width:280px;height:280px;right:-110px;top:85px;background:rgba(255,214,51,.35);}
+    .market-shell::after{width:220px;height:220px;left:-110px;bottom:45px;background:rgba(239,77,63,.12);}
+    header,main,footer{position:relative;z-index:1;}
+    .market-logo{font-family:"Fraunces",serif;letter-spacing:-.045em;}
+    .aisle-stripe{height:9px;background:repeating-linear-gradient(90deg,#ef4d3f 0 36px,#fff9e8 36px 53px,#16845b 53px 89px,#fff9e8 89px 106px);}
+    .progress-track{background:#e5ecd7;}
+    .progress-fill{width:0%;background:linear-gradient(90deg,#16845b,#42af62);transition:width .45s ease;}
+    .quiz-card{box-shadow:0 18px 0 rgba(20,51,43,.1),0 24px 46px rgba(20,51,43,.13);}
+    .emoji-tile{background:#fff3bd;border:5px solid #fff;box-shadow:0 8px 0 rgba(20,51,43,.11);display:flex;align-items:center;justify-content:center;font-size:5rem;}
+    .escena-card{background:#eaf6fb;border:2px dashed #75b8dc;}
+    .answer-option{border:3px solid var(--line);background:#fff;color:var(--ink);transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease,background .18s ease;}
+    .answer-option:hover:not(:disabled),.answer-option:focus-visible:not(:disabled){transform:translateY(-3px);border-color:var(--leaf);box-shadow:0 7px 0 rgba(22,132,91,.18);outline:none;}
+    .answer-option:disabled{cursor:default;}
+    .answer-option.selected-correct,.answer-option.revealed-correct{background:#dff5d8;border-color:var(--leaf);}
+    .answer-option.selected-wrong{background:#ffe0db;border-color:var(--tomato);}
+    .feedback-correct{background:#ddf5d6;color:#145b3e;border:2px solid #79bd76;}
+    .feedback-wrong{background:#ffe0db;color:#a62f26;border:2px solid #f09186;}
+    .solution-card{background:#fff8d8;border:2px dashed #d2a52d;}
+    .next-button{box-shadow:0 6px 0 #a62f26;transition:transform .15s ease,box-shadow .15s ease;}
+    .next-button:hover,.next-button:focus-visible{transform:translateY(-2px);box-shadow:0 8px 0 #a62f26;outline:3px solid var(--ink);outline-offset:3px;}
+    .next-button:active{transform:translateY(4px);box-shadow:0 2px 0 #a62f26;}
+    .question-panel,.result-panel{display:none;}
+    .question-panel.active,.result-panel.active{display:block;animation:slideIn .35s ease both;}
+    @keyframes slideIn{from{opacity:0;transform:translateX(18px) scale(.985);}to{opacity:1;transform:translateX(0) scale(1);}}
+    .cart-badge{animation:bob 2.2s ease-in-out infinite;}
+    @keyframes bob{50%{transform:translateY(-5px) rotate(-2deg);}}
+    .screen-reader-status{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+    .question-heading:focus{outline:none;}
+    .emergencia-banner{background:#ffe0db;border:2px solid #ef4d3f;color:#7a241c;}
+  </style>
+</head>
+<body>
+  <div class="market-shell">
+   <div class="aisle-stripe"></div>
+   <header class="w-full px-4 pt-5 sm:px-8">
+    <div class="mx-auto flex max-w-4xl flex-col gap-4 rounded-[1.7rem] bg-[#16845b] px-5 py-4 text-white shadow-lg sm:flex-row sm:items-center sm:justify-between">
+     <div class="flex items-center gap-3">
+      <div class="cart-badge flex h-12 w-12 items-center justify-center rounded-2xl bg-[#ffd633] text-[#14332b]"><i data-lucide="activity" aria-hidden="true"></i></div>
+      <div>
+       <p class="m-0 text-xs font-bold uppercase tracking-[.18em]">Diabetes tipo 1 · Escenarios</p>
+       <h1 class="market-logo m-0 leading-tight text-3xl">Reconoce la Hipoglucemia</h1>
+      </div>
+     </div>
+     <div class="flex items-center gap-3">
+      <div class="rounded-xl bg-white/15 px-3 py-2 text-center">
+       <p class="m-0 text-xs font-semibold uppercase tracking-wider">Puntuación</p>
+       <p id="score-display" class="m-0 text-xl font-extrabold" aria-live="polite">0 / 6</p>
+      </div><button id="header-restart" class="rounded-xl bg-[#ffd633] px-4 py-3 font-bold text-[#14332b] transition hover:bg-[#fff3bd] focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2" type="button">Reiniciar</button>
+     </div>
+    </div>
+    <div class="mx-auto mt-4 max-w-4xl">
+     <div class="mb-2 flex items-center justify-between">
+      <p class="m-0 text-sm font-bold uppercase tracking-wider">Tu recorrido</p>
+      <p id="progress-text" class="m-0 text-sm font-bold" aria-live="polite">1 / 6</p>
+     </div>
+     <div class="progress-track h-4 overflow-hidden rounded-full border-2 border-white shadow-sm" aria-label="Progreso del cuestionario">
+      <div id="progress-fill" class="progress-fill h-full rounded-full"></div>
+     </div>
+    </div>
+   </header>
+   <main class="w-full px-4 py-7 sm:px-8 sm:py-10">
+    <section id="quiz-stage" class="mx-auto max-w-4xl" aria-label="Preguntas del cuestionario">
+     <p id="live-status" class="screen-reader-status" aria-live="polite"></p>
+     <aside class="mx-auto mb-6 max-w-4xl rounded-2xl border-2 border-[#d7e2c2] bg-[#fffef7] px-5 py-4 text-sm leading-relaxed shadow-sm">Practica reconocer señales de glucosa baja (hipoglucemia) y qué hacer al momento, con escenarios de la vida diaria. Esto refuerza lo que revisas en consulta; sigue siempre el plan de manejo que hayas acordado con tu equipo de salud, y ante cualquier duda o urgencia, actúa de inmediato o busca ayuda médica.</aside>
+
+     <!-- Q1: reconocer síntomas -->
+     <article class="question-panel active" data-index="0">
+      <div class="quiz-card overflow-hidden rounded-[2rem] bg-white">
+       <div class="grid md:grid-cols-[.92fr_1.08fr]">
+        <div class="relative min-h-[230px] bg-[#75b8dc] p-6 sm:p-8 flex flex-col">
+         <div class="inline-block rounded-full bg-[#14332b] px-4 py-2 text-sm font-extrabold text-white w-fit">Escena 1</div>
+         <div class="emoji-tile mt-6 flex-1 rounded-[1.5rem]">😰🤲</div>
+        </div>
+        <div class="p-6 sm:p-9">
+         <p class="m-0 text-sm font-extrabold uppercase tracking-[.16em] text-[#16845b]">Escenario 1 de 6</p>
+         <h2 tabindex="-1" class="question-heading mt-2 text-2xl font-extrabold leading-tight">¿Qué está pasando?</h2>
+         <div class="escena-card mt-4 rounded-xl px-4 py-3 font-semibold">Llevas dos horas sin comer y de repente sientes que te tiemblan las manos, te da sudor frío y te cuesta concentrarte.</div>
+         <p class="mb-6 mt-4 text-lg font-normal">¿Qué podría estar pasando?</p>
+         <div class="grid gap-3" role="group" aria-label="Opciones escenario 1"><button class="answer-option rounded-2xl px-5 py-4 text-left text-lg font-bold" type="button" data-correct="true">Probablemente es hipoglucemia (glucosa baja)</button> <button class="answer-option rounded-2xl px-5 py-4 text-left text-lg font-bold" type="button" data-correct="false">Probablemente es hiperglucemia (glucosa alta)</button> <button class="answer-option rounded-2xl px-5 py-4 text-left text-lg font-bold" type="button" data-correct="false">Es normal, no significa nada</button></div>
+         <div class="mt-5 space-y-3">
+          <div class="feedback-correct hidden rounded-2xl p-4 font-semibold" data-feedback="correct"><span>¡Correcto! Temblor, sudor frío y dificultad para concentrarte son señales típicas.</span></div>
+          <div class="feedback-wrong hidden rounded-2xl p-4 font-semibold" data-feedback="wrong"><span>No esta vez. Esas señales suelen indicar glucosa baja.</span></div>
+          <div data-solution="" class="solution-card hidden rounded-2xl p-4">
+           <p class="m-0 text-xs font-extrabold uppercase tracking-wider text-[#8a6214]">Por qué</p>
+           <p class="mt-1 mb-0 font-bold">El temblor, el sudor frío y la dificultad para concentrarte son señales comunes de que la glucosa está bajando. Si tienes glucómetro o sensor, este es el momento de checar.</p>
+          </div>
+         </div><button class="next-button mt-5 hidden w-full rounded-2xl bg-[#ef4d3f] px-5 py-4 text-lg font-extrabold text-white" type="button" data-next="">Siguiente escenario</button>
+        </div>
+       </div>
+      </div>
+     </article>
+
+     <!-- Q2: señal que no corresponde -->
+     <article class="question-panel" data-index="1">
+      <div class="quiz-card overflow-hidden rounded-[2rem] bg-white">
+       <div class="grid md:grid-cols-[.92fr_1.08fr]">
+        <div class="relative min-h-[230px] bg-[#f4b83d] p-6 sm:p-8 flex flex-col">
+         <div class="inline-block rounded-full bg-[#14332b] px-4 py-2 text-sm font-extrabold text-white w-fit">Escena 2</div>
+         <div class="emoji-tile mt-6 flex-1 rounded-[1.5rem]">🩺</div>
+        </div>
+        <div class="p-6 sm:p-9">
+         <p class="m-0 text-sm font-extrabold uppercase tracking-[.16em] text-[#16845b]">Escenario 2 de 6</p>
+         <h2 tabindex="-1" class="question-heading mt-2 text-2xl font-extrabold leading-tight">Encuentra la señal que no corresponde</h2>
+         <p class="mb-6 mt-4 text-lg font-normal">¿Cuál de estas señales NO es típica de hipoglucemia (más bien es de glucosa alta)?</p>
+         <div class="grid gap-3" role="group" aria-label="Opciones escenario 2"><button class="answer-option rounded-2xl px-5 py-4 text-left text-lg font-bold" type="button" data-correct="true">Mucha sed y orinar con mucha frecuencia</button> <button class="answer-option rounded-2xl px-5 py-4 text-left text-lg font-bold" type="button" data-correct="false">Cambios de humor repentinos o irritabilidad</button> <button class="answer-option rounded-2xl px-5 py-4 text-left text-lg font-bold" type="button" data-correct="false">Piel pálida y sudoración</button></div>
+         <div class="mt-5 space-y-3">
+          <div class="feedback-correct hidden rounded-2xl p-4 font-semibold" data-feedback="correct"><span>¡Correcto! La sed excesiva y orinar mucho son más típicas de glucosa alta.</span></div>
+          <div class="feedback-wrong hidden rounded-2xl p-4 font-semibold" data-feedback="wrong"><span>No esta vez. La mucha sed y orinar frecuente son señales de glucosa alta, no baja.</span></div>
+          <div data-solution="" class="solution-card hidden rounded-2xl p-4">
+           <p class="m-0 text-xs font-extrabold uppercase tracking-wider text-[#8a6214]">Por qué</p>
+           <p class="mt-1 mb-0 font-bold">La irritabilidad, la piel pálida y la sudoración sí son señales comunes de hipoglucemia. La sed excesiva y orinar mucho apuntan más a hiperglucemia.</p>
+          </div>
+         </div><button class="next-button mt-5 hidden w-full rounded-2xl bg-[#ef4d3f] px-5 py-4 text-lg font-extrabold text-white" type="button" data-next="">Siguiente escenario</button>
+        </div>
+       </div>
+      </div>
+     </article>
+
+     <!-- Q3: acción inmediata -->
+     <article class="question-panel" data-index="2">
+      <div class="quiz-card overflow-hidden rounded-[2rem] bg-white">
+       <div class="grid md:grid-cols-[.92fr_1.08fr]">
+        <div class="relative min-h-[230px] bg-[#ffd633] p-6 sm:p-8 flex flex-col">
+         <div class="inline-block rounded-full bg-[#14332b] px-4 py-2 text-sm font-extrabold text-white w-fit">Escena 3</div>
+         <div class="emoji-tile mt-6 flex-1 rounded-[1.5rem]">🧃</div>
+        </div>
+        <div class="p-6 sm:p-9">
+         <p class="m-0 text-sm font-extrabold uppercase tracking-[.16em] text-[#16845b]">Escenario 3 de 6</p>
+         <h2 tabindex="-1" class="question-heading mt-2 text-2xl font-extrabold leading-tight">Confirmaste que tu glucosa está baja</h2>
+         <div class="escena-card mt-4 rounded-xl px-4 py-3 font-semibold">Estás consciente, puedes tragar bien y tu medidor confirma que tu glucosa está baja.</div>
+         <p class="mb-6 mt-4 text-lg font-normal">Según la regla que muchas personas con diabetes aprenden, ¿qué es lo primero que harías?</p>
+         <div class="grid gap-3" role="group" aria-label="Opciones escenario 3"><button class="answer-option rounded-2xl px-5 py-4 text-left text-lg font-bold" type="button" data-correct="false">Comer un platillo completo y abundante de inmediato</button> <button class="answer-option rounded-2xl px-5 py-4 text-left text-lg font-bold" type="button" data-correct="true">Tomar 15 g de carbohidratos de acción rápida (jugo, tabletas de glucosa, refresco regular)</button> <button class="answer-option rounded-2xl px-5 py-4 text-left text-lg font-bold" type="button" data-correct="false">Esperar a ver si se pasa solo</button></div>
+         <div class="mt-5 space-y-3">
+          <div class="feedback-correct hidden rounded-2xl p-4 font-semibold" data-feedback="correct"><span>¡Correcto! Esto es lo que muchas personas conocen como la "regla de los 15".</span></div>
+          <div class="feedback-wrong hidden rounded-2xl p-4 font-semibold" data-feedback="wrong"><span>No esta vez. Lo indicado es tomar 15 g de carbohidratos de acción rápida.</span></div>
+          <div data-solution="" class="solution-card hidden rounded-2xl p-4">
+           <p class="m-0 text-xs font-extrabold uppercase tracking-wider text-[#8a6214]">Por qué</p>
+           <p class="mt-1 mb-0 font-bold">Carbohidratos de absorción rápida (sin grasa, que la hace más lenta) suben la glucosa pronto. Confirma siempre esta indicación con tu médico o educador en diabetes, ya que puede ajustarse a tu caso.</p>
+          </div>
+         </div><button class="next-button mt-5 hidden w-full rounded-2xl bg-[#ef4d3f] px-5 py-4 text-lg font-extrabold text-white" type="button" data-next="">Siguiente escenario</button>
+        </div>
+       </div>
+      </div>
+     </article>
+
+     <!-- Q4: sigue baja a los 15 min -->
+     <article class="question-panel" data-index="3">
+      <div class="quiz-card overflow-hidden rounded-[2rem] bg-white">
+       <div class="grid md:grid-cols-[.92fr_1.08fr]">
+        <div class="relative min-h-[230px] bg-[#b2a1dd] p-6 sm:p-8 flex flex-col">
+         <div class="inline-block rounded-full bg-[#14332b] px-4 py-2 text-sm font-extrabold text-white w-fit">Escena 4</div>
+         <div class="emoji-tile mt-6 flex-1 rounded-[1.5rem]">⏱️</div>
+        </div>
+        <div class="p-6 sm:p-9">
+         <p class="m-0 text-sm font-extrabold uppercase tracking-[.16em] text-[#16845b]">Escenario 4 de 6</p>
+         <h2 tabindex="-1" class="question-heading mt-2 text-2xl font-extrabold leading-tight">Pasaron 15 minutos</h2>
+         <div class="escena-card mt-4 rounded-xl px-4 py-3 font-semibold">Vuelves a checar tu glucosa después de los 15 g de carbohidratos... y sigue baja.</div>
+         <p class="mb-6 mt-4 text-lg font-normal">¿Qué harías ahora?</p>
+         <div class="grid gap-3" role="group" aria-label="Opciones escenario 4"><button class="answer-option rounded-2xl px-5 py-4 text-left text-lg font-bold" type="button" data-correct="true">Repetir 15 g de carbohidratos de acción rápida y volver a checar en 15 minutos</button> <button class="answer-option rounded-2xl px-5 py-4 text-left text-lg font-bold" type="button" data-correct="false">No hacer nada más</button> <button class="answer-option rounded-2xl px-5 py-4 text-left text-lg font-bold" type="button" data-correct="false">Aplicar más insulina de inmediato</button></div>
+         <div class="mt-5 space-y-3">
+          <div class="feedback-correct hidden rounded-2xl p-4 font-semibold" data-feedback="correct"><span>¡Correcto! Se repite el ciclo hasta que la glucosa se normalice.</span></div>
+          <div class="feedback-wrong hidden rounded-2xl p-4 font-semibold" data-feedback="wrong"><span>No esta vez. Lo indicado es repetir los 15 g y volver a checar.</span></div>
+          <div data-solution="" class="solution-card hidden rounded-2xl p-4">
+           <p class="m-0 text-xs font-extrabold uppercase tracking-wider text-[#8a6214]">Por qué</p>
+           <p class="mt-1 mb-0 font-bold">Si la glucosa sigue baja después de 15 minutos, se repite: 15 g de carbohidratos y volver a checar. Nunca se debe aplicar insulina extra cuando la glucosa ya está baja.</p>
+          </div>
+         </div><button class="next-button mt-5 hidden w-full rounded-2xl bg-[#ef4d3f] px-5 py-4 text-lg font-extrabold text-white" type="button" data-next="">Siguiente escenario</button>
+        </div>
+       </div>
+      </div>
+     </article>
+
+     <!-- Q5: después de normalizar -->
+     <article class="question-panel" data-index="4">
+      <div class="quiz-card overflow-hidden rounded-[2rem] bg-white">
+       <div class="grid md:grid-cols-[.92fr_1.08fr]">
+        <div class="relative min-h-[230px] bg-[#a8d5ba] p-6 sm:p-8 flex flex-col">
+         <div class="inline-block rounded-full bg-[#14332b] px-4 py-2 text-sm font-extrabold text-white w-fit">Escena 5</div>
+         <div class="emoji-tile mt-6 flex-1 rounded-[1.5rem]">🥪</div>
+        </div>
+        <div class="p-6 sm:p-9">
+         <p class="m-0 text-sm font-extrabold uppercase tracking-[.16em] text-[#16845b]">Escenario 5 de 6</p>
+         <h2 tabindex="-1" class="question-heading mt-2 text-2xl font-extrabold leading-tight">Tu glucosa ya se normalizó</h2>
+         <div class="escena-card mt-4 rounded-xl px-4 py-3 font-semibold">Tu siguiente comida todavía está lejos, faltan más de una hora.</div>
+         <p class="mb-6 mt-4 text-lg font-normal">¿Qué es recomendable hacer?</p>
+         <div class="grid gap-3" role="group" aria-label="Opciones escenario 5"><button class="answer-option rounded-2xl px-5 py-4 text-left text-lg font-bold" type="button" data-correct="false">Nada, ya pasó</button> <button class="answer-option rounded-2xl px-5 py-4 text-left text-lg font-bold" type="button" data-correct="true">Comer un snack con carbohidrato + proteína, para mantenerte estable</button> <button class="answer-option rounded-2xl px-5 py-4 text-left text-lg font-bold" type="button" data-correct="false">Restringir comida el resto del día</button></div>
+         <div class="mt-5 space-y-3">
+          <div class="feedback-correct hidden rounded-2xl p-4 font-semibold" data-feedback="correct"><span>¡Correcto! Esto ayuda a que la glucosa no vuelva a bajar antes de tu próxima comida.</span></div>
+          <div class="feedback-wrong hidden rounded-2xl p-4 font-semibold" data-feedback="wrong"><span>No esta vez. Conviene un snack con carbohidrato y proteína.</span></div>
+          <div data-solution="" class="solution-card hidden rounded-2xl p-4">
+           <p class="m-0 text-xs font-extrabold uppercase tracking-wider text-[#8a6214]">Por qué</p>
+           <p class="mt-1 mb-0 font-bold">Un snack que combine carbohidrato y proteína ayuda a sostener la glucosa hasta tu siguiente comida. Restringir comida después de un episodio no es necesario ni recomendable.</p>
+          </div>
+         </div><button class="next-button mt-5 hidden w-full rounded-2xl bg-[#ef4d3f] px-5 py-4 text-lg font-extrabold text-white" type="button" data-next="">Siguiente escenario</button>
+        </div>
+       </div>
+      </div>
+     </article>
+
+     <!-- Q6: emergencia -->
+     <article class="question-panel" data-index="5">
+      <div class="quiz-card overflow-hidden rounded-[2rem] bg-white">
+       <div class="grid md:grid-cols-[.92fr_1.08fr]">
+        <div class="relative min-h-[230px] bg-[#ef4d3f] p-6 sm:p-8 flex flex-col">
+         <div class="inline-block rounded-full bg-white px-4 py-2 text-sm font-extrabold text-[#a62f26] w-fit">⚠️ Escena de urgencia</div>
+         <div class="emoji-tile mt-6 flex-1 rounded-[1.5rem]">🚨</div>
+        </div>
+        <div class="p-6 sm:p-9">
+         <p class="m-0 text-sm font-extrabold uppercase tracking-[.16em] text-[#16845b]">Escenario 6 de 6</p>
+         <h2 tabindex="-1" class="question-heading mt-2 text-2xl font-extrabold leading-tight">Alguien no responde bien</h2>
+         <div class="escena-card mt-4 rounded-xl px-4 py-3 font-semibold">Una persona con diabetes tipo 1 está muy confundida, no responde con claridad o pierde el conocimiento.</div>
+         <p class="mb-6 mt-4 text-lg font-normal">¿Qué es lo correcto?</p>
+         <div class="grid gap-3" role="group" aria-label="Opciones escenario 6"><button class="answer-option rounded-2xl px-5 py-4 text-left text-lg font-bold" type="button" data-correct="false">Darle de comer o beber algo dulce por la boca</button> <button class="answer-option rounded-2xl px-5 py-4 text-left text-lg font-bold" type="button" data-correct="true">Llamar a emergencias de inmediato (y usar glucagón si hay uno disponible y alguien sabe aplicarlo)</button> <button class="answer-option rounded-2xl px-5 py-4 text-left text-lg font-bold" type="button" data-correct="false">Dejarla dormir para que se recupere sola</button></div>
+         <div class="mt-5 space-y-3">
+          <div class="feedback-correct hidden rounded-2xl p-4 font-semibold" data-feedback="correct"><span>¡Correcto! Esto es una urgencia médica.</span></div>
+          <div class="feedback-wrong hidden rounded-2xl p-4 font-semibold" data-feedback="wrong"><span>No esta vez. Si alguien no puede tragar con seguridad, es una urgencia médica.</span></div>
+          <div data-solution="" class="solution-card hidden rounded-2xl p-4">
+           <p class="m-0 text-xs font-extrabold uppercase tracking-wider text-[#8a6214]">Importante</p>
+           <p class="mt-1 mb-0 font-bold">Nunca se le debe dar de comer o beber a alguien que no puede tragar con seguridad: hay riesgo de asfixia. Llama a emergencias de inmediato; si la persona tiene glucagón y alguien sabe aplicarlo, es el momento de usarlo.</p>
+          </div>
+         </div><button class="next-button mt-5 hidden w-full rounded-2xl bg-[#ef4d3f] px-5 py-4 text-lg font-extrabold text-white" type="button" data-next="">Ver mi resultado</button>
+        </div>
+       </div>
+      </div>
+     </article>
+    </section>
+
+    <section id="result-panel" class="result-panel mx-auto max-w-3xl" aria-labelledby="result-title">
+     <div class="quiz-card overflow-hidden rounded-[2rem] bg-white text-center">
+      <div class="bg-[#ffd633] px-6 py-9">
+       <div class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-[#ef4d3f] text-white shadow-lg"><i data-lucide="activity" class="h-10 w-10" aria-hidden="true"></i></div>
+       <p class="mt-5 text-sm font-extrabold uppercase tracking-[.18em]">¡Buen trabajo!</p>
+       <h2 id="result-title" class="market-logo mt-2 text-2xl font-extrabold leading-tight">Ya repasaste cómo actuar ante la hipoglucemia</h2>
+      </div>
+      <div class="p-7 sm:p-10">
+       <p id="final-score" class="m-0 text-6xl font-extrabold text-[#16845b]" aria-live="polite">0 / 6</p>
+       <p class="mt-2 text-lg font-semibold text-[#16845b]">respuestas correctas</p>
+       <div class="emergencia-banner mt-6 rounded-2xl p-4 text-left font-semibold">
+        Esto es información general y educativa: sigue siempre el plan de manejo que hayas
+        acordado con tu médico o educador en diabetes. Ante una urgencia real (confusión
+        severa, pérdida del conocimiento o convulsiones), llama a emergencias de inmediato.
+       </div>
+       <div class="mt-6"><button id="try-again-button" class="w-full rounded-2xl bg-[#16845b] px-5 py-4 text-lg font-extrabold text-white transition hover:brightness-95 focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2" type="button">Volver a intentar</button></div>
+      </div>
+     </div>
+    </section>
+   </main>
+   <footer class="w-full px-4 pb-7 text-center sm:px-8">
+    <p class="mx-auto max-w-3xl text-sm leading-relaxed" style="color:#466159">Información general con fines educativos. No sustituye la valoración ni el plan de manejo individual de tu médico o educador en diabetes.</p>
+   </footer>
+  </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      lucide.createIcons();
+      const panels = Array.from(document.querySelectorAll(".question-panel"));
+      const resultPanel = document.getElementById("result-panel");
+      const scoreDisplay = document.getElementById("score-display");
+      const finalScore = document.getElementById("final-score");
+      const progressText = document.getElementById("progress-text");
+      const progressFill = document.getElementById("progress-fill");
+      const liveStatus = document.getElementById("live-status");
+      const TOTAL = panels.length;
+      let currentIndex = 0, score = 0, answered = new Set();
+
+      function updateDashboard(){
+        scoreDisplay.textContent = score + " / " + TOTAL;
+        progressText.textContent = Math.min(currentIndex+1, TOTAL) + " / " + TOTAL;
+        progressFill.style.width = (Math.min(currentIndex+1, TOTAL) / TOTAL * 100) + "%";
+      }
+      function showPanel(index){
+        panels.forEach((p,i)=>p.classList.toggle("active", i===index));
+        currentIndex = index; updateDashboard();
+        const heading = panels[index].querySelector(".question-heading");
+        if (heading) heading.focus({preventScroll:true});
+        window.scrollTo({top:0, behavior:"smooth"});
+      }
+      function answerQuestion(button){
+        const panel = button.closest(".question-panel");
+        const index = Number(panel.dataset.index);
+        if (answered.has(index)) return;
+        answered.add(index);
+        const isCorrect = button.dataset.correct === "true";
+        const options = Array.from(panel.querySelectorAll(".answer-option"));
+        options.forEach(o=>{o.disabled=true; if(o.dataset.correct==="true") o.classList.add("revealed-correct");});
+        if (isCorrect){
+          score+=1; button.classList.add("selected-correct");
+          panel.querySelector('[data-feedback="correct"]').classList.remove("hidden");
+          liveStatus.textContent="Respuesta correcta. Se muestra la explicación.";
+        } else {
+          button.classList.add("selected-wrong");
+          panel.querySelector('[data-feedback="wrong"]').classList.remove("hidden");
+          liveStatus.textContent="Respuesta incorrecta. Se muestra la respuesta correcta y la explicación.";
+        }
+        panel.querySelector("[data-solution]").classList.remove("hidden");
+        panel.querySelector("[data-next]").classList.remove("hidden");
+        updateDashboard();
+      }
+      document.querySelectorAll(".answer-option").forEach(b=>b.addEventListener("click",()=>answerQuestion(b)));
+      document.querySelectorAll("[data-next]").forEach(b=>{
+        b.addEventListener("click", ()=>{
+          if (currentIndex < panels.length-1){ showPanel(currentIndex+1); return; }
+          panels.forEach(p=>p.classList.remove("active"));
+          resultPanel.classList.add("active");
+          finalScore.textContent = score + " / " + TOTAL;
+          progressText.textContent = TOTAL + " / " + TOTAL;
+          progressFill.style.width = "100%";
+          liveStatus.textContent = "Cuestionario completado. Resultado: " + score + " de " + TOTAL + ".";
+          window.scrollTo({top:0, behavior:"smooth"});
+        });
+      });
+      function restartQuiz(){
+        score=0; currentIndex=0; answered=new Set();
+        resultPanel.classList.remove("active");
+        panels.forEach(panel=>{
+          panel.classList.remove("active");
+          panel.querySelectorAll(".answer-option").forEach(o=>{o.disabled=false; o.classList.remove("selected-correct","selected-wrong","revealed-correct");});
+          panel.querySelectorAll("[data-feedback],[data-solution],[data-next]").forEach(e=>e.classList.add("hidden"));
+        });
+        showPanel(0);
+        liveStatus.textContent="Cuestionario reiniciado.";
+      }
+      document.getElementById("header-restart").addEventListener("click", restartQuiz);
+      document.getElementById("try-again-button").addEventListener("click", restartQuiz);
+      updateDashboard();
+    });
+  </script>
+</body>
+</html>

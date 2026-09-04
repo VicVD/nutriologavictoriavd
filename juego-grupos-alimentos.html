@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Súper Clasificador · Grupos de Alimentos</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,800&family=Work+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #241a33;
+      --cream: #faf6ee;
+      --plum: #5b3a8e;
+      --coral: #ef6a4c;
+      --gold: #f2b33d;
+      --green: #2f9e56;
+      --line: #e2dcd0;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; width: 100%; color: var(--ink); font-family: "Work Sans", sans-serif; background: var(--cream); }
+    .shell {
+      width: 100%; min-height: 100vh; position: relative; overflow: hidden;
+      background-image: linear-gradient(135deg, rgba(91,58,142,.05) 25%, transparent 25%), linear-gradient(315deg, rgba(91,58,142,.05) 25%, transparent 25%);
+      background-size: 26px 26px;
+    }
+    .shell::before, .shell::after { content: ""; position: absolute; z-index: 0; border-radius: 999px; pointer-events: none; }
+    .shell::before { width: 270px; height: 270px; right: -105px; top: 75px; background: rgba(242,179,61,.28); }
+    .shell::after { width: 220px; height: 220px; left: -105px; bottom: 35px; background: rgba(91,58,142,.10); }
+    header, main, footer { position: relative; z-index: 1; }
+    .display { font-family: "Fraunces", serif; letter-spacing: -.04em; }
+    .stripe { height: 8px; background: repeating-linear-gradient(90deg, #5b3a8e 0 30px, #faf6ee 30px 45px, #f2b33d 45px 75px, #faf6ee 75px 90px); }
+    .progress-track { background: #e9e3d5; }
+    .progress-fill { width: 0%; background: linear-gradient(90deg, #5b3a8e, #8462c2); transition: width .45s ease; }
+    .card { box-shadow: 0 16px 0 rgba(36,26,51,.09), 0 22px 42px rgba(36,26,51,.12); }
+    .food-tile { background: #fff; border: 5px solid #fff; box-shadow: 0 8px 0 rgba(36,26,51,.10); }
+    .choice-tile {
+      border: 3px solid var(--line); background: #fff; color: var(--ink);
+      transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease, background .16s ease;
+    }
+    .choice-tile:hover:not(:disabled), .choice-tile:focus-visible:not(:disabled) {
+      transform: translateY(-3px); border-color: var(--plum); box-shadow: 0 7px 0 rgba(91,58,142,.18); outline: none;
+    }
+    .choice-tile:disabled { cursor: default; }
+    .choice-tile.pick-correct, .choice-tile.reveal-correct { background: #e2f4e6; border-color: var(--green); }
+    .choice-tile.pick-wrong { background: #fde3dd; border-color: var(--coral); }
+    .fb-correct { background: #e2f4e6; color: #1c6b3a; border: 2px solid #7fc998; }
+    .fb-wrong { background: #fde3dd; color: #a13d24; border: 2px solid #f2a48f; }
+    .solution { background: #fef3d9; border: 2px dashed #d9a52e; }
+    .btn-next { box-shadow: 0 6px 0 #3c2660; transition: transform .15s ease, box-shadow .15s ease; }
+    .btn-next:hover, .btn-next:focus-visible { transform: translateY(-2px); box-shadow: 0 8px 0 #3c2660; outline: 3px solid var(--ink); outline-offset: 3px; }
+    .btn-next:active { transform: translateY(4px); box-shadow: 0 2px 0 #3c2660; }
+    .q-panel, .result-panel { display: none; }
+    .q-panel.active, .result-panel.active { display: block; animation: rise .35s ease both; }
+    @keyframes rise { from { opacity: 0; transform: translateX(16px) scale(.985); } to { opacity: 1; transform: translateX(0) scale(1); } }
+    .badge-wobble { animation: wobble 2.4s ease-in-out infinite; }
+    @keyframes wobble { 50% { transform: translateY(-4px) rotate(-3deg); } }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    .q-heading:focus { outline: none; }
+    .food-emoji { font-size: 3.6rem; line-height: 1; }
+    .food-emoji-sm { font-size: 2.2rem; line-height: 1; }
+    @media (prefers-reduced-motion: reduce) {
+      .badge-wobble { animation: none; }
+      .q-panel.active, .result-panel.active { animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+   <div class="stripe"></div>
+   <header class="w-full px-4 pt-5 sm:px-8">
+    <div class="mx-auto flex max-w-4xl flex-col gap-4 rounded-[1.7rem] bg-[#5b3a8e] px-5 py-4 text-white shadow-lg sm:flex-row sm:items-center sm:justify-between">
+     <div class="flex items-center gap-3">
+      <div class="badge-wobble flex h-12 w-12 items-center justify-center rounded-2xl bg-[#f2b33d] text-[#241a33]"><i data-lucide="layout-grid" aria-hidden="true"></i></div>
+      <div>
+       <p class="m-0 text-xs font-bold uppercase tracking-[.18em]">Actividad · Grupos de alimentos</p>
+       <h1 class="display m-0 leading-tight text-3xl">Súper Clasificador</h1>
+      </div>
+     </div>
+     <div class="flex items-center gap-3">
+      <div class="rounded-xl bg-white/15 px-3 py-2 text-center">
+       <p class="m-0 text-xs font-semibold uppercase tracking-wider">Puntos</p>
+       <p id="score-display" class="m-0 text-xl font-extrabold" aria-live="polite">0 / 7</p>
+      </div>
+      <button id="header-restart" class="rounded-xl bg-[#f2b33d] px-4 py-3 font-bold text-[#241a33] transition hover:bg-[#fbdb8f] focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2" type="button">Nueva ronda</button>
+     </div>
+    </div>
+    <div class="mx-auto mt-4 max-w-4xl">
+     <div class="mb-2 flex items-center justify-between">
+      <p class="m-0 text-sm font-bold uppercase tracking-wider">Alimentos ordenados</p>
+      <p id="progress-text" class="m-0 text-sm font-bold" aria-live="polite">1 / 7</p>
+     </div>
+     <div class="progress-track h-4 overflow-hidden rounded-full border-2 border-white shadow-sm" aria-label="Progreso de la actividad">
+      <div id="progress-fill" class="progress-fill h-full rounded-full"></div>
+     </div>
+    </div>
+   </header>
+   <main class="w-full px-4 py-7 sm:px-8 sm:py-10">
+    <section id="quiz-stage" class="mx-auto max-w-4xl" aria-label="Preguntas de clasificación">
+     <p id="live-status" class="sr-only" aria-live="polite"></p>
+     <aside class="mx-auto mb-6 max-w-4xl rounded-2xl border-2 border-[#e2dcd0] bg-white px-5 py-4 text-sm leading-relaxed shadow-sm">Antes de contar carbohidratos, ayuda mucho reconocer a qué grupo pertenece cada alimento. Practica identificando el grupo correcto y encontrando al "intruso" que no encaja. Cada ronda mezcla 6 casos al azar de un banco más grande, más un reto final con los grupos que más se confunden.</aside>
+     <div id="panels-container"></div>
+    </section>
+    <section id="result-panel" class="result-panel mx-auto max-w-3xl" aria-labelledby="result-title">
+     <div class="card overflow-hidden rounded-[2rem] bg-white text-center">
+      <div class="bg-[#f2b33d] px-6 py-9">
+       <div class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-[#5b3a8e] text-white shadow-lg"><i data-lucide="badge-check" class="h-10 w-10" aria-hidden="true"></i></div>
+       <p class="mt-5 text-sm font-extrabold uppercase tracking-[.18em]">¡Ronda completa!</p>
+       <h2 id="result-title" class="display mt-2 text-2xl font-extrabold leading-tight">Así ordenaste tus alimentos</h2>
+      </div>
+      <div class="p-7 sm:p-10">
+       <p id="final-score" class="m-0 text-6xl font-extrabold text-[#5b3a8e]" aria-live="polite">0 / 7</p>
+       <p class="mt-2 text-lg font-semibold text-[#5b3a8e]">respuestas correctas</p>
+       <p class="mx-auto mt-5 max-w-xl text-lg font-normal">Cuando reconozcas los grupos con seguridad, sigue practicando con Detective de Carbohidratos y con el Carrito SMAE para trabajar los gramos de cada uno.</p>
+       <div class="mt-8 grid gap-3 sm:grid-cols-2">
+        <button id="try-again-button" class="rounded-2xl bg-[#5b3a8e] px-5 py-4 text-lg font-extrabold text-white transition hover:brightness-95 focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2" type="button">Otra ronda</button>
+        <button id="final-restart-button" class="rounded-2xl bg-[#f2b33d] px-5 py-4 text-lg font-extrabold text-[#241a33] transition hover:brightness-95 focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2" type="button">Reiniciar</button>
+       </div>
+      </div>
+     </div>
+    </section>
+   </main>
+   <footer class="w-full px-4 pb-7 text-center sm:px-8">
+    <p class="mx-auto max-w-3xl text-sm leading-relaxed" style="color:#5a4f6b">Clasificación con fines educativos, basada en los grupos de alimentos del SMAE. Para el manejo real de tu alimentación, consulta a un profesional de la salud.</p>
+   </footer>
+  </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // ---------- "Classify" questions: pick the correct food group ----------
+      const CLASSIFY_POOL = [
+        { emoji: "🫓", food: "Tortilla", choices: ["Cereales y tubérculos", "Verduras", "Grasas"], correctIndex: 0,
+          correctFeedback: "¡Correcto! La tortilla es un cereal.",
+          solution: "La tortilla se hace de maíz, por eso pertenece al grupo de cereales y tubérculos." },
+        { emoji: "🥔", food: "Papa", choices: ["Cereales y tubérculos", "Leguminosas", "Frutas"], correctIndex: 0,
+          correctFeedback: "¡Correcto! La papa es un tubérculo.",
+          solution: "Los tubérculos como la papa se agrupan junto con los cereales por su aporte de carbohidratos." },
+        { emoji: "🫘", food: "Frijol", choices: ["Leguminosas", "Cereales y tubérculos", "Verduras"], correctIndex: 0,
+          correctFeedback: "¡Correcto! El frijol es una leguminosa.",
+          solution: "Frijoles, lentejas, habas y garbanzos forman el grupo de leguminosas." },
+        { emoji: "🌱", food: "Lenteja", choices: ["Leguminosas", "Frutas", "Alimentos de origen animal"], correctIndex: 0,
+          correctFeedback: "¡Correcto! La lenteja es una leguminosa.",
+          solution: "Las lentejas, igual que el frijol, pertenecen al grupo de leguminosas." },
+        { emoji: "🥦", food: "Brócoli", choices: ["Verduras", "Frutas", "Cereales y tubérculos"], correctIndex: 0,
+          correctFeedback: "¡Correcto! El brócoli es una verdura.",
+          solution: "El brócoli pertenece al grupo de verduras, con muy poco aporte de carbohidratos." },
+        { emoji: "🥕", food: "Zanahoria", choices: ["Verduras", "Leguminosas", "Grasas"], correctIndex: 0,
+          correctFeedback: "¡Correcto! La zanahoria es una verdura.",
+          solution: "La zanahoria pertenece al grupo de verduras." },
+        { emoji: "🍎", food: "Manzana", choices: ["Frutas", "Verduras", "Azúcares"], correctIndex: 0,
+          correctFeedback: "¡Correcto! La manzana es una fruta.",
+          solution: "La manzana pertenece al grupo de frutas." },
+        { emoji: "🍌", food: "Plátano", choices: ["Frutas", "Cereales y tubérculos", "Grasas"], correctIndex: 0,
+          correctFeedback: "¡Correcto! El plátano es una fruta.",
+          solution: "El plátano pertenece al grupo de frutas, aunque sea muy energético." },
+        { emoji: "🥛", food: "Leche entera", choices: ["Leche", "Alimentos de origen animal", "Azúcares"], correctIndex: 0,
+          correctFeedback: "¡Correcto! La leche forma su propio grupo.",
+          solution: "La leche y sus derivados líquidos forman el grupo de leche." },
+        { emoji: "🍦", food: "Yogur natural", choices: ["Leche", "Grasas", "Frutas"], correctIndex: 0,
+          correctFeedback: "¡Correcto! El yogur pertenece al grupo de leche.",
+          solution: "El yogur, al derivar de la leche, se clasifica en el grupo de leche." },
+        { emoji: "🍗", food: "Pollo", choices: ["Alimentos de origen animal", "Leguminosas", "Leche"], correctIndex: 0,
+          correctFeedback: "¡Correcto! El pollo es un alimento de origen animal.",
+          solution: "Carnes, pescado y aves forman el grupo de alimentos de origen animal." },
+        { emoji: "🥚", food: "Huevo", choices: ["Alimentos de origen animal", "Verduras", "Cereales y tubérculos"], correctIndex: 0,
+          correctFeedback: "¡Correcto! El huevo es un alimento de origen animal.",
+          solution: "El huevo pertenece al grupo de alimentos de origen animal." },
+        { emoji: "🥑", food: "Aguacate", choices: ["Grasas", "Frutas", "Verduras"], correctIndex: 0,
+          correctFeedback: "¡Correcto! El aguacate se clasifica como grasa.",
+          solution: "Aunque crece como fruta, por su composición el aguacate se agrupa con las grasas." },
+        { emoji: "🥜", food: "Cacahuates", choices: ["Grasas", "Leguminosas", "Cereales y tubérculos"], correctIndex: 0,
+          correctFeedback: "¡Correcto! Los cacahuates se clasifican como grasa.",
+          solution: "Por su alto contenido de aceite, los cacahuates se agrupan con las grasas." },
+        { emoji: "🍬", food: "Azúcar de mesa", choices: ["Azúcares", "Cereales y tubérculos", "Frutas"], correctIndex: 0,
+          correctFeedback: "¡Correcto! El azúcar forma su propio grupo.",
+          solution: "El azúcar de mesa pertenece al grupo de azúcares." },
+        { emoji: "🍯", food: "Miel", choices: ["Azúcares", "Leche", "Grasas"], correctIndex: 0,
+          correctFeedback: "¡Correcto! La miel pertenece al grupo de azúcares.",
+          solution: "La miel, como endulzante, se clasifica en el grupo de azúcares." }
+      ];
+
+      // ---------- "Odd one out" questions: 2 foods share a group, 1 doesn't ----------
+      const ODD_POOL = [
+        { items: [ {emoji:"🍎", food:"Manzana"}, {emoji:"🍌", food:"Plátano"}, {emoji:"🥕", food:"Zanahoria"} ], oddIndex: 2,
+          correctFeedback: "¡Correcto! La manzana y el plátano son frutas; la zanahoria es verdura.",
+          solution: "Manzana y plátano pertenecen a frutas. La zanahoria es verdura, por eso es el intruso." },
+        { items: [ {emoji:"🍗", food:"Pollo"}, {emoji:"🐟", food:"Atún"}, {emoji:"🫘", food:"Frijol"} ], oddIndex: 2,
+          correctFeedback: "¡Correcto! Pollo y atún son alimentos de origen animal; el frijol es leguminosa.",
+          solution: "Pollo y atún pertenecen a alimentos de origen animal. El frijol es leguminosa, por eso es el intruso." },
+        { items: [ {emoji:"🍚", food:"Arroz"}, {emoji:"🍞", food:"Pan"}, {emoji:"🥬", food:"Lechuga"} ], oddIndex: 2,
+          correctFeedback: "¡Correcto! Arroz y pan son cereales; la lechuga es verdura.",
+          solution: "Arroz y pan pertenecen a cereales y tubérculos. La lechuga es verdura, por eso es el intruso." },
+        { items: [ {emoji:"🫒", food:"Aceite"}, {emoji:"🧈", food:"Mantequilla"}, {emoji:"🍊", food:"Naranja"} ], oddIndex: 2,
+          correctFeedback: "¡Correcto! Aceite y mantequilla son grasas; la naranja es fruta.",
+          solution: "Aceite y mantequilla pertenecen a grasas. La naranja es fruta, por eso es el intruso." },
+        { items: [ {emoji:"🫘", food:"Frijol"}, {emoji:"🌱", food:"Lenteja"}, {emoji:"🌽", food:"Elote"} ], oddIndex: 2,
+          correctFeedback: "¡Correcto! Frijol y lenteja son leguminosas; el elote es cereal.",
+          solution: "Frijol y lenteja pertenecen a leguminosas. El elote es cereal, por eso es el intruso." },
+        { items: [ {emoji:"🍬", food:"Azúcar"}, {emoji:"🍯", food:"Miel"}, {emoji:"🥑", food:"Aguacate"} ], oddIndex: 2,
+          correctFeedback: "¡Correcto! Azúcar y miel son azúcares; el aguacate es grasa.",
+          solution: "Azúcar y miel pertenecen a azúcares. El aguacate se clasifica como grasa, por eso es el intruso." },
+        { items: [ {emoji:"🍅", food:"Jitomate"}, {emoji:"🎃", food:"Calabaza"}, {emoji:"🍠", food:"Camote"} ], oddIndex: 2,
+          correctFeedback: "¡Correcto! Jitomate y calabaza son verduras; el camote es cereal/tubérculo.",
+          solution: "Jitomate y calabaza pertenecen a verduras. El camote es tubérculo, por eso es el intruso." },
+        { items: [ {emoji:"🥛", food:"Leche"}, {emoji:"🍦", food:"Yogur"}, {emoji:"🧀", food:"Queso panela"} ], oddIndex: 2,
+          correctFeedback: "¡Correcto! Leche y yogur son del grupo leche; el queso panela es alimento de origen animal.",
+          solution: "Leche y yogur pertenecen al grupo de leche. El queso panela se clasifica como alimento de origen animal, por eso es el intruso." }
+      ];
+
+      // ---------- Final panel: common food-group mix-ups ----------
+      const FINAL_POOL = [
+        { emoji: "🥑", food: "Aguacate", intro: "Se confunde seguido con una fruta, pero por su composición el SMAE lo agrupa como:",
+          choices: ["Frutas", "Grasas", "Verduras", "Leguminosas"], correctIndex: 1,
+          correctFeedback: "¡Correcto! El aguacate se clasifica como grasa.",
+          solution: "Aunque crece en un árbol como fruta, su alto contenido de grasa hace que el SMAE lo agrupe con las grasas." },
+        { emoji: "🌽", food: "Elote", intro: "Parece verdura, pero en el SMAE se clasifica como:",
+          choices: ["Verduras", "Cereales y tubérculos", "Frutas", "Leguminosas"], correctIndex: 1,
+          correctFeedback: "¡Correcto! El elote es un cereal.",
+          solution: "El elote es la mazorca de maíz, por lo que pertenece al grupo de cereales y tubérculos." },
+        { emoji: "🧀", food: "Queso panela", intro: "Suele agruparse con los lácteos, pero pertenece a:",
+          choices: ["Leche", "Alimentos de origen animal", "Grasas", "Leguminosas"], correctIndex: 1,
+          correctFeedback: "¡Correcto! El queso panela es un alimento de origen animal.",
+          solution: "En el SMAE, los quesos se clasifican dentro de alimentos de origen animal, no en el grupo de leche." }
+      ];
+
+      const ROUND_SIZE = 6;
+      const TOTAL_QUESTIONS = ROUND_SIZE + 1;
+
+      function shuffle(array) {
+        const copy = array.slice();
+        for (let i = copy.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [copy[i], copy[j]] = [copy[j], copy[i]];
+        }
+        return copy;
+      }
+
+      function buildClassifyPanel(q, index) {
+        const order = shuffle(q.choices.map((label, i) => ({ label, correct: i === q.correctIndex })));
+        const correctLabel = q.choices[q.correctIndex];
+        const optionsHtml = order.map(o =>
+          `<button class="choice-tile rounded-2xl px-5 py-5 text-left text-lg font-bold" type="button" data-correct="${o.correct}">${o.label}</button>`
+        ).join(" ");
+        return `
+      <article class="q-panel" data-index="${index}">
+       <div class="card overflow-hidden rounded-[2rem] bg-white p-6 sm:p-9">
+        <p class="m-0 text-sm font-extrabold uppercase tracking-[.16em] text-[#5b3a8e]">Caso ${index + 1} de ${ROUND_SIZE} · Clasifica</p>
+        <div class="mt-4 flex items-center gap-4">
+         <div class="food-tile flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl"><span class="food-emoji" aria-hidden="true">${q.emoji}</span></div>
+         <h2 tabindex="-1" class="q-heading text-2xl font-extrabold leading-tight">¿A qué grupo pertenece: ${q.food}?</h2>
+        </div>
+        <div class="mt-6 grid gap-3 sm:grid-cols-3" role="group" aria-label="Opciones de grupo de alimentos">${optionsHtml}</div>
+        <div class="mt-5 space-y-3">
+         <div class="fb-correct hidden rounded-2xl p-4 font-semibold" data-feedback="correct"><span>${q.correctFeedback}</span></div>
+         <div class="fb-wrong hidden rounded-2xl p-4 font-semibold" data-feedback="wrong"><span>No esta vez. El grupo correcto es "${correctLabel}".</span></div>
+         <div data-solution="" class="solution hidden rounded-2xl p-4">
+          <p class="m-0 text-xs font-extrabold uppercase tracking-wider text-[#8a6214]">Por qué</p>
+          <p class="mt-1 mb-0 font-bold">${q.solution}</p>
+         </div>
+        </div>
+        <button class="btn-next mt-5 hidden w-full rounded-2xl bg-[#5b3a8e] px-5 py-4 text-lg font-extrabold text-white sm:w-auto" type="button" data-next="">Siguiente caso</button>
+       </div>
+      </article>`;
+      }
+
+      function buildOddPanel(q, index) {
+        const order = shuffle(q.items.map((item, i) => ({ ...item, correct: i === q.oddIndex })));
+        const correctFood = q.items[q.oddIndex].food;
+        const optionsHtml = order.map(o =>
+          `<button class="choice-tile flex flex-col items-center gap-2 rounded-2xl px-4 py-6 text-center text-lg font-bold" type="button" data-correct="${o.correct}"><span class="food-emoji-sm" aria-hidden="true">${o.emoji}</span>${o.food}</button>`
+        ).join(" ");
+        return `
+      <article class="q-panel" data-index="${index}">
+       <div class="card overflow-hidden rounded-[2rem] bg-white p-6 sm:p-9">
+        <p class="m-0 text-sm font-extrabold uppercase tracking-[.16em] text-[#5b3a8e]">Caso ${index + 1} de ${ROUND_SIZE} · Encuentra al intruso</p>
+        <div class="mt-3 flex items-center gap-3">
+         <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#fef3d9] text-[#c98a1c]"><i data-lucide="shuffle" aria-hidden="true"></i></div>
+         <h2 tabindex="-1" class="q-heading text-2xl font-extrabold leading-tight">Dos de estos son del mismo grupo. ¿Cuál no pertenece?</h2>
+        </div>
+        <div class="mt-6 grid gap-3 sm:grid-cols-3" role="group" aria-label="Opciones de alimentos">${optionsHtml}</div>
+        <div class="mt-5 space-y-3">
+         <div class="fb-correct hidden rounded-2xl p-4 font-semibold" data-feedback="correct"><span>${q.correctFeedback}</span></div>
+         <div class="fb-wrong hidden rounded-2xl p-4 font-semibold" data-feedback="wrong"><span>No esta vez. El intruso es "${correctFood}".</span></div>
+         <div data-solution="" class="solution hidden rounded-2xl p-4">
+          <p class="m-0 text-xs font-extrabold uppercase tracking-wider text-[#8a6214]">Por qué</p>
+          <p class="mt-1 mb-0 font-bold">${q.solution}</p>
+         </div>
+        </div>
+        <button class="btn-next mt-5 hidden w-full rounded-2xl bg-[#5b3a8e] px-5 py-4 text-lg font-extrabold text-white sm:w-auto" type="button" data-next="">${index === ROUND_SIZE - 1 ? "Ver reto final" : "Siguiente caso"}</button>
+       </div>
+      </article>`;
+      }
+
+      function buildFinalPanel(q, index) {
+        const order = shuffle(q.choices.map((label, i) => ({ label, correct: i === q.correctIndex })));
+        const correctLabel = q.choices[q.correctIndex];
+        const optionsHtml = order.map(o =>
+          `<button class="choice-tile rounded-2xl px-5 py-4 text-left text-lg font-bold" type="button" data-correct="${o.correct}">${o.label}</button>`
+        ).join(" ");
+        return `
+      <article class="q-panel" data-index="${index}">
+       <div class="card rounded-[2rem] bg-[#f3ecfa] p-5 sm:p-9">
+        <div class="mx-auto max-w-2xl">
+         <div class="inline-block rounded-full bg-[#ef6a4c] px-4 py-2 text-sm font-extrabold uppercase tracking-wider text-white">Reto final · Grupos que se confunden</div>
+         <div class="mt-5 flex items-center gap-4">
+          <div class="food-tile flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-white"><span class="food-emoji" aria-hidden="true">${q.emoji}</span></div>
+          <div>
+           <p class="m-0 text-sm font-extrabold uppercase tracking-wider text-[#5b3a8e]">${q.food}</p>
+           <h2 tabindex="-1" class="q-heading display m-0 mt-1 text-xl font-extrabold leading-snug">${q.intro}</h2>
+          </div>
+         </div>
+         <div class="mt-6 grid gap-3 sm:grid-cols-2" role="group" aria-label="Opciones del reto final">${optionsHtml}</div>
+         <div class="mt-5 space-y-3">
+          <div class="fb-correct hidden rounded-2xl p-4 font-semibold" data-feedback="correct"><span>${q.correctFeedback}</span></div>
+          <div class="fb-wrong hidden rounded-2xl p-4 font-semibold" data-feedback="wrong"><span>No esta vez. El grupo correcto es "${correctLabel}".</span></div>
+          <div data-solution="" class="solution hidden rounded-2xl p-4">
+           <p class="m-0 text-xs font-extrabold uppercase tracking-wider text-[#8a6214]">Por qué</p>
+           <p class="mt-1 mb-0 font-bold">${q.solution}</p>
+          </div>
+         </div>
+         <button class="btn-next mt-5 hidden w-full rounded-2xl bg-[#ef6a4c] px-5 py-4 text-lg font-extrabold text-white" type="button" data-next="">Ver mi resultado</button>
+        </div>
+       </div>
+      </article>`;
+      }
+
+      const panelsContainer = document.getElementById("panels-container");
+      const resultPanel = document.getElementById("result-panel");
+      const scoreDisplay = document.getElementById("score-display");
+      const finalScore = document.getElementById("final-score");
+      const progressText = document.getElementById("progress-text");
+      const progressFill = document.getElementById("progress-fill");
+      const liveStatus = document.getElementById("live-status");
+
+      let panels = [];
+      let currentIndex = 0;
+      let score = 0;
+      let answered = new Set();
+
+      function updateDashboard() {
+        scoreDisplay.textContent = score + " / " + TOTAL_QUESTIONS;
+        progressText.textContent = Math.min(currentIndex + 1, TOTAL_QUESTIONS) + " / " + TOTAL_QUESTIONS;
+        progressFill.style.width = (Math.min(currentIndex + 1, TOTAL_QUESTIONS) / TOTAL_QUESTIONS * 100) + "%";
+      }
+
+      function showPanel(index) {
+        panels.forEach((panel, i) => panel.classList.toggle("active", i === index));
+        currentIndex = index;
+        updateDashboard();
+        const heading = panels[index].querySelector(".q-heading");
+        if (heading) heading.focus({ preventScroll: true });
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      function answerQuestion(button) {
+        const panel = button.closest(".q-panel");
+        const index = Number(panel.dataset.index);
+        if (answered.has(index)) return;
+        answered.add(index);
+        const isCorrect = button.dataset.correct === "true";
+        const options = Array.from(panel.querySelectorAll(".choice-tile"));
+        options.forEach(opt => {
+          opt.disabled = true;
+          if (opt.dataset.correct === "true") opt.classList.add("reveal-correct");
+        });
+        if (isCorrect) {
+          score += 1;
+          button.classList.add("pick-correct");
+          panel.querySelector('[data-feedback="correct"]').classList.remove("hidden");
+          liveStatus.textContent = "Respuesta correcta. Se muestra la explicación.";
+        } else {
+          button.classList.add("pick-wrong");
+          panel.querySelector('[data-feedback="wrong"]').classList.remove("hidden");
+          liveStatus.textContent = "Respuesta incorrecta. Se muestra la respuesta correcta y la explicación.";
+        }
+        panel.querySelector("[data-solution]").classList.remove("hidden");
+        panel.querySelector("[data-next]").classList.remove("hidden");
+        updateDashboard();
+      }
+
+      panelsContainer.addEventListener("click", (event) => {
+        const choiceButton = event.target.closest(".choice-tile");
+        if (choiceButton) { answerQuestion(choiceButton); return; }
+        const nextButton = event.target.closest("[data-next]");
+        if (nextButton) {
+          if (currentIndex < panels.length - 1) { showPanel(currentIndex + 1); return; }
+          panels.forEach(panel => panel.classList.remove("active"));
+          resultPanel.classList.add("active");
+          finalScore.textContent = score + " / " + TOTAL_QUESTIONS;
+          progressText.textContent = TOTAL_QUESTIONS + " / " + TOTAL_QUESTIONS;
+          progressFill.style.width = "100%";
+          liveStatus.textContent = "Ronda completada. Resultado: " + score + " de " + TOTAL_QUESTIONS + ".";
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      });
+
+      function newRound() {
+        score = 0; currentIndex = 0; answered = new Set();
+        resultPanel.classList.remove("active");
+
+        const mixed = shuffle([
+          ...CLASSIFY_POOL.map(q => ({ type: "classify", data: q })),
+          ...ODD_POOL.map(q => ({ type: "odd", data: q }))
+        ]).slice(0, ROUND_SIZE);
+        const chosenFinal = shuffle(FINAL_POOL)[0];
+
+        let html = "";
+        mixed.forEach((q, i) => {
+          html += q.type === "classify" ? buildClassifyPanel(q.data, i) : buildOddPanel(q.data, i);
+        });
+        html += buildFinalPanel(chosenFinal, ROUND_SIZE);
+
+        panelsContainer.innerHTML = html;
+        panels = Array.from(panelsContainer.querySelectorAll(".q-panel"));
+        lucide.createIcons();
+        showPanel(0);
+        liveStatus.textContent = "Ronda nueva lista.";
+      }
+
+      document.getElementById("header-restart").addEventListener("click", newRound);
+      document.getElementById("try-again-button").addEventListener("click", newRound);
+      document.getElementById("final-restart-button").addEventListener("click", newRound);
+
+      lucide.createIcons();
+      newRound();
+    });
+  </script>
+</body>
+</html>

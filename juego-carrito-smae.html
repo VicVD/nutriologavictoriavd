@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carrito SMAE: equivalentes y carbohidratos</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,800&family=Work+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #14332b;
+      --cream: #fff9e8;
+      --tomato: #ef4d3f;
+      --leaf: #16845b;
+      --yellow: #ffd633;
+      --line: #d7e2c2;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; width: 100%; color: var(--ink); font-family: "Work Sans", sans-serif; background: var(--cream); }
+    .market-shell {
+      width: 100%;
+      min-height: 100vh;
+      position: relative;
+      overflow: hidden;
+      background-image: linear-gradient(90deg, rgba(22,132,91,.05) 1px, transparent 1px), linear-gradient(rgba(22,132,91,.05) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+    .market-shell::before, .market-shell::after {
+      content: "";
+      position: absolute;
+      z-index: 0;
+      border-radius: 999px;
+      pointer-events: none;
+    }
+    .market-shell::before { width: 280px; height: 280px; right: -110px; top: 85px; background: rgba(255,214,51,.35); }
+    .market-shell::after { width: 220px; height: 220px; left: -110px; bottom: 45px; background: rgba(239,77,63,.12); }
+    header, main, footer { position: relative; z-index: 1; }
+    .market-logo { font-family: "Fraunces", serif; letter-spacing: -.045em; }
+    .aisle-stripe { height: 9px; background: repeating-linear-gradient(90deg, #ef4d3f 0 36px, #fff9e8 36px 53px, #16845b 53px 89px, #fff9e8 89px 106px); }
+    .progress-track { background: #e5ecd7; }
+    .progress-fill { width: 0%; background: linear-gradient(90deg, #16845b, #42af62); transition: width .45s ease; }
+    .quiz-card { box-shadow: 0 18px 0 rgba(20,51,43,.1), 0 24px 46px rgba(20,51,43,.13); }
+    .food-photo { background: #fff3bd; border: 5px solid #fff; box-shadow: 0 8px 0 rgba(20,51,43,.11); }
+    .answer-option {
+      border: 3px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease, background .18s ease;
+    }
+    .answer-option:hover:not(:disabled), .answer-option:focus-visible:not(:disabled) {
+      transform: translateY(-3px);
+      border-color: var(--leaf);
+      box-shadow: 0 7px 0 rgba(22,132,91,.18);
+      outline: none;
+    }
+    .answer-option:disabled { cursor: default; }
+    .answer-option.selected-correct, .answer-option.revealed-correct { background: #dff5d8; border-color: var(--leaf); }
+    .answer-option.selected-wrong { background: #ffe0db; border-color: var(--tomato); }
+    .feedback-correct { background: #ddf5d6; color: #145b3e; border: 2px solid #79bd76; }
+    .feedback-wrong { background: #ffe0db; color: #a62f26; border: 2px solid #f09186; }
+    .solution-card { background: #fff8d8; border: 2px dashed #d2a52d; }
+    .next-button {
+      box-shadow: 0 6px 0 #a62f26;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+    .next-button:hover, .next-button:focus-visible { transform: translateY(-2px); box-shadow: 0 8px 0 #a62f26; outline: 3px solid var(--ink); outline-offset: 3px; }
+    .next-button:active { transform: translateY(4px); box-shadow: 0 2px 0 #a62f26; }
+    .receipt { background: #fffef7; background-image: linear-gradient(90deg, transparent 0 8px, rgba(22,132,91,.08) 8px 9px, transparent 9px); box-shadow: 0 12px 0 rgba(20,51,43,.11); }
+    .receipt-edge { border-bottom: 4px dashed #b8c8ad; }
+    .question-panel, .result-panel { display: none; }
+    .question-panel.active, .result-panel.active { display: block; animation: slideIn .35s ease both; }
+    @keyframes slideIn { from { opacity: 0; transform: translateX(18px) scale(.985); } to { opacity: 1; transform: translateX(0) scale(1); } }
+    .cart-badge { animation: bob 2.2s ease-in-out infinite; }
+    @keyframes bob { 50% { transform: translateY(-5px) rotate(-2deg); } }
+    .screen-reader-status { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    .question-heading:focus { outline: none; }
+    @media (prefers-reduced-motion: reduce) {
+      .cart-badge { animation: none; }
+      .question-panel.active, .result-panel.active { animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="market-shell">
+   <div class="aisle-stripe"></div>
+   <header class="w-full px-4 pt-5 sm:px-8">
+    <div class="mx-auto flex max-w-4xl flex-col gap-4 rounded-[1.7rem] bg-[#16845b] px-5 py-4 text-white shadow-lg sm:flex-row sm:items-center sm:justify-between">
+     <div class="flex items-center gap-3">
+      <div class="cart-badge flex h-12 w-12 items-center justify-center rounded-2xl bg-[#ffd633] text-[#14332b]"><i data-lucide="shopping-cart" aria-hidden="true"></i>
+      </div>
+      <div>
+       <p class="m-0 text-xs font-bold uppercase tracking-[.18em]">Juego de supermercado · SMAE</p>
+       <h1 class="market-logo m-0 leading-tight text-3xl">Carrito SMAE: equivalentes y carbohidratos</h1>
+      </div>
+     </div>
+     <div class="flex items-center gap-3">
+      <div class="rounded-xl bg-white/15 px-3 py-2 text-center">
+       <p class="m-0 text-xs font-semibold uppercase tracking-wider">Puntuación</p>
+       <p id="score-display" class="m-0 text-xl font-extrabold" aria-live="polite">0 / 7</p>
+      </div><button id="header-restart" class="rounded-xl bg-[#ffd633] px-4 py-3 font-bold text-[#14332b] transition hover:bg-[#fff3bd] focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2" type="button">Nuevo carrito</button>
+     </div>
+    </div>
+    <div class="mx-auto mt-4 max-w-4xl">
+     <div class="mb-2 flex items-center justify-between">
+      <p class="m-0 text-sm font-bold uppercase tracking-wider">Ruta por los pasillos</p>
+      <p id="progress-text" class="m-0 text-sm font-bold" aria-live="polite">1 / 7</p>
+     </div>
+     <div class="progress-track h-4 overflow-hidden rounded-full border-2 border-white shadow-sm" aria-label="Progreso del cuestionario">
+      <div id="progress-fill" class="progress-fill h-full rounded-full"></div>
+     </div>
+    </div>
+   </header>
+   <main class="w-full px-4 py-7 sm:px-8 sm:py-10">
+    <section id="quiz-stage" class="mx-auto max-w-4xl" aria-label="Preguntas del cuestionario SMAE">
+     <p id="live-status" class="screen-reader-status" aria-live="polite"></p>
+     <aside class="mx-auto mb-6 max-w-4xl rounded-2xl border-2 border-[#d7e2c2] bg-[#fffef7] px-5 py-4 text-sm leading-relaxed shadow-sm">En este nivel identificarás la porción, el grupo de alimentos, el número de equivalentes y convertirás los equivalentes a gramos de hidratos de carbono (HC). Cada carrito toma 6 productos al azar de una lista de 14, más un reto final, así que casi nunca te tocará el mismo recorrido. Los valores son aproximados y deben verificarse con la edición vigente del SMAE y la indicación de un profesional de la salud.</aside>
+     <div id="panels-container"></div>
+    </section>
+    <section id="result-panel" class="result-panel mx-auto max-w-3xl" aria-labelledby="result-title">
+     <div class="quiz-card overflow-hidden rounded-[2rem] bg-white text-center">
+      <div class="bg-[#ffd633] px-6 py-9">
+       <div class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-[#ef4d3f] text-white shadow-lg"><i data-lucide="shopping-cart" class="h-10 w-10" aria-hidden="true"></i>
+       </div>
+       <p class="mt-5 text-sm font-extrabold uppercase tracking-[.18em]">¡Compra completada!</p>
+       <h2 id="result-title" class="market-logo mt-2 text-2xl font-extrabold leading-tight">Tu carrito ya pasó por caja</h2>
+      </div>
+      <div class="p-7 sm:p-10">
+       <p id="final-score" class="m-0 text-6xl font-extrabold text-[#16845b]" aria-live="polite">0 / 7</p>
+       <p class="mt-2 text-lg font-semibold text-[#16845b]">respuestas correctas</p>
+       <p class="mx-auto mt-5 max-w-xl text-lg font-normal">Repasa las soluciones paso a paso y arma un carrito nuevo cuando quieras practicar otra combinación de conversiones de equivalentes a gramos de HC.</p>
+       <div class="mt-8 grid gap-3 sm:grid-cols-2"><button id="try-again-button" class="rounded-2xl bg-[#16845b] px-5 py-4 text-lg font-extrabold text-white transition hover:brightness-95 focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2" type="button">Armar otro carrito</button> <button id="final-restart-button" class="rounded-2xl bg-[#ffd633] px-5 py-4 text-lg font-extrabold text-[#14332b] transition hover:brightness-95 focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2" type="button">Reiniciar</button>
+       </div>
+      </div>
+     </div>
+    </section>
+   </main>
+   <footer class="w-full px-4 pb-7 text-center sm:px-8">
+    <p class="mx-auto max-w-3xl text-sm leading-relaxed" style="color:#466159">Valores aproximados. Pueden variar según la edición vigente del SMAE, la porción, la preparación y la marca. Para decisiones clínicas, consulta a un profesional de la salud.</p>
+   </footer>
+  </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // ---------- Question pools ----------
+      // 14 possible "product" questions — 6 are drawn at random each round.
+      const ITEM_POOL = [
+        {
+          category: "Cereales y tubérculos sin grasa", badgeBg: "#ffd633",
+          img: "https://images.pexels.com/photos/31009742/pexels-photo-31009742.jpeg",
+          imgAlt: "Dos tortillas de maíz dobladas.",
+          food: "Tortilla de maíz", portion: "2 tortillas", unitBg: "#e9f4e9",
+          unitText: "1 tortilla = 1 equivalente = 15 g HC",
+          question: "¿Cuántos carbohidratos hay en 2 tortillas?",
+          options: [15, 30, 45], correctIndex: 1,
+          correctFeedback: "¡Correcto! Convertiste 2 equivalentes a gramos de HC.",
+          solution: "2 tortillas → 2 equivalentes → 2 × 15 g HC → 30 g HC"
+        },
+        {
+          category: "Leguminosas", badgeBg: "#ef4d3f",
+          img: "https://images.pexels.com/photos/8479384/pexels-photo-8479384.jpeg",
+          imgAlt: "Frijoles mexicanos servidos en un tazón con cilantro fresco y una rodaja de limón.",
+          food: "Frijoles de la olla", portion: "1 taza", unitBg: "#fff0e7",
+          unitText: "½ taza = 1 equivalente = 20 g HC",
+          question: "¿Cuántos carbohidratos aporta 1 taza?",
+          options: [20, 30, 40], correctIndex: 2,
+          correctFeedback: "¡Correcto! Una taza reúne dos equivalentes de leguminosas.",
+          solution: "1 taza → 2 equivalentes → 2 × 20 g HC → 40 g HC"
+        },
+        {
+          category: "Frutas", badgeBg: "#f4b83d",
+          img: "https://images.pexels.com/photos/4113829/pexels-photo-4113829.jpeg",
+          imgAlt: "Papaya fresca cortada en rebanadas junto a limón sobre platos de cerámica.",
+          food: "Papaya en cubos", portion: "2 tazas", unitBg: "#fff7d7",
+          unitText: "1 taza = 1 equivalente = 15 g HC",
+          question: "¿Cuántos carbohidratos van al carrito?",
+          options: [15, 30, 45], correctIndex: 1,
+          correctFeedback: "¡Correcto! Dos tazas equivalen a dos intercambios de fruta.",
+          solution: "2 tazas → 2 equivalentes → 2 × 15 g HC → 30 g HC"
+        },
+        {
+          category: "Leche", badgeBg: "#75b8dc",
+          img: "https://images.pexels.com/photos/7702453/pexels-photo-7702453.jpeg",
+          imgAlt: "Leche fresca vertiéndose en un vaso sobre una mesa de madera.",
+          food: "Leche semidescremada", portion: "1½ tazas", unitBg: "#eaf6fb",
+          unitText: "1 taza = 1 equivalente = 12 g HC",
+          question: "¿Cuál es el conteo total?",
+          options: [12, 18, 24], correctIndex: 1,
+          correctFeedback: "¡Correcto! Aplicaste un equivalente y medio de leche.",
+          solution: "1½ tazas → 1.5 equivalentes → 1.5 × 12 g HC → 18 g HC"
+        },
+        {
+          category: "Cereales y tubérculos sin grasa", badgeBg: "#b2a1dd",
+          img: "https://images.pexels.com/photos/31346219/pexels-photo-31346219.jpeg",
+          imgAlt: "Arroz blanco al vapor servido en un tazón de madera.",
+          food: "Arroz cocido", portion: "¾ de taza", unitBg: "#f0ecfa",
+          unitText: "1/4 taza = 1 equivalente = 15 g HC",
+          question: "¿Cuántos carbohidratos contiene?",
+          options: [45, 22.5, 30], correctIndex: 0,
+          correctFeedback: "¡Correcto! Tres cuartos de taza representan un equivalente y medio.",
+          solution: "¾ de taza → 3 equivalentes → 3 × 15 g HC → 45 g HC"
+        },
+        {
+          category: "Leche con azúcar", badgeBg: "#f28eb6",
+          img: "https://images.pexels.com/photos/414262/pexels-photo-414262.jpeg?auto=compress&cs=tinysrgb&w=800",
+          imgAlt: "Parfait de yogur con frutos rojos frescos y hojas de menta.",
+          food: "Yogur con azúcar", portion: "1 taza", unitBg: "#fff0f5",
+          unitText: "1 equivalente = 30 g HC",
+          question: "¿Cuántos carbohidratos registra esta equivalencia?",
+          options: [12, 15, 30], correctIndex: 2,
+          correctFeedback: "¡Correcto! Esta equivalencia registra 30 g de HC.",
+          solution: "1 taza → 1 equivalente → 1 × 30 g HC → 30 g HC"
+        },
+        {
+          category: "Cereales y tubérculos sin grasa", badgeBg: "#ffd633",
+          img: "https://images.pexels.com/photos/8599600/pexels-photo-8599600.jpeg",
+          imgAlt: "Rebanadas de pan blanco apiladas sobre una tabla de madera.",
+          food: "Pan de caja blanco", portion: "3 rebanadas", unitBg: "#e9f4e9",
+          unitText: "1 rebanada = 1 equivalente = 15 g HC",
+          question: "¿Cuántos carbohidratos suman las 3 rebanadas?",
+          options: [15, 30, 45], correctIndex: 2,
+          correctFeedback: "¡Correcto! Tres rebanadas son tres equivalentes de cereal.",
+          solution: "3 rebanadas → 3 equivalentes → 3 × 15 g HC → 45 g HC"
+        },
+        {
+          category: "Cereales y tubérculos sin grasa", badgeBg: "#f4b83d",
+          img: "https://images.pexels.com/photos/13408692/pexels-photo-13408692.jpeg",
+          imgAlt: "Elotes cocidos servidos en un plato.",
+          food: "Elote", portion: "1 pieza", unitBg: "#fff7d7",
+          unitText: "½ pieza = 1 equivalente = 15 g HC",
+          question: "¿Cuántos carbohidratos aporta 1 pieza completa?",
+          options: [15, 30, 45], correctIndex: 1,
+          correctFeedback: "¡Correcto! Una pieza completa son dos equivalentes.",
+          solution: "1 pieza → 2 equivalentes → 2 × 15 g HC → 30 g HC"
+        },
+        {
+          category: "Frutas", badgeBg: "#75b8dc",
+          img: "https://images.pexels.com/photos/8286692/pexels-photo-8286692.jpeg",
+          imgAlt: "Manzanas rojas frescas en una canasta.",
+          food: "Manzana chica", portion: "3 piezas", unitBg: "#eaf6fb",
+          unitText: "1 pieza chica = 1 equivalente = 15 g HC",
+          question: "¿Cuántos carbohidratos suman las 3 manzanas?",
+          options: [15, 30, 45], correctIndex: 2,
+          correctFeedback: "¡Correcto! Tres piezas chicas son tres equivalentes de fruta.",
+          solution: "3 piezas → 3 equivalentes → 3 × 15 g HC → 45 g HC"
+        },
+        {
+          category: "Frutas", badgeBg: "#b2a1dd",
+          img: "https://images.pexels.com/photos/4030384/pexels-photo-4030384.jpeg",
+          imgAlt: "Naranjas frescas cortadas por la mitad.",
+          food: "Naranja", portion: "4 piezas", unitBg: "#f0ecfa",
+          unitText: "2 piezas = 1 equivalente = 15 g HC",
+          question: "¿Cuántos carbohidratos van al carrito?",
+          options: [15, 30, 45], correctIndex: 2,
+          correctFeedback: "¡Correcto! Cuatro naranjas son dos equivalente de fruta.",
+          solution: "4 piezas → 2 equivalentes → 2 × 15 g HC → 30 g HC"
+        },
+        {
+          category: "Cereales y tubérculos sin grasa", badgeBg: "#f28eb6",
+          img: "https://images.pexels.com/photos/4725734/pexels-photo-4725734.jpeg",
+          imgAlt: "Avena cocida servida en un tazón.",
+          food: "Avena cocida", portion: "1 taza", unitBg: "#fff0f5",
+          unitText: "½ taza = 1 equivalente = 15 g HC",
+          question: "¿Cuántos carbohidratos contiene 1 taza?",
+          options: [15, 30, 45], correctIndex: 1,
+          correctFeedback: "¡Correcto! Una taza completa son dos equivalentes de cereal.",
+          solution: "1 taza → 2 equivalentes → 2 × 15 g HC → 30 g HC"
+        },
+        {
+          category: "Leguminosas", badgeBg: "#ffd633",
+          img: "https://images.pexels.com/photos/9928340/pexels-photo-9928340.jpeg",
+          imgAlt: "Lentejas cocidas servidas en un tazón.",
+          food: "Lentejas cocidas", portion: "1½ tazas", unitBg: "#e9f4e9",
+          unitText: "½ taza = 1 equivalente = 20 g HC",
+          question: "¿Cuántos carbohidratos suman 1½ tazas?",
+          options: [20, 40, 60], correctIndex: 2,
+          correctFeedback: "¡Correcto! Una taza y media son tres equivalentes de leguminosa.",
+          solution: "1½ tazas → 3 equivalentes → 3 × 20 g HC → 60 g HC"
+        },
+        {
+          category: "Cereales y tubérculos sin grasa", badgeBg: "#ef4d3f",
+          img: "https://images.pexels.com/photos/546945/pexels-photo-546945.jpeg",
+          imgAlt: "Pasta cocida servida en un plato.",
+          food: "Pasta cocida", portion: "1½ tazas", unitBg: "#fff0e7",
+          unitText: "½ taza = 1 equivalente = 15 g HC",
+          question: "¿Cuántos carbohidratos suman 1½ tazas?",
+          options: [15, 30, 45], correctIndex: 2,
+          correctFeedback: "¡Correcto! Una taza y media son tres equivalentes de cereal.",
+          solution: "1½ tazas → 3 equivalentes → 3 × 15 g HC → 45 g HC"
+        },
+        {
+          category: "Cereales y tubérculos sin grasa", badgeBg: "#75b8dc",
+          img: "https://images.pexels.com/photos/5505466/pexels-photo-5505466.jpeg",
+          imgAlt: "Camotes cocidos partidos a la mitad.",
+          food: "Camote cocido", portion: "1 pieza mediana", unitBg: "#eaf6fb",
+          unitText: "½ pieza mediana = 1 equivalente = 15 g HC",
+          question: "¿Cuántos carbohidratos aporta 1 pieza mediana?",
+          options: [15, 30, 45], correctIndex: 1,
+          correctFeedback: "¡Correcto! Una pieza mediana completa son dos equivalentes.",
+          solution: "1 pieza mediana → 2 equivalentes → 2 × 15 g HC → 30 g HC"
+        }
+      ];
+
+      // 4 possible "final challenge" receipts — 1 is drawn at random each round.
+      const FINAL_POOL = [
+        {
+          lines: [ { label: "2 tortillas", grams: 30 }, { label: "½ taza de frijoles", grams: 20 }, { label: "1 taza de papaya", grams: 15 } ],
+          options: [55, 65, 75], correctIndex: 1,
+          correctFeedback: "¡Correcto! Sumaste correctamente los tres alimentos del ticket.",
+          solutionIntro: "2 tortillas + ½ taza de frijoles + 1 taza de papaya"
+        },
+        {
+          lines: [ { label: "1 elote", grams: 30 }, { label: "1 naranja", grams: 15 }, { label: "1 taza de leche", grams: 12 } ],
+          options: [47, 57, 67], correctIndex: 1,
+          correctFeedback: "¡Correcto! Sumaste correctamente los tres alimentos del ticket.",
+          solutionIntro: "1 elote + 1 naranja + 1 taza de leche"
+        },
+        {
+          lines: [ { label: "½ taza de arroz", grams: 15 }, { label: "1 taza de lentejas", grams: 40 }, { label: "2 manzanas chicas", grams: 30 } ],
+          options: [75, 85, 95], correctIndex: 1,
+          correctFeedback: "¡Correcto! Sumaste correctamente los tres alimentos del ticket.",
+          solutionIntro: "½ taza de arroz + 1 taza de lentejas + 2 manzanas chicas"
+        },
+        {
+          lines: [ { label: "½ taza de avena", grams: 15 }, { label: "½ camote mediano", grams: 15 }, { label: "1 taza de yogur con azúcar", grams: 30 } ],
+          options: [50, 60, 70], correctIndex: 1,
+          correctFeedback: "¡Correcto! Sumaste correctamente los tres alimentos del ticket.",
+          solutionIntro: "½ taza de avena + ½ camote mediano + 1 taza de yogur con azúcar"
+        }
+      ];
+
+      const ITEMS_PER_ROUND = 6;
+      const TOTAL_QUESTIONS = ITEMS_PER_ROUND + 1;
+
+      function fmtG(n) { return (Number.isInteger(n) ? n : n) + " g"; }
+
+      function shuffle(array) {
+        const copy = array.slice();
+        for (let i = copy.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [copy[i], copy[j]] = [copy[j], copy[i]];
+        }
+        return copy;
+      }
+
+      function buildItemPanel(item, roundIndex) {
+        const optionOrder = shuffle(item.options.map((value, i) => ({ value, correct: i === item.correctIndex })));
+        const correctValue = item.options[item.correctIndex];
+        const optionsHtml = optionOrder.map(opt =>
+          `<button class="answer-option rounded-2xl px-5 py-4 text-left text-lg font-bold" type="button" data-correct="${opt.correct}">${fmtG(opt.value)}</button>`
+        ).join(" ");
+        return `
+      <article class="question-panel" data-index="${roundIndex}">
+       <div class="quiz-card overflow-hidden rounded-[2rem] bg-white">
+        <div class="grid md:grid-cols-[.92fr_1.08fr]">
+         <div class="relative min-h-[270px] p-6 sm:p-8" style="background:${item.badgeBg}">
+          <div class="inline-block rounded-full bg-[#14332b] px-4 py-2 text-sm font-extrabold text-white">${item.category}</div>
+          <img class="food-photo mt-7 h-56 w-full rounded-[1.5rem] object-cover" loading="lazy" src="${item.img}" alt="${item.imgAlt}">
+          <div class="absolute bottom-4 right-4 rotate-[-4deg] rounded-xl bg-white px-4 py-3 font-extrabold shadow-md">${item.portion}</div>
+         </div>
+         <div class="p-6 sm:p-9">
+          <p class="m-0 text-sm font-extrabold uppercase tracking-[.16em] text-[#16845b]">Producto ${roundIndex + 1} de ${ITEMS_PER_ROUND}</p>
+          <h2 tabindex="-1" class="question-heading mt-2 text-2xl font-extrabold leading-tight">${item.food}</h2>
+          <p class="mt-3 rounded-xl px-4 py-3 font-semibold" style="background:${item.unitBg}">${item.unitText}</p>
+          <p class="mb-6 mt-4 text-lg font-normal">${item.question}</p>
+          <div class="grid gap-3" role="group" aria-label="Opciones para ${item.food}">${optionsHtml}</div>
+          <div class="mt-5 space-y-3">
+           <div class="feedback-correct hidden rounded-2xl p-4 font-semibold" data-feedback="correct"><span>${item.correctFeedback}</span></div>
+           <div class="feedback-wrong hidden rounded-2xl p-4 font-semibold" data-feedback="wrong"><span>No esta vez. La respuesta correcta es ${fmtG(correctValue)}.</span></div>
+           <div data-solution="" class="solution-card hidden rounded-2xl p-4">
+            <p class="m-0 text-xs font-extrabold uppercase tracking-wider text-[#8a6214]">Solución</p>
+            <p class="mt-1 mb-0 font-bold">${item.solution}</p>
+           </div>
+          </div>
+          <button class="next-button mt-5 hidden w-full rounded-2xl bg-[#ef4d3f] px-5 py-4 text-lg font-extrabold text-white" type="button" data-next="">${roundIndex === ITEMS_PER_ROUND - 1 ? "Ver reto final" : "Siguiente producto"}</button>
+         </div>
+        </div>
+       </div>
+      </article>`;
+      }
+
+      function buildFinalPanel(final, roundIndex) {
+        const optionOrder = shuffle(final.options.map((value, i) => ({ value, correct: i === final.correctIndex })));
+        const correctValue = final.options[final.correctIndex];
+        const lineTotal = final.lines.map(l => l.grams).reduce((a, b) => a + b, 0);
+        const linesHtml = final.lines.map(l =>
+          `<div class="flex justify-between gap-4"><span>${l.label}</span><span class="font-extrabold">${fmtG(l.grams)} HC</span></div>`
+        ).join("");
+        const optionsHtml = optionOrder.map(opt =>
+          `<button class="answer-option rounded-2xl px-5 py-4 text-left text-lg font-bold" type="button" data-correct="${opt.correct}">${fmtG(opt.value)}</button>`
+        ).join(" ");
+        return `
+      <article class="question-panel" data-index="${roundIndex}">
+       <div class="quiz-card rounded-[2rem] bg-[#f9edc8] p-5 sm:p-9">
+        <div class="mx-auto max-w-2xl">
+         <div class="inline-block rounded-full bg-[#ef4d3f] px-4 py-2 text-sm font-extrabold uppercase tracking-wider text-white">Reto final</div>
+         <div class="receipt mt-5 rounded-xl p-6 sm:p-8">
+          <div class="receipt-edge pb-4 text-center"><i data-lucide="receipt-text" class="mx-auto mb-2 h-9 w-9 text-[#16845b]" aria-hidden="true"></i>
+           <h2 tabindex="-1" class="question-heading market-logo m-0 text-2xl font-extrabold">Comida mexicana</h2>
+          </div>
+          <div class="space-y-3 py-5 font-semibold">${linesHtml}</div>
+          <div class="receipt-edge border-t-2 border-dashed border-[#b8c8ad] pt-4">
+           <p class="m-0 text-lg font-bold">¿Cuál es el total de carbohidratos de esta comida?</p>
+          </div>
+         </div>
+         <div class="mt-6 grid gap-3" role="group" aria-label="Opciones del reto final">${optionsHtml}</div>
+         <div class="mt-5 space-y-3">
+          <div class="feedback-correct hidden rounded-2xl p-4 font-semibold" data-feedback="correct"><span>${final.correctFeedback}</span></div>
+          <div class="feedback-wrong hidden rounded-2xl p-4 font-semibold" data-feedback="wrong"><span>No esta vez. El total correcto es ${fmtG(correctValue)} HC.</span></div>
+          <div data-solution="" class="solution-card hidden rounded-2xl p-4">
+           <p class="m-0 text-xs font-extrabold uppercase tracking-wider text-[#8a6214]">Solución</p>
+           <p class="mt-1 mb-0 font-bold">${final.solutionIntro} → ${final.lines.map(l => fmtG(l.grams)).join(" + ")} → ${fmtG(lineTotal)} HC</p>
+          </div>
+         </div>
+         <button class="next-button mt-5 hidden w-full rounded-2xl bg-[#ef4d3f] px-5 py-4 text-lg font-extrabold text-white" type="button" data-next="">Ver mi resultado</button>
+        </div>
+       </div>
+      </article>`;
+      }
+
+      const panelsContainer = document.getElementById("panels-container");
+      const resultPanel = document.getElementById("result-panel");
+      const scoreDisplay = document.getElementById("score-display");
+      const finalScore = document.getElementById("final-score");
+      const progressText = document.getElementById("progress-text");
+      const progressFill = document.getElementById("progress-fill");
+      const liveStatus = document.getElementById("live-status");
+
+      let panels = [];
+      let currentIndex = 0;
+      let score = 0;
+      let answered = new Set();
+
+      function updateDashboard() {
+        scoreDisplay.textContent = score + " / " + TOTAL_QUESTIONS;
+        progressText.textContent = Math.min(currentIndex + 1, TOTAL_QUESTIONS) + " / " + TOTAL_QUESTIONS;
+        progressFill.style.width = (Math.min(currentIndex + 1, TOTAL_QUESTIONS) / TOTAL_QUESTIONS * 100) + "%";
+      }
+
+      function showPanel(index) {
+        panels.forEach((panel, panelIndex) => panel.classList.toggle("active", panelIndex === index));
+        currentIndex = index;
+        updateDashboard();
+        const heading = panels[index].querySelector(".question-heading");
+        if (heading) heading.focus({ preventScroll: true });
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      function answerQuestion(button) {
+        const panel = button.closest(".question-panel");
+        const index = Number(panel.dataset.index);
+        if (answered.has(index)) return;
+        answered.add(index);
+        const isCorrect = button.dataset.correct === "true";
+        const options = Array.from(panel.querySelectorAll(".answer-option"));
+        options.forEach(option => {
+          option.disabled = true;
+          if (option.dataset.correct === "true") option.classList.add("revealed-correct");
+        });
+        if (isCorrect) {
+          score += 1;
+          button.classList.add("selected-correct");
+          panel.querySelector('[data-feedback="correct"]').classList.remove("hidden");
+          liveStatus.textContent = "Respuesta correcta. Se muestra la solución.";
+        } else {
+          button.classList.add("selected-wrong");
+          panel.querySelector('[data-feedback="wrong"]').classList.remove("hidden");
+          liveStatus.textContent = "Respuesta incorrecta. Se muestra la respuesta correcta y la solución.";
+        }
+        panel.querySelector("[data-solution]").classList.remove("hidden");
+        panel.querySelector("[data-next]").classList.remove("hidden");
+        updateDashboard();
+      }
+
+      panelsContainer.addEventListener("click", (event) => {
+        const answerButton = event.target.closest(".answer-option");
+        if (answerButton) { answerQuestion(answerButton); return; }
+        const nextButton = event.target.closest("[data-next]");
+        if (nextButton) {
+          if (currentIndex < panels.length - 1) { showPanel(currentIndex + 1); return; }
+          panels.forEach(panel => panel.classList.remove("active"));
+          resultPanel.classList.add("active");
+          finalScore.textContent = score + " / " + TOTAL_QUESTIONS;
+          progressText.textContent = TOTAL_QUESTIONS + " / " + TOTAL_QUESTIONS;
+          progressFill.style.width = "100%";
+          liveStatus.textContent = "Cuestionario completado. Resultado: " + score + " de " + TOTAL_QUESTIONS + ".";
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      });
+
+      function newRound() {
+        score = 0; currentIndex = 0; answered = new Set();
+        resultPanel.classList.remove("active");
+
+        const chosenItems = shuffle(ITEM_POOL).slice(0, ITEMS_PER_ROUND);
+        const chosenFinal = shuffle(FINAL_POOL)[0];
+
+        let html = "";
+        chosenItems.forEach((item, i) => { html += buildItemPanel(item, i); });
+        html += buildFinalPanel(chosenFinal, ITEMS_PER_ROUND);
+
+        panelsContainer.innerHTML = html;
+        panels = Array.from(panelsContainer.querySelectorAll(".question-panel"));
+        lucide.createIcons();
+        showPanel(0);
+        liveStatus.textContent = "Carrito nuevo listo.";
+      }
+
+      document.getElementById("header-restart").addEventListener("click", newRound);
+      document.getElementById("try-again-button").addEventListener("click", newRound);
+      document.getElementById("final-restart-button").addEventListener("click", newRound);
+
+      lucide.createIcons();
+      newRound();
+    });
+  </script>
+</body>
+</html>

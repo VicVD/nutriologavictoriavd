@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snacks Inteligentes</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,800&family=Work+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--ink:#14332b;--cream:#fff9e8;--tomato:#ef4d3f;--leaf:#16845b;--yellow:#ffd633;--line:#d7e2c2;}
+    *{box-sizing:border-box;}
+    body{margin:0;width:100%;color:var(--ink);font-family:"Work Sans",sans-serif;background:var(--cream);}
+    .market-shell{width:100%;min-height:100vh;position:relative;overflow:hidden;background-image:linear-gradient(90deg,rgba(22,132,91,.05) 1px,transparent 1px),linear-gradient(rgba(22,132,91,.05) 1px,transparent 1px);background-size:28px 28px;}
+    .market-shell::before,.market-shell::after{content:"";position:absolute;z-index:0;border-radius:999px;pointer-events:none;}
+    .market-shell::before{width:280px;height:280px;right:-110px;top:85px;background:rgba(255,214,51,.35);}
+    .market-shell::after{width:220px;height:220px;left:-110px;bottom:45px;background:rgba(239,77,63,.12);}
+    header,main,footer{position:relative;z-index:1;}
+    .market-logo{font-family:"Fraunces",serif;letter-spacing:-.045em;}
+    .aisle-stripe{height:9px;background:repeating-linear-gradient(90deg,#ef4d3f 0 36px,#fff9e8 36px 53px,#16845b 53px 89px,#fff9e8 89px 106px);}
+    .progress-track{background:#e5ecd7;}
+    .progress-fill{width:0%;background:linear-gradient(90deg,#16845b,#42af62);transition:width .45s ease;}
+    .quiz-card{box-shadow:0 18px 0 rgba(20,51,43,.1),0 24px 46px rgba(20,51,43,.13);}
+    .snack-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+    .snack-option{border:3px solid var(--line);background:#fff;border-radius:1.25rem;padding:1.25rem;text-align:center;cursor:pointer;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease,background .18s ease;}
+    .snack-option:hover:not(:disabled),.snack-option:focus-visible:not(:disabled){transform:translateY(-3px);border-color:var(--leaf);box-shadow:0 7px 0 rgba(22,132,91,.18);outline:none;}
+    .snack-option:disabled{cursor:default;}
+    .snack-option .emoji{font-size:3rem;display:block;margin-bottom:.5rem;}
+    .snack-option.selected-correct,.snack-option.revealed-correct{background:#dff5d8;border-color:var(--leaf);}
+    .snack-option.selected-wrong{background:#ffe0db;border-color:var(--tomato);}
+    .feedback-correct{background:#ddf5d6;color:#145b3e;border:2px solid #79bd76;}
+    .feedback-wrong{background:#ffe0db;color:#a62f26;border:2px solid #f09186;}
+    .solution-card{background:#fff8d8;border:2px dashed #d2a52d;}
+    .next-button{box-shadow:0 6px 0 #a62f26;transition:transform .15s ease,box-shadow .15s ease;}
+    .next-button:hover,.next-button:focus-visible{transform:translateY(-2px);box-shadow:0 8px 0 #a62f26;outline:3px solid var(--ink);outline-offset:3px;}
+    .next-button:active{transform:translateY(4px);box-shadow:0 2px 0 #a62f26;}
+    .question-panel,.result-panel{display:none;}
+    .question-panel.active,.result-panel.active{display:block;animation:slideIn .35s ease both;}
+    @keyframes slideIn{from{opacity:0;transform:translateX(18px) scale(.985);}to{opacity:1;transform:translateX(0) scale(1);}}
+    .cart-badge{animation:bob 2.2s ease-in-out infinite;}
+    @keyframes bob{50%{transform:translateY(-5px) rotate(-2deg);}}
+    .screen-reader-status{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+    .question-heading:focus{outline:none;}
+  </style>
+</head>
+<body>
+  <div class="market-shell">
+   <div class="aisle-stripe"></div>
+   <header class="w-full px-4 pt-5 sm:px-8">
+    <div class="mx-auto flex max-w-4xl flex-col gap-4 rounded-[1.7rem] bg-[#16845b] px-5 py-4 text-white shadow-lg sm:flex-row sm:items-center sm:justify-between">
+     <div class="flex items-center gap-3">
+      <div class="cart-badge flex h-12 w-12 items-center justify-center rounded-2xl bg-[#ffd633] text-[#14332b]"><i data-lucide="cookie" aria-hidden="true"></i></div>
+      <div>
+       <p class="m-0 text-xs font-bold uppercase tracking-[.18em]">Público general · Conoce tu comida</p>
+       <h1 class="market-logo m-0 leading-tight text-3xl">Snacks Inteligentes</h1>
+      </div>
+     </div>
+     <div class="flex items-center gap-3">
+      <div class="rounded-xl bg-white/15 px-3 py-2 text-center">
+       <p class="m-0 text-xs font-semibold uppercase tracking-wider">Puntuación</p>
+       <p id="score-display" class="m-0 text-xl font-extrabold" aria-live="polite">0 / 6</p>
+      </div><button id="header-restart" class="rounded-xl bg-[#ffd633] px-4 py-3 font-bold text-[#14332b] transition hover:bg-[#fff3bd] focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2" type="button">Reiniciar</button>
+     </div>
+    </div>
+    <div class="mx-auto mt-4 max-w-4xl">
+     <div class="mb-2 flex items-center justify-between">
+      <p class="m-0 text-sm font-bold uppercase tracking-wider">Tu recorrido</p>
+      <p id="progress-text" class="m-0 text-sm font-bold" aria-live="polite">1 / 6</p>
+     </div>
+     <div class="progress-track h-4 overflow-hidden rounded-full border-2 border-white shadow-sm" aria-label="Progreso del cuestionario">
+      <div id="progress-fill" class="progress-fill h-full rounded-full"></div>
+     </div>
+    </div>
+   </header>
+   <main class="w-full px-4 py-7 sm:px-8 sm:py-10">
+    <section id="quiz-stage" class="mx-auto max-w-4xl" aria-label="Preguntas del cuestionario">
+     <p id="live-status" class="screen-reader-status" aria-live="polite"></p>
+     <aside class="mx-auto mb-6 max-w-4xl rounded-2xl border-2 border-[#d7e2c2] bg-[#fffef7] px-5 py-4 text-sm leading-relaxed shadow-sm">No hay snacks "prohibidos": aquí practicamos identificar cuál de dos opciones te deja más satisfecho por más tiempo, casi siempre porque combina fibra, proteína o grasas saludables.</aside>
+
+     <!-- Q1 -->
+     <article class="question-panel active" data-index="0">
+      <div class="quiz-card overflow-hidden rounded-[2rem] bg-white p-6 sm:p-9">
+       <p class="m-0 text-sm font-extrabold uppercase tracking-[.16em] text-[#16845b]">Ronda 1 de 6</p>
+       <h2 tabindex="-1" class="question-heading mt-2 text-2xl font-extrabold leading-tight">¿Cuál snack te deja más satisfecho por más tiempo?</h2>
+       <div class="snack-row mt-6" role="group" aria-label="Opciones ronda 1">
+        <button class="snack-option" type="button" data-correct="true"><span class="emoji">🍎🥜</span><span class="font-bold">Manzana con crema de cacahuate</span></button>
+        <button class="snack-option" type="button" data-correct="false"><span class="emoji">🍬</span><span class="font-bold">Dulces de azúcar</span></button>
+       </div>
+       <div class="mt-5 space-y-3">
+        <div class="feedback-correct hidden rounded-2xl p-4 font-semibold" data-feedback="correct"><span>¡Correcto! La combinación de fibra y grasa saludable te da más saciedad.</span></div>
+        <div class="feedback-wrong hidden rounded-2xl p-4 font-semibold" data-feedback="wrong"><span>La manzana con crema de cacahuate suele dejarte satisfecho por más tiempo.</span></div>
+        <div data-solution="" class="solution-card hidden rounded-2xl p-4">
+         <p class="m-0 text-xs font-extrabold uppercase tracking-wider text-[#8a6214]">Por qué</p>
+         <p class="mt-1 mb-0 font-bold">La fibra de la manzana y la grasa saludable del cacahuate hacen que la energía se libere más lento, dándote más saciedad.</p>
+        </div>
+       </div><button class="next-button mt-5 hidden w-full rounded-2xl bg-[#ef4d3f] px-5 py-4 text-lg font-extrabold text-white" type="button" data-next="">Siguiente ronda</button>
+      </div>
+     </article>
+
+     <!-- Q2 -->
+     <article class="question-panel" data-index="1">
+      <div class="quiz-card overflow-hidden rounded-[2rem] bg-white p-6 sm:p-9">
+       <p class="m-0 text-sm font-extrabold uppercase tracking-[.16em] text-[#16845b]">Ronda 2 de 6</p>
+       <h2 tabindex="-1" class="question-heading mt-2 text-2xl font-extrabold leading-tight">¿Cuál snack te deja más satisfecho por más tiempo?</h2>
+       <div class="snack-row mt-6" role="group" aria-label="Opciones ronda 2">
+        <button class="snack-option" type="button" data-correct="true"><span class="emoji">🥣🍓</span><span class="font-bold">Yogur natural con fruta</span></button>
+        <button class="snack-option" type="button" data-correct="false"><span class="emoji">🍭</span><span class="font-bold">Paleta de hielo azucarada</span></button>
+       </div>
+       <div class="mt-5 space-y-3">
+        <div class="feedback-correct hidden rounded-2xl p-4 font-semibold" data-feedback="correct"><span>¡Correcto! El yogur aporta proteína y la fruta, fibra.</span></div>
+        <div class="feedback-wrong hidden rounded-2xl p-4 font-semibold" data-feedback="wrong"><span>El yogur con fruta suele dejarte satisfecho por más tiempo.</span></div>
+        <div data-solution="" class="solution-card hidden rounded-2xl p-4">
+         <p class="m-0 text-xs font-extrabold uppercase tracking-wider text-[#8a6214]">Por qué</p>
+         <p class="mt-1 mb-0 font-bold">La proteína del yogur y la fibra de la fruta te ayudan a mantener la energía estable por más tiempo.</p>
+        </div>
+       </div><button class="next-button mt-5 hidden w-full rounded-2xl bg-[#ef4d3f] px-5 py-4 text-lg font-extrabold text-white" type="button" data-next="">Siguiente ronda</button>
+      </div>
+     </article>
+
+     <!-- Q3 -->
+     <article class="question-panel" data-index="2">
+      <div class="quiz-card overflow-hidden rounded-[2rem] bg-white p-6 sm:p-9">
+       <p class="m-0 text-sm font-extrabold uppercase tracking-[.16em] text-[#16845b]">Ronda 3 de 6</p>
+       <h2 tabindex="-1" class="question-heading mt-2 text-2xl font-extrabold leading-tight">¿Cuál snack te deja más satisfecho por más tiempo?</h2>
+       <div class="snack-row mt-6" role="group" aria-label="Opciones ronda 3">
+        <button class="snack-option" type="button" data-correct="true"><span class="emoji">🍿</span><span class="font-bold">Palomitas naturales</span></button>
+        <button class="snack-option" type="button" data-correct="false"><span class="emoji">🍟</span><span class="font-bold">Papas fritas de bolsa</span></button>
+       </div>
+       <div class="mt-5 space-y-3">
+        <div class="feedback-correct hidden rounded-2xl p-4 font-semibold" data-feedback="correct"><span>¡Correcto! Las palomitas naturales tienen más fibra por porción.</span></div>
+        <div class="feedback-wrong hidden rounded-2xl p-4 font-semibold" data-feedback="wrong"><span>Las palomitas naturales suelen ser la opción con más fibra.</span></div>
+        <div data-solution="" class="solution-card hidden rounded-2xl p-4">
+         <p class="m-0 text-xs font-extrabold uppercase tracking-wider text-[#8a6214]">Por qué</p>
+         <p class="mt-1 mb-0 font-bold">Al ser un grano entero, las palomitas naturales aportan más fibra que una fritura, con menos grasa y sodio por porción.</p>
+        </div>
+       </div><button class="next-button mt-5 hidden w-full rounded-2xl bg-[#ef4d3f] px-5 py-4 text-lg font-extrabold text-white" type="button" data-next="">Siguiente ronda</button>
+      </div>
+     </article>
+
+     <!-- Q4 -->
+     <article class="question-panel" data-index="3">
+      <div class="quiz-card overflow-hidden rounded-[2rem] bg-white p-6 sm:p-9">
+       <p class="m-0 text-sm font-extrabold uppercase tracking-[.16em] text-[#16845b]">Ronda 4 de 6</p>
+       <h2 tabindex="-1" class="question-heading mt-2 text-2xl font-extrabold leading-tight">¿Cuál snack te deja más satisfecho por más tiempo?</h2>
+       <div class="snack-row mt-6" role="group" aria-label="Opciones ronda 4">
+        <button class="snack-option" type="button" data-correct="true"><span class="emoji">🥕🥣</span><span class="font-bold">Zanahoria con hummus</span></button>
+        <button class="snack-option" type="button" data-correct="false"><span class="emoji">🥐</span><span class="font-bold">Pan dulce</span></button>
+       </div>
+       <div class="mt-5 space-y-3">
+        <div class="feedback-correct hidden rounded-2xl p-4 font-semibold" data-feedback="correct"><span>¡Correcto! La fibra de la verdura y la proteína del hummus suman saciedad.</span></div>
+        <div class="feedback-wrong hidden rounded-2xl p-4 font-semibold" data-feedback="wrong"><span>La zanahoria con hummus suele dejarte satisfecho por más tiempo.</span></div>
+        <div data-solution="" class="solution-card hidden rounded-2xl p-4">
+         <p class="m-0 text-xs font-extrabold uppercase tracking-wider text-[#8a6214]">Por qué</p>
+         <p class="mt-1 mb-0 font-bold">El hummus (leguminosa) aporta proteína y la zanahoria, fibra: juntos dan más saciedad que un snack solo de harinas refinadas.</p>
+        </div>
+       </div><button class="next-button mt-5 hidden w-full rounded-2xl bg-[#ef4d3f] px-5 py-4 text-lg font-extrabold text-white" type="button" data-next="">Siguiente ronda</button>
+      </div>
+     </article>
+
+     <!-- Q5 -->
+     <article class="question-panel" data-index="4">
+      <div class="quiz-card overflow-hidden rounded-[2rem] bg-white p-6 sm:p-9">
+       <p class="m-0 text-sm font-extrabold uppercase tracking-[.16em] text-[#16845b]">Ronda 5 de 6</p>
+       <h2 tabindex="-1" class="question-heading mt-2 text-2xl font-extrabold leading-tight">¿Cuál snack te deja más satisfecho por más tiempo?</h2>
+       <div class="snack-row mt-6" role="group" aria-label="Opciones ronda 5">
+        <button class="snack-option" type="button" data-correct="true"><span class="emoji">🥜</span><span class="font-bold">Un puño de nueces o almendras</span></button>
+        <button class="snack-option" type="button" data-correct="false"><span class="emoji">🥨</span><span class="font-bold">Frituras saladas</span></button>
+       </div>
+       <div class="mt-5 space-y-3">
+        <div class="feedback-correct hidden rounded-2xl p-4 font-semibold" data-feedback="correct"><span>¡Correcto! Las grasas saludables y la proteína de las nueces dan saciedad.</span></div>
+        <div class="feedback-wrong hidden rounded-2xl p-4 font-semibold" data-feedback="wrong"><span>Un puño de nueces suele ser la opción con más saciedad.</span></div>
+        <div data-solution="" class="solution-card hidden rounded-2xl p-4">
+         <p class="m-0 text-xs font-extrabold uppercase tracking-wider text-[#8a6214]">Por qué</p>
+         <p class="mt-1 mb-0 font-bold">Las nueces aportan grasas saludables, fibra y algo de proteína; un puño (porción controlada) rinde mucho en saciedad.</p>
+        </div>
+       </div><button class="next-button mt-5 hidden w-full rounded-2xl bg-[#ef4d3f] px-5 py-4 text-lg font-extrabold text-white" type="button" data-next="">Siguiente ronda</button>
+      </div>
+     </article>
+
+     <!-- Q6 -->
+     <article class="question-panel" data-index="5">
+      <div class="quiz-card overflow-hidden rounded-[2rem] bg-white p-6 sm:p-9">
+       <p class="m-0 text-sm font-extrabold uppercase tracking-[.16em] text-[#16845b]">Ronda 6 de 6</p>
+       <h2 tabindex="-1" class="question-heading mt-2 text-2xl font-extrabold leading-tight">¿Cuál snack te deja más satisfecho por más tiempo?</h2>
+       <div class="snack-row mt-6" role="group" aria-label="Opciones ronda 6">
+        <button class="snack-option" type="button" data-correct="true"><span class="emoji">🍉🌶️</span><span class="font-bold">Fruta picada con chile y limón</span></button>
+        <button class="snack-option" type="button" data-correct="false"><span class="emoji">🍫</span><span class="font-bold">Chocolate en gran cantidad</span></button>
+       </div>
+       <div class="mt-5 space-y-3">
+        <div class="feedback-correct hidden rounded-2xl p-4 font-semibold" data-feedback="correct"><span>¡Correcto! La fruta con su fibra natural suele dar más saciedad.</span></div>
+        <div class="feedback-wrong hidden rounded-2xl p-4 font-semibold" data-feedback="wrong"><span>La fruta picada suele ser la opción con más fibra y agua.</span></div>
+        <div data-solution="" class="solution-card hidden rounded-2xl p-4">
+         <p class="m-0 text-xs font-extrabold uppercase tracking-wider text-[#8a6214]">Por qué</p>
+         <p class="mt-1 mb-0 font-bold">La fruta aporta fibra y agua que ayudan a la saciedad. Esto no significa que el chocolate esté prohibido: la clave está en la cantidad y con qué frecuencia lo comes.</p>
+        </div>
+       </div><button class="next-button mt-5 hidden w-full rounded-2xl bg-[#ef4d3f] px-5 py-4 text-lg font-extrabold text-white" type="button" data-next="">Ver mi resultado</button>
+      </div>
+     </article>
+    </section>
+
+    <section id="result-panel" class="result-panel mx-auto max-w-3xl" aria-labelledby="result-title">
+     <div class="quiz-card overflow-hidden rounded-[2rem] bg-white text-center">
+      <div class="bg-[#ffd633] px-6 py-9">
+       <div class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-[#ef4d3f] text-white shadow-lg"><i data-lucide="cookie" class="h-10 w-10" aria-hidden="true"></i></div>
+       <p class="mt-5 text-sm font-extrabold uppercase tracking-[.18em]">¡Bien hecho!</p>
+       <h2 id="result-title" class="market-logo mt-2 text-2xl font-extrabold leading-tight">Ya reconoces snacks que te dan más saciedad</h2>
+      </div>
+      <div class="p-7 sm:p-10">
+       <p id="final-score" class="m-0 text-6xl font-extrabold text-[#16845b]" aria-live="polite">0 / 6</p>
+       <p class="mt-2 text-lg font-semibold text-[#16845b]">respuestas correctas</p>
+       <p class="mx-auto mt-5 max-w-xl text-lg font-normal">Recuerda: no hay alimentos prohibidos. Esto es sobre elegir lo que te dé más energía sostenida la mayoría de las veces.</p>
+       <div class="mt-8"><button id="try-again-button" class="w-full rounded-2xl bg-[#16845b] px-5 py-4 text-lg font-extrabold text-white transition hover:brightness-95 focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2" type="button">Volver a intentar</button></div>
+      </div>
+     </div>
+    </section>
+   </main>
+   <footer class="w-full px-4 pb-7 text-center sm:px-8">
+    <p class="mx-auto max-w-3xl text-sm leading-relaxed" style="color:#466159">Información general con fines educativos, no sustituye una valoración nutricional individual.</p>
+   </footer>
+  </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      lucide.createIcons();
+      const panels = Array.from(document.querySelectorAll(".question-panel"));
+      const resultPanel = document.getElementById("result-panel");
+      const scoreDisplay = document.getElementById("score-display");
+      const finalScore = document.getElementById("final-score");
+      const progressText = document.getElementById("progress-text");
+      const progressFill = document.getElementById("progress-fill");
+      const liveStatus = document.getElementById("live-status");
+      const TOTAL = panels.length;
+      let currentIndex = 0, score = 0, answered = new Set();
+
+      function updateDashboard(){
+        scoreDisplay.textContent = score + " / " + TOTAL;
+        progressText.textContent = Math.min(currentIndex+1, TOTAL) + " / " + TOTAL;
+        progressFill.style.width = (Math.min(currentIndex+1, TOTAL) / TOTAL * 100) + "%";
+      }
+      function showPanel(index){
+        panels.forEach((p,i)=>p.classList.toggle("active", i===index));
+        currentIndex = index; updateDashboard();
+        const heading = panels[index].querySelector(".question-heading");
+        if (heading) heading.focus({preventScroll:true});
+        window.scrollTo({top:0, behavior:"smooth"});
+      }
+      function answerQuestion(button){
+        const panel = button.closest(".question-panel");
+        const index = Number(panel.dataset.index);
+        if (answered.has(index)) return;
+        answered.add(index);
+        const isCorrect = button.dataset.correct === "true";
+        const options = Array.from(panel.querySelectorAll(".snack-option"));
+        options.forEach(o=>{o.disabled=true; if(o.dataset.correct==="true") o.classList.add("revealed-correct");});
+        if (isCorrect){
+          score+=1; button.classList.add("selected-correct");
+          panel.querySelector('[data-feedback="correct"]').classList.remove("hidden");
+          liveStatus.textContent="Respuesta correcta. Se muestra la explicación.";
+        } else {
+          button.classList.add("selected-wrong");
+          panel.querySelector('[data-feedback="wrong"]').classList.remove("hidden");
+          liveStatus.textContent="Se muestra la opción con más saciedad y la explicación.";
+        }
+        panel.querySelector("[data-solution]").classList.remove("hidden");
+        panel.querySelector("[data-next]").classList.remove("hidden");
+        updateDashboard();
+      }
+      document.querySelectorAll(".snack-option").forEach(b=>b.addEventListener("click",()=>answerQuestion(b)));
+      document.querySelectorAll("[data-next]").forEach(b=>{
+        b.addEventListener("click", ()=>{
+          if (currentIndex < panels.length-1){ showPanel(currentIndex+1); return; }
+          panels.forEach(p=>p.classList.remove("active"));
+          resultPanel.classList.add("active");
+          finalScore.textContent = score + " / " + TOTAL;
+          progressText.textContent = TOTAL + " / " + TOTAL;
+          progressFill.style.width = "100%";
+          liveStatus.textContent = "Cuestionario completado. Resultado: " + score + " de " + TOTAL + ".";
+          window.scrollTo({top:0, behavior:"smooth"});
+        });
+      });
+      function restartQuiz(){
+        score=0; currentIndex=0; answered=new Set();
+        resultPanel.classList.remove("active");
+        panels.forEach(panel=>{
+          panel.classList.remove("active");
+          panel.querySelectorAll(".snack-option").forEach(o=>{o.disabled=false; o.classList.remove("selected-correct","selected-wrong","revealed-correct");});
+          panel.querySelectorAll("[data-feedback],[data-solution],[data-next]").forEach(e=>e.classList.add("hidden"));
+        });
+        showPanel(0);
+        liveStatus.textContent="Cuestionario reiniciado.";
+      }
+      document.getElementById("header-restart").addEventListener("click", restartQuiz);
+      document.getElementById("try-again-button").addEventListener("click", restartQuiz);
+      updateDashboard();
+    });
+  </script>
+</body>
+</html>

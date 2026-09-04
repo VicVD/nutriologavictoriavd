@@ -28,306 +28,308 @@
     />
     <link rel="stylesheet" href="css/style.css" />
     <style>
-  .hero {
-    position: relative;
-    overflow: hidden;
-    background: linear-gradient(
-      180deg,
-      rgba(173, 201, 121, 0.95) 0%,
-      rgba(240, 242, 235, 1) 100%
-    );
-  }
-  .hero .container {
-    position: relative;
-    z-index: 2;
-  }
-  .wrap {
-    max-width: 1120px;
-    margin: 0 auto;
-    padding: 3rem 1.5rem;
-    background: #ffffff;
-    border-radius: 28px;
-    box-shadow: 0 20px 50px rgba(83, 96, 68, 0.08);
-    position: relative;
-    overflow: hidden;
-  }
-  .wrap::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 8px;
-    background: linear-gradient(
-      90deg,
-      #ff9f00 0%,
-      #ffd23f 34%,
-      #86c232 67%,
-      #3b82f6 100%
-    );
-  }
-  .servicios-fondo {
-    position: relative;
-    overflow: hidden;
-    background: linear-gradient(
-      160deg,
-      #fef6e4 0%,
-      #eefaf1 45%,
-      #eaf3ff 100%
-    );
-  }
-  .servicios-fondo .blob {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(50px);
-    opacity: 0.45;
-    z-index: 0;
-    pointer-events: none;
-  }
-  .servicios-fondo .blob-1 {
-    width: 320px;
-    height: 320px;
-    top: -100px;
-    left: -100px;
-    background: #ffca6b;
-  }
-  .servicios-fondo .blob-2 {
-    width: 280px;
-    height: 280px;
-    bottom: -90px;
-    right: -80px;
-    background: #7ed6a5;
-  }
-  .servicios-fondo .blob-3 {
-    width: 220px;
-    height: 220px;
-    top: 40%;
-    right: 8%;
-    background: #a3c9ff;
-    opacity: 0.3;
-  }
-  .eyebrow-color {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 0.35rem 0.9rem;
-    border-radius: 999px;
-    background: linear-gradient(90deg, #fff1d6, #eafbe7);
-    color: #6b6118;
-    font-weight: 700;
-    font-size: 0.8rem;
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
-  }
-  .wrap h2 {
-    margin-top: 1.1rem;
-    margin-bottom: 1.8rem;
-    font-size: clamp(2rem, 2.4vw, 2.45rem);
-  }
-  .pill-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-    gap: 0.85rem;
-    margin-top: 1.4rem;
-  }
-  .pill {
-    padding: 0.9rem 1rem;
-    border-radius: 999px;
-    background: #eef4ff;
-    color: #3c567f;
-    font-size: 0.95rem;
-    font-weight: 600;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.45rem;
-    text-align: center;
-    border: 1px solid transparent;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-  }
-  .pill:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
-  }
-  .pill i {
-    font-size: 1rem;
-  }
-  .pill-blue {
-    background: #eaf3ff;
-    color: #2f5fac;
-    border-color: rgba(59, 130, 246, 0.18);
-  }
-  .pill-green {
-    background: #e9f7ec;
-    color: #2f7a44;
-    border-color: rgba(46, 160, 67, 0.18);
-  }
-  .pill-orange {
-    background: #fff3e0;
-    color: #b96a05;
-    border-color: rgba(255, 159, 0, 0.22);
-  }
-  .price-card {
-    border: 1px solid rgba(124, 135, 87, 0.18);
-    border-radius: 26px;
-    padding: 1.5rem;
-    margin-bottom: 1.25rem;
-    background: #fbfbf8;
-    box-shadow: 0 14px 35px rgba(90, 102, 80, 0.08);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1.5rem;
-  }
-  .price-card-body {
-    flex: 1;
-    min-width: 0;
-  }
-  .price-card h4 {
-    margin-bottom: 0.8rem;
-    font-size: 1.05rem;
-  }
-  .price-card-media {
-    flex-shrink: 0;
-    width: 110px;
-    height: 110px;
-    border-radius: 18px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.6rem;
-  }
-  .price-card-media.media-virtual {
-    background: linear-gradient(145deg, #dbeafe, #eef2ff);
-    color: #3b6fd6;
-  }
-  .price-card-media.media-presencial {
-    background: linear-gradient(145deg, #dcf5e3, #f0fbe9);
-    color: #3f9d5c;
-  }
-  .price-card-media img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-  .price-card.card-virtual {
-    border-left: 4px solid #3b82f6;
-  }
-  .price-card.card-presencial {
-    border-left: 4px solid #86c232;
-  }
-  .price-card.card-virtual .price {
-    color: #3b6fd6;
-  }
-  .price-card.card-presencial .price {
-    color: #4e8a2f;
-  }
-  .price {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #5f6b42;
-    margin: 1rem 0;
-  }
-  .price-note {
-    color: #7d7c69;
-    font-size: 0.95rem;
-  }
+      .hero {
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(
+          180deg,
+          rgba(173, 201, 121, 0.95) 0%,
+          rgba(240, 242, 235, 1) 100%
+        );
+      }
+      .hero .container {
+        position: relative;
+        z-index: 2;
+      }
+      .wrap {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 3rem 1.5rem;
+        background: #ffffff;
+        border-radius: 28px;
+        box-shadow: 0 20px 50px rgba(83, 96, 68, 0.08);
+        position: relative;
+        overflow: hidden;
+      }
+      .wrap::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 8px;
+        background: linear-gradient(
+          90deg,
+          #ff9f00 0%,
+          #ffd23f 34%,
+          #86c232 67%,
+          #3b82f6 100%
+        );
+      }
+      .servicios-fondo {
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(
+          160deg,
+          #fef6e4 0%,
+          #eefaf1 45%,
+          #eaf3ff 100%
+        );
+      }
+      .servicios-fondo .blob {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(50px);
+        opacity: 0.45;
+        z-index: 0;
+        pointer-events: none;
+      }
+      .servicios-fondo .blob-1 {
+        width: 320px;
+        height: 320px;
+        top: -100px;
+        left: -100px;
+        background: #ffca6b;
+      }
+      .servicios-fondo .blob-2 {
+        width: 280px;
+        height: 280px;
+        bottom: -90px;
+        right: -80px;
+        background: #7ed6a5;
+      }
+      .servicios-fondo .blob-3 {
+        width: 220px;
+        height: 220px;
+        top: 40%;
+        right: 8%;
+        background: #a3c9ff;
+        opacity: 0.3;
+      }
+      .eyebrow-color {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.35rem 0.9rem;
+        border-radius: 999px;
+        background: linear-gradient(90deg, #fff1d6, #eafbe7);
+        color: #6b6118;
+        font-weight: 700;
+        font-size: 0.8rem;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+      }
+      .wrap h2 {
+        margin-top: 1.1rem;
+        margin-bottom: 1.8rem;
+        font-size: clamp(2rem, 2.4vw, 2.45rem);
+      }
+      .pill-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+        gap: 0.85rem;
+        margin-top: 1.4rem;
+      }
+      .pill {
+        padding: 0.9rem 1rem;
+        border-radius: 999px;
+        background: #eef4ff;
+        color: #3c567f;
+        font-size: 0.95rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.45rem;
+        text-align: center;
+        border: 1px solid transparent;
+        transition:
+          transform 0.15s ease,
+          box-shadow 0.15s ease;
+      }
+      .pill:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+      }
+      .pill i {
+        font-size: 1rem;
+      }
+      .pill-blue {
+        background: #eaf3ff;
+        color: #2f5fac;
+        border-color: rgba(59, 130, 246, 0.18);
+      }
+      .pill-green {
+        background: #e9f7ec;
+        color: #2f7a44;
+        border-color: rgba(46, 160, 67, 0.18);
+      }
+      .pill-orange {
+        background: #fff3e0;
+        color: #b96a05;
+        border-color: rgba(255, 159, 0, 0.22);
+      }
+      .price-card {
+        border: 1px solid rgba(124, 135, 87, 0.18);
+        border-radius: 26px;
+        padding: 1.5rem;
+        margin-bottom: 1.25rem;
+        background: #fbfbf8;
+        box-shadow: 0 14px 35px rgba(90, 102, 80, 0.08);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.5rem;
+      }
+      .price-card-body {
+        flex: 1;
+        min-width: 0;
+      }
+      .price-card h4 {
+        margin-bottom: 0.8rem;
+        font-size: 1.05rem;
+      }
+      .price-card-media {
+        flex-shrink: 0;
+        width: 110px;
+        height: 110px;
+        border-radius: 18px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.6rem;
+      }
+      .price-card-media.media-virtual {
+        background: linear-gradient(145deg, #dbeafe, #eef2ff);
+        color: #3b6fd6;
+      }
+      .price-card-media.media-presencial {
+        background: linear-gradient(145deg, #dcf5e3, #f0fbe9);
+        color: #3f9d5c;
+      }
+      .price-card-media img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+      .price-card.card-virtual {
+        border-left: 4px solid #3b82f6;
+      }
+      .price-card.card-presencial {
+        border-left: 4px solid #86c232;
+      }
+      .price-card.card-virtual .price {
+        color: #3b6fd6;
+      }
+      .price-card.card-presencial .price {
+        color: #4e8a2f;
+      }
+      .price {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #5f6b42;
+        margin: 1rem 0;
+      }
+      .price-note {
+        color: #7d7c69;
+        font-size: 0.95rem;
+      }
 
-  /* ===================== RESPONSIVIDAD MÓVIL ===================== */
+      /* ===================== RESPONSIVIDAD MÓVIL ===================== */
 
-  /* La cabecera tenía demasiado padding-top fijo, aplastando el hero en pantallas chicas */
-  header.seccion.fondo-bosque {
-    padding-top: clamp(5.5rem, 18vw, 9rem) !important;
-    padding-bottom: 3rem;
-  }
+      /* La cabecera tenía demasiado padding-top fijo, aplastando el hero en pantallas chicas */
+      header.seccion.fondo-bosque {
+        padding-top: clamp(5.5rem, 18vw, 9rem) !important;
+        padding-bottom: 3rem;
+      }
 
-  /* El botón flotante de WhatsApp tapaba contenido en móvil: se reduce y se mueve a una esquina inferior */
-  .whatsapp-flotante {
-    width: 64px;
-    height: 64px;
-    font-size: 28px;
-  }
+      /* El botón flotante de WhatsApp tapaba contenido en móvil: se reduce y se mueve a una esquina inferior */
+      .whatsapp-flotante {
+        width: 64px;
+        height: 64px;
+        font-size: 28px;
+      }
 
-  @media (max-width: 991px) {
-    .wrap {
-      padding: 2.25rem 1.25rem;
-      border-radius: 20px;
-    }
+      @media (max-width: 991px) {
+        .wrap {
+          padding: 2.25rem 1.25rem;
+          border-radius: 20px;
+        }
 
-    /* La rejilla de 2 columnas fijas (1.3fr / 0.9fr) se apilaba mal en tablets/móvil */
-    .includes-grid {
-      grid-template-columns: 1fr;
-      gap: 1.75rem;
-    }
+        /* La rejilla de 2 columnas fijas (1.3fr / 0.9fr) se apilaba mal en tablets/móvil */
+        .includes-grid {
+          grid-template-columns: 1fr;
+          gap: 1.75rem;
+        }
 
-    .pill-list {
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    }
-  }
+        .pill-list {
+          grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        }
+      }
 
-  @media (max-width: 576px) {
-    .wrap {
-      padding: 1.75rem 1rem;
-      border-radius: 16px;
-      margin: 0 0.5rem;
-    }
+      @media (max-width: 576px) {
+        .wrap {
+          padding: 1.75rem 1rem;
+          border-radius: 16px;
+          margin: 0 0.5rem;
+        }
 
-    .wrap h2 {
-      font-size: 1.5rem;
-      margin-bottom: 1.25rem;
-    }
+        .wrap h2 {
+          font-size: 1.5rem;
+          margin-bottom: 1.25rem;
+        }
 
-    .pill-list {
-      grid-template-columns: 1fr 1fr;
-      gap: 0.6rem;
-    }
+        .pill-list {
+          grid-template-columns: 1fr 1fr;
+          gap: 0.6rem;
+        }
 
-    .pill {
-      padding: 0.75rem 0.6rem;
-      font-size: 0.85rem;
-    }
+        .pill {
+          padding: 0.75rem 0.6rem;
+          font-size: 0.85rem;
+        }
 
-    .price-card {
-      padding: 1.25rem;
-      border-radius: 20px;
-      gap: 1rem;
-    }
+        .price-card {
+          padding: 1.25rem;
+          border-radius: 20px;
+          gap: 1rem;
+        }
 
-    .price-card-media {
-      width: 76px;
-      height: 76px;
-      border-radius: 14px;
-      font-size: 1.2rem;
-    }
+        .price-card-media {
+          width: 76px;
+          height: 76px;
+          border-radius: 14px;
+          font-size: 1.2rem;
+        }
 
-    .price {
-      font-size: 1.7rem;
-    }
+        .price {
+          font-size: 1.7rem;
+        }
 
-    .step-card {
-      padding: 1.25rem !important;
-      min-height: unset !important;
-    }
+        .step-card {
+          padding: 1.25rem !important;
+          min-height: unset !important;
+        }
 
-    .tarjeta-formulario {
-      padding: 1.5rem !important;
-      border-radius: 18px !important;
-    }
+        .tarjeta-formulario {
+          padding: 1.5rem !important;
+          border-radius: 18px !important;
+        }
 
-    /* El botón de WhatsApp a media altura tapaba texto en pantallas angostas: se lleva a la esquina inferior */
-    .whatsapp-flotante {
-      width: 54px;
-      height: 54px;
-      font-size: 24px;
-      top: auto !important;
-      bottom: 16px;
-      right: 12px;
-      transform: none !important;
-    }
-  }
-</style>
+        /* El botón de WhatsApp a media altura tapaba texto en pantallas angostas: se lleva a la esquina inferior */
+        .whatsapp-flotante {
+          width: 54px;
+          height: 54px;
+          font-size: 24px;
+          top: auto !important;
+          bottom: 16px;
+          right: 12px;
+          transform: none !important;
+        }
+      }
+    </style>
   </head>
   <body>
     <!-- ================= NAVBAR ================= -->
@@ -351,6 +353,7 @@
           <li><a href="consulta.html" class="activo">Consulta</a></li>
           <li><a href="testimonios.html">Testimonios</a></li>
           <li><a href="blog.html">Blog</a></li>
+          <li><a href="pacientes.html">Pacientes</a></li>
           <li><a href="contacto.html">Contacto</a></li>
         </ul>
       </div>
@@ -450,7 +453,10 @@
             </p>
             <div class="price-card card-virtual" style="margin-top: 18px">
               <div class="price-card-body">
-                <h4><i class="bi bi-camera-video-fill" style="color: #3b6fd6"></i> Consulta virtual</h4>
+                <h4>
+                  <i class="bi bi-camera-video-fill" style="color: #3b6fd6"></i>
+                  Consulta virtual
+                </h4>
                 <div class="price">$700</div>
                 <p>
                   Se realiza por medio de <strong>Google Meet</strong> y se
@@ -465,7 +471,10 @@
             </div>
             <div class="price-card card-presencial" style="margin-top: 10px">
               <div class="price-card-body">
-                <h4><i class="bi bi-geo-alt-fill" style="color: #4e8a2f"></i> Consulta presencial</h4>
+                <h4>
+                  <i class="bi bi-geo-alt-fill" style="color: #4e8a2f"></i>
+                  Consulta presencial
+                </h4>
                 <div class="price">$700</div>
                 <p>
                   <strong>Ubicación:</strong> C. Colomos 2181, Ayuntamiento,
@@ -998,7 +1007,10 @@
     </script>
 
     <!-- ================= FOOTER ================= -->
-    <footer class="footer-vd" style="margin-top: 80px; background: #788757; color: #fff">
+    <footer
+      class="footer-vd"
+      style="margin-top: 80px; background: #788757; color: #fff"
+    >
       <div class="container">
         <div class="row gy-4">
           <div class="col-lg-4">
@@ -1034,7 +1046,7 @@
                 ><i class="bi bi-tiktok"></i
               ></a>
               <a
-                href="https://wa.me/523310256779"
+                href="https://wa.me/523331575751"
                 aria-label="WhatsApp"
                 style="text-decoration: none; color: #fff"
                 ><i class="bi bi-whatsapp"></i
@@ -1105,7 +1117,7 @@
     </footer>
 
     <a
-      href="https://wa.me/523310256779"
+      href="https://wa.me/523331575751"
       class="whatsapp-flotante"
       aria-label="Escribir por WhatsApp"
       style="

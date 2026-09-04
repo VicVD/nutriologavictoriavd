@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detective de Carbohidratos · Nivel 1</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,800&family=Work+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #1a2e35;
+      --cream: #fbf6ea;
+      --coral: #ef6a4c;
+      --teal: #1b7f79;
+      --gold: #f2b33d;
+      --line: #dfe3cf;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; width: 100%; color: var(--ink); font-family: "Work Sans", sans-serif; background: var(--cream); }
+    .shell {
+      width: 100%; min-height: 100vh; position: relative; overflow: hidden;
+      background-image: radial-gradient(circle, rgba(27,127,121,.08) 1.6px, transparent 1.6px);
+      background-size: 22px 22px;
+    }
+    .shell::before, .shell::after { content: ""; position: absolute; z-index: 0; border-radius: 999px; pointer-events: none; }
+    .shell::before { width: 260px; height: 260px; right: -100px; top: 70px; background: rgba(242,179,61,.30); }
+    .shell::after { width: 210px; height: 210px; left: -100px; bottom: 30px; background: rgba(239,106,76,.14); }
+    header, main, footer { position: relative; z-index: 1; }
+    .display { font-family: "Fraunces", serif; letter-spacing: -.04em; }
+    .stripe { height: 8px; background: repeating-linear-gradient(90deg, #ef6a4c 0 30px, #fbf6ea 30px 45px, #1b7f79 45px 75px, #fbf6ea 75px 90px); }
+    .progress-track { background: #e4e9d6; }
+    .progress-fill { width: 0%; background: linear-gradient(90deg, #1b7f79, #3aa79f); transition: width .45s ease; }
+    .card { box-shadow: 0 16px 0 rgba(26,46,53,.09), 0 22px 42px rgba(26,46,53,.12); }
+    .choice-tile {
+      border: 3px solid var(--line); background: #fff; color: var(--ink);
+      transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease, background .16s ease;
+    }
+    .choice-tile:hover:not(:disabled), .choice-tile:focus-visible:not(:disabled) {
+      transform: translateY(-3px); border-color: var(--teal); box-shadow: 0 7px 0 rgba(27,127,121,.18); outline: none;
+    }
+    .choice-tile:disabled { cursor: default; }
+    .choice-tile.pick-correct, .choice-tile.reveal-correct { background: #e0f3e3; border-color: #2f9e56; }
+    .choice-tile.pick-wrong { background: #fde3dd; border-color: var(--coral); }
+    .fb-correct { background: #e0f3e3; color: #1c6b3a; border: 2px solid #7fc998; }
+    .fb-wrong { background: #fde3dd; color: #a13d24; border: 2px solid #f2a48f; }
+    .solution { background: #fef3d9; border: 2px dashed #d9a52e; }
+    .btn-next { box-shadow: 0 6px 0 #16645f; transition: transform .15s ease, box-shadow .15s ease; }
+    .btn-next:hover, .btn-next:focus-visible { transform: translateY(-2px); box-shadow: 0 8px 0 #16645f; outline: 3px solid var(--ink); outline-offset: 3px; }
+    .btn-next:active { transform: translateY(4px); box-shadow: 0 2px 0 #16645f; }
+    .ticket { background: #fffdf5; background-image: linear-gradient(90deg, transparent 0 8px, rgba(27,127,121,.08) 8px 9px, transparent 9px); box-shadow: 0 10px 0 rgba(26,46,53,.10); }
+    .ticket-edge { border-bottom: 4px dashed #c6cdb2; }
+    .q-panel, .result-panel { display: none; }
+    .q-panel.active, .result-panel.active { display: block; animation: rise .35s ease both; }
+    @keyframes rise { from { opacity: 0; transform: translateX(16px) scale(.985); } to { opacity: 1; transform: translateX(0) scale(1); } }
+    .badge-wobble { animation: wobble 2.4s ease-in-out infinite; }
+    @keyframes wobble { 50% { transform: translateY(-4px) rotate(-3deg); } }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    .q-heading:focus { outline: none; }
+    @media (prefers-reduced-motion: reduce) {
+      .badge-wobble { animation: none; }
+      .q-panel.active, .result-panel.active { animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+   <div class="stripe"></div>
+   <header class="w-full px-4 pt-5 sm:px-8">
+    <div class="mx-auto flex max-w-4xl flex-col gap-4 rounded-[1.7rem] bg-[#1b7f79] px-5 py-4 text-white shadow-lg sm:flex-row sm:items-center sm:justify-between">
+     <div class="flex items-center gap-3">
+      <div class="badge-wobble flex h-12 w-12 items-center justify-center rounded-2xl bg-[#f2b33d] text-[#1a2e35]"><i data-lucide="search" aria-hidden="true"></i></div>
+      <div>
+       <p class="m-0 text-xs font-bold uppercase tracking-[.18em]">Nivel 1 · Lo esencial</p>
+       <h1 class="display m-0 leading-tight text-3xl">Detective de Carbohidratos</h1>
+      </div>
+     </div>
+     <div class="flex items-center gap-3">
+      <div class="rounded-xl bg-white/15 px-3 py-2 text-center">
+       <p class="m-0 text-xs font-semibold uppercase tracking-wider">Puntos</p>
+       <p id="score-display" class="m-0 text-xl font-extrabold" aria-live="polite">0 / 7</p>
+      </div>
+      <button id="header-restart" class="rounded-xl bg-[#f2b33d] px-4 py-3 font-bold text-[#1a2e35] transition hover:bg-[#fbdb8f] focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2" type="button">Nueva ronda</button>
+     </div>
+    </div>
+    <div class="mx-auto mt-4 max-w-4xl">
+     <div class="mb-2 flex items-center justify-between">
+      <p class="m-0 text-sm font-bold uppercase tracking-wider">Casos resueltos</p>
+      <p id="progress-text" class="m-0 text-sm font-bold" aria-live="polite">1 / 7</p>
+     </div>
+     <div class="progress-track h-4 overflow-hidden rounded-full border-2 border-white shadow-sm" aria-label="Progreso del nivel">
+      <div id="progress-fill" class="progress-fill h-full rounded-full"></div>
+     </div>
+    </div>
+   </header>
+   <main class="w-full px-4 py-7 sm:px-8 sm:py-10">
+    <section id="quiz-stage" class="mx-auto max-w-4xl" aria-label="Preguntas de Nivel 1">
+     <p id="live-status" class="sr-only" aria-live="polite"></p>
+     <aside class="mx-auto mb-6 max-w-4xl rounded-2xl border-2 border-[#dfe3cf] bg-[#fffdf5] px-5 py-4 text-sm leading-relaxed shadow-sm">Nivel 1 es la base: aprender a reconocer qué alimentos sí aportan carbohidratos y sumar gramos de HC sin complicarte con equivalentes todavía. Cada ronda mezcla 6 casos al azar de un banco más grande, así que puedes repetir el nivel para practicar distintas combinaciones.</aside>
+     <div id="panels-container"></div>
+    </section>
+    <section id="result-panel" class="result-panel mx-auto max-w-3xl" aria-labelledby="result-title">
+     <div class="card overflow-hidden rounded-[2rem] bg-white text-center">
+      <div class="bg-[#f2b33d] px-6 py-9">
+       <div class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-[#1b7f79] text-white shadow-lg"><i data-lucide="badge-check" class="h-10 w-10" aria-hidden="true"></i></div>
+       <p class="mt-5 text-sm font-extrabold uppercase tracking-[.18em]">¡Caso cerrado!</p>
+       <h2 id="result-title" class="display mt-2 text-2xl font-extrabold leading-tight">Resultados de tu investigación</h2>
+      </div>
+      <div class="p-7 sm:p-10">
+       <p id="final-score" class="m-0 text-6xl font-extrabold text-[#1b7f79]" aria-live="polite">0 / 7</p>
+       <p class="mt-2 text-lg font-semibold text-[#1b7f79]">respuestas correctas</p>
+       <p class="mx-auto mt-5 max-w-xl text-lg font-normal">Cuando te sientas cómodo reconociendo carbohidratos y sumando gramos, puedes pasar al Nivel 2, donde se trabaja con equivalentes del SMAE.</p>
+       <div class="mt-8 grid gap-3 sm:grid-cols-2">
+        <button id="try-again-button" class="rounded-2xl bg-[#1b7f79] px-5 py-4 text-lg font-extrabold text-white transition hover:brightness-95 focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2" type="button">Otra ronda</button>
+        <button id="final-restart-button" class="rounded-2xl bg-[#f2b33d] px-5 py-4 text-lg font-extrabold text-[#1a2e35] transition hover:brightness-95 focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2" type="button">Reiniciar</button>
+       </div>
+      </div>
+     </div>
+    </section>
+   </main>
+   <footer class="w-full px-4 pb-7 text-center sm:px-8">
+    <p class="mx-auto max-w-3xl text-sm leading-relaxed" style="color:#4a5f5c">Valores aproximados con fines educativos. Para el manejo real de tu alimentación, consulta a un profesional de la salud.</p>
+   </footer>
+  </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // ---------- "Classify" questions: which of these 3 foods has carbs? ----------
+      const CLASSIFY_POOL = [
+        { prompt: "¿Cuál de estos alimentos SÍ aporta carbohidratos?", choices: ["Pechuga de pollo", "Arroz cocido", "Aceite de oliva"], correctIndex: 1,
+          correctFeedback: "¡Correcto! El arroz es un cereal, uno de los grupos que más aporta carbohidratos.",
+          solution: "El pollo y el aceite son proteína y grasa: casi no tienen carbohidratos. El arroz es cereal: sí aporta HC." },
+        { prompt: "¿Cuál de estos alimentos SÍ aporta carbohidratos?", choices: ["Manzana", "Queso panela", "Huevo cocido"], correctIndex: 0,
+          correctFeedback: "¡Correcto! La fruta es uno de los grupos que aporta carbohidratos.",
+          solution: "El queso y el huevo son proteína: aportan poco o nada de HC. La manzana, al ser fruta, sí aporta." },
+        { prompt: "¿Cuál de estos alimentos SÍ aporta carbohidratos?", choices: ["Filete de pescado", "Mantequilla", "Pan de caja"], correctIndex: 2,
+          correctFeedback: "¡Correcto! El pan es cereal, así que sí aporta carbohidratos.",
+          solution: "El pescado es proteína y la mantequilla es grasa: ninguno aporta carbohidratos de forma relevante. El pan sí." },
+        { prompt: "¿Cuál de estos alimentos SÍ aporta carbohidratos?", choices: ["Frijoles cocidos", "Jamón", "Aguacate"], correctIndex: 0,
+          correctFeedback: "¡Correcto! Las leguminosas, como el frijol, sí aportan carbohidratos.",
+          solution: "El jamón es proteína y el aguacate es grasa: aportan poco HC. El frijol es leguminosa: sí aporta." },
+        { prompt: "¿Cuál de estos alimentos SÍ aporta carbohidratos?", choices: ["Leche entera", "Carne molida", "Aceite vegetal"], correctIndex: 0,
+          correctFeedback: "¡Correcto! La leche contiene lactosa, un tipo de carbohidrato.",
+          solution: "La carne es proteína y el aceite es grasa pura: no aportan carbohidratos. La leche sí, por su azúcar natural." },
+        { prompt: "¿Cuál de estos alimentos SÍ aporta carbohidratos?", choices: ["Tocino", "Camote", "Queso manchego"], correctIndex: 1,
+          correctFeedback: "¡Correcto! El camote es un tubérculo, así que sí aporta carbohidratos.",
+          solution: "El tocino y el queso son grasa y proteína: casi no aportan HC. El camote, al ser tubérculo, sí aporta." },
+        { prompt: "¿Cuál de estos alimentos SÍ aporta carbohidratos?", choices: ["Yogur natural", "Chuleta de cerdo", "Mayonesa"], correctIndex: 0,
+          correctFeedback: "¡Correcto! El yogur contiene azúcar de la leche, un carbohidrato.",
+          solution: "La chuleta es proteína y la mayonesa es grasa: no aportan carbohidratos. El yogur sí, por su contenido de leche." }
+      ];
+
+      // ---------- "Sum" questions: add up the grams already given, no conversions ----------
+      const SUM_POOL = [
+        { title: "Tu plato tiene:", lines: [ {label:"1 rebanada de pan", grams:15}, {label:"1 plátano", grams:30} ], options:[35,45,55], correctIndex:1,
+          correctFeedback: "¡Correcto! Solo era sumar los dos números.",
+          solutionIntro: "1 rebanada de pan + 1 plátano" },
+        { title: "Tu plato tiene:", lines: [ {label:"½ taza de arroz", grams:30}, {label:"1 taza de leche", grams:12} ], options:[17,42,37], correctIndex:1,
+          correctFeedback: "¡Correcto! Sumaste bien los gramos de cada alimento.",
+          solutionIntro: "½ taza de arroz + 1 taza de leche" },
+        { title: "Tu plato tiene:", lines: [ {label:"2 tortillas", grams:30}, {label:"agua natural", grams:0} ], options:[0,15,30], correctIndex:2,
+          correctFeedback: "¡Correcto! El agua no aporta carbohidratos, así que no cambia el total.",
+          solutionIntro: "2 tortillas + agua natural" },
+        { title: "Tu plato tiene:", lines: [ {label:"1 taza de papaya", grams:15}, {label:"1 yogur natural", grams:12} ], options:[12,15,27], correctIndex:2,
+          correctFeedback: "¡Correcto! Sumaste bien los gramos de cada alimento.",
+          solutionIntro: "1 taza de papaya + 1 yogur natural" },
+        { title: "Tu plato tiene:", lines: [ {label:"1 taza de frijoles", grams:40}, {label:"pechuga de pollo", grams:0} ], options:[0,20,40], correctIndex:2,
+          correctFeedback: "¡Correcto! El pollo es proteína y no suma carbohidratos.",
+          solutionIntro: "1 taza de frijoles + pechuga de pollo" },
+        { title: "Tu plato tiene:", lines: [ {label:"1 taza de cereal de caja", grams:24}, {label:"½ taza de leche", grams:6} ], options:[18,24,30], correctIndex:2,
+          correctFeedback: "¡Correcto! Sumaste bien los gramos de cada alimento.",
+          solutionIntro: "1 taza de cereal de caja + ½ taza de leche" },
+        { title: "Tu plato tiene:", lines: [ {label:"1 manzana", grams:15}, {label:"1 naranja", grams:7.5} ], options:[15,22.5,45], correctIndex:1,
+          correctFeedback: "¡Correcto! Sumaste bien los gramos de cada alimento.",
+          solutionIntro: "1 manzana + 1 naranja" }
+      ];
+
+      // ---------- Final "resumen del día" — a slightly bigger sum to close the round ----------
+      const FINAL_POOL = [
+        { title: "Tu desayuno tiene:", lines: [ {label:"1 rebanada de pan tostado", grams:15}, {label:"huevo", grams:0}, {label:"1 taza de jugo de naranja", grams:25} ], options:[30,40,50], correctIndex:1,
+          correctFeedback: "¡Correcto! Sumaste bien los tres alimentos del desayuno.",
+          solutionIntro: "pan tostado + huevo + jugo de naranja" },
+        { title: "Tu desayuno tiene:", lines: [ {label:"avena cocida", grams:30}, {label:"plátano", grams:30}, {label:"café solo", grams:0} ], options:[50,60,70], correctIndex:1,
+          correctFeedback: "¡Correcto! Sumaste bien los tres alimentos del desayuno.",
+          solutionIntro: "avena cocida + plátano + café solo" },
+        { title: "Tu comida tiene:", lines: [ {label:"quesadilla (2 tortillas)", grams:30}, {label:"½ taza de frijoles", grams:20}, {label:"agua natural", grams:0} ], options:[40,50,60], correctIndex:1,
+          correctFeedback: "¡Correcto! Sumaste bien los tres alimentos de la comida.",
+          solutionIntro: "quesadilla (2 tortillas) + ½ taza de frijoles + agua natural" }
+      ];
+
+      const ROUND_SIZE = 6;
+      const TOTAL_QUESTIONS = ROUND_SIZE + 1;
+
+      function fmtG(n) { return n + " g"; }
+
+      function shuffle(array) {
+        const copy = array.slice();
+        for (let i = copy.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [copy[i], copy[j]] = [copy[j], copy[i]];
+        }
+        return copy;
+      }
+
+      function buildClassifyPanel(q, index) {
+        const order = shuffle(q.choices.map((label, i) => ({ label, correct: i === q.correctIndex })));
+        const correctLabel = q.choices[q.correctIndex];
+        const optionsHtml = order.map(o =>
+          `<button class="choice-tile rounded-2xl px-5 py-5 text-left text-lg font-bold" type="button" data-correct="${o.correct}">${o.label}</button>`
+        ).join(" ");
+        return `
+      <article class="q-panel" data-index="${index}">
+       <div class="card overflow-hidden rounded-[2rem] bg-white p-6 sm:p-9">
+        <p class="m-0 text-sm font-extrabold uppercase tracking-[.16em] text-[#1b7f79]">Caso ${index + 1} de ${ROUND_SIZE} · Identifica</p>
+        <div class="mt-3 flex items-center gap-3">
+         <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#fef3d9] text-[#c98a1c]"><i data-lucide="scan-search" aria-hidden="true"></i></div>
+         <h2 tabindex="-1" class="q-heading text-2xl font-extrabold leading-tight">${q.prompt}</h2>
+        </div>
+        <div class="mt-6 grid gap-3 sm:grid-cols-3" role="group" aria-label="Opciones de alimentos">${optionsHtml}</div>
+        <div class="mt-5 space-y-3">
+         <div class="fb-correct hidden rounded-2xl p-4 font-semibold" data-feedback="correct"><span>${q.correctFeedback}</span></div>
+         <div class="fb-wrong hidden rounded-2xl p-4 font-semibold" data-feedback="wrong"><span>No esta vez. La respuesta correcta es "${correctLabel}".</span></div>
+         <div data-solution="" class="solution hidden rounded-2xl p-4">
+          <p class="m-0 text-xs font-extrabold uppercase tracking-wider text-[#8a6214]">Por qué</p>
+          <p class="mt-1 mb-0 font-bold">${q.solution}</p>
+         </div>
+        </div>
+        <button class="btn-next mt-5 hidden w-full rounded-2xl bg-[#1b7f79] px-5 py-4 text-lg font-extrabold text-white sm:w-auto" type="button" data-next="">Siguiente caso</button>
+       </div>
+      </article>`;
+      }
+
+      function buildSumPanel(q, index) {
+        const order = shuffle(q.options.map((value, i) => ({ value, correct: i === q.correctIndex })));
+        const correctValue = q.options[q.correctIndex];
+        const total = q.lines.reduce((a, l) => a + l.grams, 0);
+        const linesHtml = q.lines.map(l =>
+          `<div class="flex justify-between gap-4"><span>${l.label}</span><span class="font-extrabold">${fmtG(l.grams)} HC</span></div>`
+        ).join("");
+        const optionsHtml = order.map(o =>
+          `<button class="choice-tile rounded-2xl px-5 py-4 text-left text-lg font-bold" type="button" data-correct="${o.correct}">${fmtG(o.value)}</button>`
+        ).join(" ");
+        return `
+      <article class="q-panel" data-index="${index}">
+       <div class="card overflow-hidden rounded-[2rem] bg-white p-6 sm:p-9">
+        <p class="m-0 text-sm font-extrabold uppercase tracking-[.16em] text-[#1b7f79]">Caso ${index + 1} de ${ROUND_SIZE} · Suma</p>
+        <div class="mt-3 flex items-center gap-3">
+         <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#e0f3e3] text-[#1c6b3a]"><i data-lucide="calculator" aria-hidden="true"></i></div>
+         <h2 tabindex="-1" class="q-heading text-2xl font-extrabold leading-tight">${q.title}</h2>
+        </div>
+        <div class="ticket mt-5 rounded-xl p-5 sm:p-6">
+         <div class="space-y-2 font-semibold">${linesHtml}</div>
+        </div>
+        <p class="mb-6 mt-4 text-lg font-normal">¿Cuál es el total de carbohidratos?</p>
+        <div class="grid gap-3" role="group" aria-label="Opciones de total">${optionsHtml}</div>
+        <div class="mt-5 space-y-3">
+         <div class="fb-correct hidden rounded-2xl p-4 font-semibold" data-feedback="correct"><span>${q.correctFeedback}</span></div>
+         <div class="fb-wrong hidden rounded-2xl p-4 font-semibold" data-feedback="wrong"><span>No esta vez. El total correcto es ${fmtG(correctValue)}.</span></div>
+         <div data-solution="" class="solution hidden rounded-2xl p-4">
+          <p class="m-0 text-xs font-extrabold uppercase tracking-wider text-[#8a6214]">Solución</p>
+          <p class="mt-1 mb-0 font-bold">${q.solutionIntro} → ${q.lines.map(l => fmtG(l.grams)).join(" + ")} → ${fmtG(total)} HC</p>
+         </div>
+        </div>
+        <button class="btn-next mt-5 hidden w-full rounded-2xl bg-[#1b7f79] px-5 py-4 text-lg font-extrabold text-white" type="button" data-next="">${index === ROUND_SIZE - 1 ? "Ver resumen final" : "Siguiente caso"}</button>
+       </div>
+      </article>`;
+      }
+
+      function buildFinalPanel(q, index) {
+        const order = shuffle(q.options.map((value, i) => ({ value, correct: i === q.correctIndex })));
+        const correctValue = q.options[q.correctIndex];
+        const total = q.lines.reduce((a, l) => a + l.grams, 0);
+        const linesHtml = q.lines.map(l =>
+          `<div class="flex justify-between gap-4"><span>${l.label}</span><span class="font-extrabold">${fmtG(l.grams)} HC</span></div>`
+        ).join("");
+        const optionsHtml = order.map(o =>
+          `<button class="choice-tile rounded-2xl px-5 py-4 text-left text-lg font-bold" type="button" data-correct="${o.correct}">${fmtG(o.value)}</button>`
+        ).join(" ");
+        return `
+      <article class="q-panel" data-index="${index}">
+       <div class="card rounded-[2rem] bg-[#fbeecb] p-5 sm:p-9">
+        <div class="mx-auto max-w-2xl">
+         <div class="inline-block rounded-full bg-[#ef6a4c] px-4 py-2 text-sm font-extrabold uppercase tracking-wider text-white">Resumen final</div>
+         <div class="ticket mt-5 rounded-xl p-6 sm:p-8">
+          <div class="ticket-edge pb-4 text-center"><i data-lucide="receipt-text" class="mx-auto mb-2 h-9 w-9 text-[#1b7f79]" aria-hidden="true"></i>
+           <h2 tabindex="-1" class="q-heading display m-0 text-2xl font-extrabold">${q.title}</h2>
+          </div>
+          <div class="space-y-3 py-5 font-semibold">${linesHtml}</div>
+          <div class="ticket-edge border-t-2 border-dashed border-[#c6cdb2] pt-4">
+           <p class="m-0 text-lg font-bold">¿Cuál es el total de carbohidratos?</p>
+          </div>
+         </div>
+         <div class="mt-6 grid gap-3" role="group" aria-label="Opciones del resumen final">${optionsHtml}</div>
+         <div class="mt-5 space-y-3">
+          <div class="fb-correct hidden rounded-2xl p-4 font-semibold" data-feedback="correct"><span>${q.correctFeedback}</span></div>
+          <div class="fb-wrong hidden rounded-2xl p-4 font-semibold" data-feedback="wrong"><span>No esta vez. El total correcto es ${fmtG(correctValue)}.</span></div>
+          <div data-solution="" class="solution hidden rounded-2xl p-4">
+           <p class="m-0 text-xs font-extrabold uppercase tracking-wider text-[#8a6214]">Solución</p>
+           <p class="mt-1 mb-0 font-bold">${q.solutionIntro} → ${q.lines.map(l => fmtG(l.grams)).join(" + ")} → ${fmtG(total)} HC</p>
+          </div>
+         </div>
+         <button class="btn-next mt-5 hidden w-full rounded-2xl bg-[#ef6a4c] px-5 py-4 text-lg font-extrabold text-white" type="button" data-next="">Ver mi resultado</button>
+        </div>
+       </div>
+      </article>`;
+      }
+
+      const panelsContainer = document.getElementById("panels-container");
+      const resultPanel = document.getElementById("result-panel");
+      const scoreDisplay = document.getElementById("score-display");
+      const finalScore = document.getElementById("final-score");
+      const progressText = document.getElementById("progress-text");
+      const progressFill = document.getElementById("progress-fill");
+      const liveStatus = document.getElementById("live-status");
+
+      let panels = [];
+      let currentIndex = 0;
+      let score = 0;
+      let answered = new Set();
+
+      function updateDashboard() {
+        scoreDisplay.textContent = score + " / " + TOTAL_QUESTIONS;
+        progressText.textContent = Math.min(currentIndex + 1, TOTAL_QUESTIONS) + " / " + TOTAL_QUESTIONS;
+        progressFill.style.width = (Math.min(currentIndex + 1, TOTAL_QUESTIONS) / TOTAL_QUESTIONS * 100) + "%";
+      }
+
+      function showPanel(index) {
+        panels.forEach((panel, i) => panel.classList.toggle("active", i === index));
+        currentIndex = index;
+        updateDashboard();
+        const heading = panels[index].querySelector(".q-heading");
+        if (heading) heading.focus({ preventScroll: true });
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      function answerQuestion(button) {
+        const panel = button.closest(".q-panel");
+        const index = Number(panel.dataset.index);
+        if (answered.has(index)) return;
+        answered.add(index);
+        const isCorrect = button.dataset.correct === "true";
+        const options = Array.from(panel.querySelectorAll(".choice-tile"));
+        options.forEach(opt => {
+          opt.disabled = true;
+          if (opt.dataset.correct === "true") opt.classList.add("reveal-correct");
+        });
+        if (isCorrect) {
+          score += 1;
+          button.classList.add("pick-correct");
+          panel.querySelector('[data-feedback="correct"]').classList.remove("hidden");
+          liveStatus.textContent = "Respuesta correcta. Se muestra la explicación.";
+        } else {
+          button.classList.add("pick-wrong");
+          panel.querySelector('[data-feedback="wrong"]').classList.remove("hidden");
+          liveStatus.textContent = "Respuesta incorrecta. Se muestra la respuesta correcta y la explicación.";
+        }
+        panel.querySelector("[data-solution]").classList.remove("hidden");
+        panel.querySelector("[data-next]").classList.remove("hidden");
+        updateDashboard();
+      }
+
+      panelsContainer.addEventListener("click", (event) => {
+        const choiceButton = event.target.closest(".choice-tile");
+        if (choiceButton) { answerQuestion(choiceButton); return; }
+        const nextButton = event.target.closest("[data-next]");
+        if (nextButton) {
+          if (currentIndex < panels.length - 1) { showPanel(currentIndex + 1); return; }
+          panels.forEach(panel => panel.classList.remove("active"));
+          resultPanel.classList.add("active");
+          finalScore.textContent = score + " / " + TOTAL_QUESTIONS;
+          progressText.textContent = TOTAL_QUESTIONS + " / " + TOTAL_QUESTIONS;
+          progressFill.style.width = "100%";
+          liveStatus.textContent = "Ronda completada. Resultado: " + score + " de " + TOTAL_QUESTIONS + ".";
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      });
+
+      function newRound() {
+        score = 0; currentIndex = 0; answered = new Set();
+        resultPanel.classList.remove("active");
+
+        // Mix classify + sum questions, then take ROUND_SIZE of them at random.
+        const mixed = shuffle([
+          ...CLASSIFY_POOL.map(q => ({ type: "classify", data: q })),
+          ...SUM_POOL.map(q => ({ type: "sum", data: q }))
+        ]).slice(0, ROUND_SIZE);
+        const chosenFinal = shuffle(FINAL_POOL)[0];
+
+        let html = "";
+        mixed.forEach((q, i) => {
+          html += q.type === "classify" ? buildClassifyPanel(q.data, i) : buildSumPanel(q.data, i);
+        });
+        html += buildFinalPanel(chosenFinal, ROUND_SIZE);
+
+        panelsContainer.innerHTML = html;
+        panels = Array.from(panelsContainer.querySelectorAll(".q-panel"));
+        lucide.createIcons();
+        showPanel(0);
+        liveStatus.textContent = "Ronda nueva lista.";
+      }
+
+      document.getElementById("header-restart").addEventListener("click", newRound);
+      document.getElementById("try-again-button").addEventListener("click", newRound);
+      document.getElementById("final-restart-button").addEventListener("click", newRound);
+
+      lucide.createIcons();
+      newRound();
+    });
+  </script>
+</body>
+</html>

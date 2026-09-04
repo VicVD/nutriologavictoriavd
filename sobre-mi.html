@@ -104,33 +104,92 @@
         color: #7d7c69;
         font-size: 0.95rem;
       }
-        /* Navbar styles */
-        .navbar-vd {
-          background: linear-gradient(90deg,#5f7a3a,#3c567f);
-          padding: 0.6rem 0;
-          box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+      /* Navbar styles */
+      .navbar-vd {
+        background: linear-gradient(90deg, #5f7a3a, #3c567f);
+        padding: 0.6rem 0;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+      }
+      .navbar-vd .contenedor-nav {
+        max-width: 1120px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 1rem;
+      }
+      .marca-nav {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        text-decoration: none;
+      }
+      .marca-nav img {
+        border-radius: 8px;
+      }
+      .marca-nav span {
+        color: #fff;
+        font-weight: 800;
+        font-family: "Poppins", sans-serif;
+      }
+      .menu-nav {
+        list-style: none;
+        display: flex;
+        gap: 1rem;
+        margin: 0;
+        padding: 0;
+        align-items: center;
+      }
+      .menu-nav li a {
+        color: rgba(255, 255, 255, 0.95);
+        text-decoration: none;
+        padding: 0.45rem 0.75rem;
+        border-radius: 8px;
+        font-weight: 600;
+      }
+      .menu-nav li a:hover {
+        background: rgba(255, 255, 255, 0.08);
+      }
+      .menu-nav li a.activo {
+        background: rgba(255, 255, 255, 0.12);
+      }
+      .btn-menu-movil {
+        display: none;
+        background: transparent;
+        border: 0;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .btn-menu-movil span {
+        width: 22px;
+        height: 2px;
+        background: #fff;
+        display: block;
+        border-radius: 2px;
+      }
+      @media (max-width: 880px) {
+        .menu-nav {
+          position: fixed;
+          right: 0;
+          top: 64px;
+          background: linear-gradient(180deg, #4f6f2f, #2f4660);
+          flex-direction: column;
+          padding: 1rem;
+          border-radius: 8px;
+          margin: 0 1rem;
+          display: none;
         }
-        .navbar-vd .contenedor-nav{
-          max-width:1120px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 1rem;
+        .menu-nav.open {
+          display: flex;
         }
-        .marca-nav{display:flex;align-items:center;gap:.6rem;text-decoration:none}
-        .marca-nav img{border-radius:8px}
-        .marca-nav span{color:#fff;font-weight:800;font-family: 'Poppins', sans-serif}
-        .menu-nav{list-style:none;display:flex;gap:1rem;margin:0;padding:0;align-items:center}
-        .menu-nav li a{color:rgba(255,255,255,0.95);text-decoration:none;padding:.45rem .75rem;border-radius:8px;font-weight:600}
-        .menu-nav li a:hover{background:rgba(255,255,255,0.08)}
-        .menu-nav li a.activo{background:rgba(255,255,255,0.12)}
-        .btn-menu-movil{display:none;background:transparent;border:0;flex-direction:column;gap:4px}
-        .btn-menu-movil span{width:22px;height:2px;background:#fff;display:block;border-radius:2px}
-        @media(max-width:880px){
-          .menu-nav{position:fixed;right:0;top:64px;background:linear-gradient(180deg,#4f6f2f,#2f4660);flex-direction:column;padding:1rem;border-radius:8px;margin:0 1rem;display:none}
-          .menu-nav.open{display:flex}
-          .btn-menu-movil{display:flex}
+        .btn-menu-movil {
+          display: flex;
         }
+      }
     </style>
   </head>
   <body>
-     <!-- ================= NAVBAR ================= -->
+    <!-- ================= NAVBAR ================= -->
     <nav class="navbar-vd">
       <div class="contenedor-nav">
         <a href="index.html" class="marca-nav">
@@ -147,10 +206,11 @@
         </button>
         <ul class="menu-nav">
           <li><a href="index.html">Inicio</a></li>
-          <li><a href="sobre-mi.html"class="activo">Sobre mí</a></li>
+          <li><a href="sobre-mi.html" class="activo">Sobre mí</a></li>
           <li><a href="consulta.html">Consulta</a></li>
-          <li><a href="testimonios.html" >Testimonios</a></li>
+          <li><a href="testimonios.html">Testimonios</a></li>
           <li><a href="blog.html">Blog</a></li>
+          <li><a href="pacientes.html">Pacientes</a></li>
           <li><a href="contacto.html">Contacto</a></li>
         </ul>
       </div>
@@ -1055,7 +1115,7 @@
                 ><i class="bi bi-tiktok"></i
               ></a>
               <a
-                href="https://wa.me/523310256779"
+                href="https://wa.me/523331575751"
                 aria-label="WhatsApp"
                 style="text-decoration: none; color: #fff"
                 ><i class="bi bi-whatsapp"></i
@@ -1110,14 +1170,22 @@
             reservados.</span
           >
           <div class="enlaces-legales">
-            <a href="aviso-privacidad.html" style="text-decoration: none; color: #fff">Aviso de privacidad</a>
-            <a href="politica-cookies.html" style="text-decoration: none; color: #fff">Política de cookies</a>
+            <a
+              href="aviso-privacidad.html"
+              style="text-decoration: none; color: #fff"
+              >Aviso de privacidad</a
+            >
+            <a
+              href="politica-cookies.html"
+              style="text-decoration: none; color: #fff"
+              >Política de cookies</a
+            >
           </div>
         </div>
       </div>
     </footer>
     <a
-      href="https://wa.me/523310256779"
+      href="https://wa.me/523331575751"
       class="whatsapp-flotante"
       aria-label="Escribir por WhatsApp"
       style="
