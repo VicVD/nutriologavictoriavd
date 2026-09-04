@@ -28,510 +28,239 @@
     <style>
       /* ---- Candado de acceso ---- */
       #candado {
-        position: fixed;
-        inset: 0;
-        z-index: 10000;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        position: fixed; inset: 0; z-index: 10000;
+        display: flex; align-items: center; justify-content: center;
         padding: 1.5rem;
         background: linear-gradient(160deg, #adc979 0%, #f0f2eb 60%);
       }
       .tarjeta-candado {
-        width: 100%;
-        max-width: 400px;
-        background: #fff;
-        border-radius: 26px;
+        width: 100%; max-width: 400px;
+        background: #fff; border-radius: 26px;
         padding: 2.25rem 2rem;
         box-shadow: 0 24px 60px rgba(32, 56, 97, 0.18);
         text-align: center;
       }
       .icono-candado {
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        background: #eef4ff;
-        color: #3d6aa1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.5rem;
-        margin: 0 auto 1rem;
+        width: 60px; height: 60px; border-radius: 50%;
+        background: #eef4ff; color: #3d6aa1;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.5rem; margin: 0 auto 1rem;
       }
       .tarjeta-candado input {
-        width: 100%;
-        padding: 0.85rem 1rem;
-        border-radius: 12px;
+        width: 100%; padding: 0.85rem 1rem; border-radius: 12px;
         border: 1px solid rgba(124, 135, 87, 0.3);
-        font-family: "Nunito", sans-serif;
-        font-size: 1.05rem;
-        text-align: center;
-        margin-top: 1.25rem;
+        font-family: "Nunito", sans-serif; font-size: 1.05rem;
+        text-align: center; margin-top: 1.25rem;
       }
-      .tarjeta-candado input:focus {
-        outline: 2px solid #93a66a;
-        outline-offset: 1px;
-      }
+      .tarjeta-candado input:focus { outline: 2px solid #93a66a; outline-offset: 1px; }
       .btn-entrar {
-        margin-top: 1rem;
-        width: 100%;
-        border: none;
-        background: #de8404;
-        color: #fff;
-        font-weight: 700;
-        padding: 0.85rem 1rem;
-        border-radius: 999px;
+        margin-top: 1rem; width: 100%; border: none;
+        background: #de8404; color: #fff; font-weight: 700;
+        padding: 0.85rem 1rem; border-radius: 999px;
         box-shadow: 0 12px 26px rgba(222, 132, 4, 0.28);
       }
       .aviso-error {
-        color: #b3261e;
-        font-size: 0.88rem;
-        margin-top: 0.75rem;
-        display: none;
+        color: #b3261e; font-size: 0.88rem; margin-top: 0.75rem; display: none;
       }
-      #contenido-app {
-        display: none;
-      }
+      #contenido-app { display: none; }
 
       /* ---- Cabecera dashboard ---- */
       .cabecera-pacientes {
-        position: relative;
-        overflow: hidden;
-        padding: 3rem 0 2.25rem;
-        background: linear-gradient(
-          180deg,
-          rgba(173, 201, 121, 0.55) 0%,
-          rgba(240, 242, 235, 1) 100%
-        );
+        position: relative; overflow: hidden; padding: 3rem 0 2.25rem;
+        background: linear-gradient(180deg, rgba(173, 201, 121, 0.55) 0%, rgba(240, 242, 235, 1) 100%);
       }
-      .cabecera-pacientes .container {
-        position: relative;
-        z-index: 1;
-      }
+      .cabecera-pacientes .container { position: relative; z-index: 1; }
 
       /* ---- Tabs de navegación tipo dashboard ---- */
       .tabs-dashboard {
-        display: flex;
-        gap: 0.6rem;
-        flex-wrap: wrap;
+        display: flex; gap: 0.6rem; flex-wrap: wrap;
         margin-top: 1.75rem;
       }
       .tab-btn {
-        border: none;
-        background: #fff;
-        color: #5b6d84;
-        font-weight: 700;
-        padding: 0.75rem 1.3rem;
-        border-radius: 999px;
-        font-size: 0.95rem;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
+        border: none; background: #fff; color: #5b6d84; font-weight: 700;
+        padding: 0.75rem 1.3rem; border-radius: 999px; font-size: 0.95rem;
+        display: inline-flex; align-items: center; gap: 0.5rem;
         box-shadow: 0 8px 20px rgba(83, 96, 68, 0.08);
-        transition:
-          transform 0.15s ease,
-          background 0.15s ease,
-          color 0.15s ease;
+        transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease;
       }
-      .tab-btn:hover {
-        transform: translateY(-2px);
-      }
-      .tab-btn.activo {
-        background: #3d6aa1;
-        color: #fff;
-      }
+      .tab-btn:hover { transform: translateY(-2px); }
+      .tab-btn.activo { background: #3d6aa1; color: #fff; }
 
-      .panel-dashboard {
-        display: none;
-      }
-      .panel-dashboard.activo {
-        display: block;
-      }
+      .panel-dashboard { display: none; }
+      .panel-dashboard.activo { display: block; }
 
       .wrap {
-        max-width: 1120px;
-        margin: 0 auto;
-        padding: 2.75rem 1.75rem;
-        background: #ffffff;
-        border-radius: 28px;
+        max-width: 1120px; margin: 0 auto; padding: 2.75rem 1.75rem;
+        background: #ffffff; border-radius: 28px;
         box-shadow: 0 20px 50px rgba(83, 96, 68, 0.08);
       }
-      .wrap + .wrap {
-        margin-top: 2rem;
-      }
-      .wrap h2 {
-        margin-top: 0.6rem;
-        margin-bottom: 0.9rem;
-        font-size: clamp(1.7rem, 2.4vw, 2.3rem);
-      }
-      .wrap > p.intro {
-        max-width: 62ch;
-        color: #5b6d84;
-      }
+      .wrap + .wrap { margin-top: 2rem; }
+      .wrap h2 { margin-top: 0.6rem; margin-bottom: 0.9rem; font-size: clamp(1.7rem, 2.4vw, 2.3rem); }
+      .wrap > p.intro { max-width: 62ch; color: #5b6d84; }
 
       /* ---- Tarjetas de bienvenida (inicio) ---- */
       .tarjeta-inicio {
-        border-radius: 22px;
-        padding: 1.9rem;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        color: #fff;
-        cursor: pointer;
-        border: none;
-        text-align: left;
+        border-radius: 22px; padding: 1.9rem; height: 100%;
+        display: flex; flex-direction: column; justify-content: space-between;
+        color: #fff; cursor: pointer; border: none; text-align: left;
         transition: transform 0.15s ease;
       }
-      .tarjeta-inicio:hover {
-        transform: translateY(-3px);
-      }
-      .tarjeta-inicio.juegos {
-        background: linear-gradient(135deg, #3d6aa1 0%, #4c7bb5 100%);
-      }
-      .tarjeta-inicio.alimentos {
-        background: linear-gradient(135deg, #7c8f5a 0%, #93a66a 100%);
-      }
-      .tarjeta-inicio.calculadora {
-        background: linear-gradient(135deg, #de8404 0%, #f0a935 100%);
-      }
-      .tarjeta-inicio .icono {
-        font-size: 1.9rem;
-      }
-      .tarjeta-inicio .flecha {
-        font-size: 1.3rem;
-        margin-top: 1rem;
-      }
+      .tarjeta-inicio:hover { transform: translateY(-3px); }
+      .tarjeta-inicio.juegos { background: linear-gradient(135deg, #3d6aa1 0%, #4c7bb5 100%); }
+      .tarjeta-inicio.alimentos { background: linear-gradient(135deg, #7c8f5a 0%, #93a66a 100%); }
+      .tarjeta-inicio.calculadora { background: linear-gradient(135deg, #de8404 0%, #f0a935 100%); }
+      .tarjeta-inicio .icono { font-size: 1.9rem; }
+      .tarjeta-inicio .flecha { font-size: 1.3rem; margin-top: 1rem; }
 
       .tarjeta-tip {
-        background: #f1e9d9;
-        border-radius: 22px;
-        padding: 1.75rem;
-        height: 100%;
+        background: #f1e9d9; border-radius: 22px; padding: 1.75rem; height: 100%;
       }
 
       /* ---- Juegos ---- */
       .juego-destacado {
         background: linear-gradient(135deg, #3d6aa1 0%, #4c7bb5 100%);
-        border-radius: 22px;
-        color: #fff;
-        padding: 2rem;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        min-height: 260px;
+        border-radius: 22px; color: #fff; padding: 2rem;
+        display: flex; flex-direction: column; justify-content: space-between; min-height: 260px;
       }
+      .juego-destacado.cat-diabetes { background: linear-gradient(135deg, #2f5f95 0%, #4c7bb5 100%); }
+      .juego-destacado.cat-general { background: linear-gradient(135deg, #c98a1f 0%, #e3a13b 100%); }
+      .juego-destacado.cat-mamas { background: linear-gradient(135deg, #c94f76 0%, #e2749a 100%); }
+      .juego-destacado.cat-general-diabetes { background: linear-gradient(135deg, #c98a1f 0%, #c98a1f 48%, #2f5f95 52%, #4c7bb5 100%); }
       .juego-tag {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        background: rgba(255, 255, 255, 0.16);
-        border-radius: 999px;
-        padding: 0.4rem 0.9rem;
-        font-size: 0.82rem;
-        font-weight: 600;
-        width: fit-content;
+        display: inline-flex; align-items: center; gap: 0.5rem;
+        background: rgba(255, 255, 255, 0.16); border-radius: 999px;
+        padding: 0.4rem 0.9rem; font-size: 0.82rem; font-weight: 600; width: fit-content;
       }
       .btn-jugar {
-        background: #de8404;
-        color: #fff;
-        border: none;
-        padding: 0.85rem 1.6rem;
-        border-radius: 999px;
-        font-weight: 700;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        width: fit-content;
-        transition: transform 0.2s ease;
-        box-shadow: 0 12px 26px rgba(222, 132, 4, 0.28);
+        background: #de8404; color: #fff; border: none; padding: 0.85rem 1.6rem;
+        border-radius: 999px; font-weight: 700; text-decoration: none;
+        display: inline-flex; align-items: center; gap: 0.5rem; width: fit-content;
+        transition: transform 0.2s ease; box-shadow: 0 12px 26px rgba(222, 132, 4, 0.28);
       }
-      .btn-jugar:hover {
-        transform: translateY(-2px);
-        color: #fff;
-      }
-      .juego-proximo {
-        border: 2px dashed rgba(124, 135, 87, 0.35);
-        border-radius: 18px;
-        padding: 1.5rem;
-        height: 100%;
-        color: #5b6d84;
-      }
+      .btn-jugar:hover { transform: translateY(-2px); color: #fff; }
+      .juego-proximo { border: 2px dashed rgba(124, 135, 87, 0.35); border-radius: 18px; padding: 1.5rem; height: 100%; color: #5b6d84; }
 
       /* ---- Base de alimentos ---- */
-      .buscador-alimentos {
-        position: relative;
-      }
+      .buscador-alimentos { position: relative; }
       .buscador-alimentos input {
-        width: 100%;
-        padding: 0.85rem 1rem 0.85rem 2.6rem;
-        border-radius: 12px;
-        border: 1px solid rgba(124, 135, 87, 0.25);
-        font-family: "Nunito", sans-serif;
-        font-size: 1rem;
+        width: 100%; padding: 1rem 1.2rem 1rem 3rem; border-radius: 16px;
+        border: 2px solid rgba(124, 135, 87, 0.22); font-family: "Nunito", sans-serif;
+        font-size: 1.05rem; background: #fff;
+        box-shadow: 0 10px 24px rgba(83, 96, 68, 0.06);
       }
-      .buscador-alimentos input:focus {
-        outline: 2px solid #93a66a;
-        outline-offset: 1px;
-      }
-      .buscador-alimentos svg {
-        position: absolute;
-        left: 0.9rem;
-        top: 50%;
-        transform: translateY(-50%);
-      }
+      .buscador-alimentos input:focus { outline: none; border-color: #93a66a; box-shadow: 0 10px 24px rgba(147, 166, 106, 0.18); }
+      .buscador-alimentos svg { position: absolute; left: 1.1rem; top: 50%; transform: translateY(-50%); }
       .chip-grupo {
-        border: 1px solid rgba(124, 135, 87, 0.3);
-        background: #fbfbf8;
-        color: #5f6b42;
-        border-radius: 999px;
-        padding: 0.4rem 0.9rem;
-        font-size: 0.84rem;
-        font-weight: 600;
-        cursor: pointer;
-        white-space: nowrap;
+        border: 1px solid rgba(124, 135, 87, 0.3); background: #fbfbf8; color: #5f6b42;
+        border-radius: 999px; padding: 0.4rem 0.9rem; font-size: 0.84rem; font-weight: 600;
+        cursor: pointer; white-space: nowrap;
       }
-      .chip-grupo.activo {
-        background: #93a66a;
-        border-color: #93a66a;
-        color: #fff;
+      .chip-grupo.activo { background: #93a66a; border-color: #93a66a; color: #fff; }
+      .contador-resultados { font-weight: 700; color: #5f6b42; font-size: 0.9rem; }
+
+      .food-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1rem; }
+      .food-card {
+        background: #fff; border: 1px solid #ede4cf; border-radius: 20px; padding: 1.1rem;
+        cursor: pointer; text-align: left; display: flex; flex-direction: column; gap: 0.6rem;
+        transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
       }
-      table.tabla-alimentos {
-        width: 100%;
-        border-collapse: collapse;
-        font-family: "Nunito", sans-serif;
-        font-size: 0.92rem;
+      .food-card:hover, .food-card:focus-visible {
+        transform: translateY(-3px); box-shadow: 0 14px 30px rgba(83, 96, 68, 0.14);
+        border-color: #93a66a; outline: none;
       }
-      .tabla-alimentos thead th {
-        position: sticky;
-        top: 0;
-        background: #fbfbf8;
-        text-align: left;
-        font-weight: 700;
-        color: #345f33;
-        border-bottom: 2px solid #ede4cf;
-        padding: 0.65rem 0.75rem;
-        white-space: nowrap;
+      .food-card-top { display: flex; align-items: flex-start; gap: 0.7rem; }
+      .food-icon {
+        width: 44px; height: 44px; min-width: 44px; border-radius: 14px; background: #f1f5ec;
+        display: flex; align-items: center; justify-content: center; font-size: 1.4rem;
       }
-      .tabla-alimentos tbody tr.fila-alimento {
-        border-bottom: 1px solid #ede4cf;
-        cursor: pointer;
+      .food-card-nombre { font-weight: 700; color: #16263d; font-size: 1.02rem; line-height: 1.25; }
+      .food-card-porcion { font-size: 0.82rem; color: #8b917f; margin-top: 0.15rem; }
+      .macro-row { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: auto; }
+      .macro-chip {
+        background: #f6f4ea; border-radius: 10px; padding: 0.35rem 0.55rem; text-align: center; flex: 1;
+        min-width: 58px;
       }
-      .tabla-alimentos tbody tr.fila-alimento:hover {
-        background: #f6f4ea;
+      .macro-chip .valor { display: block; font-weight: 800; color: #16263d; font-size: 0.95rem; }
+      .macro-chip .etiqueta { display: block; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.02em; color: #8b917f; font-weight: 700; }
+      .food-card-grupo { font-size: 0.7rem; font-weight: 700; color: #5f6b42; }
+
+      .food-skeleton { background: linear-gradient(90deg, #f1efe4 25%, #f8f6ee 37%, #f1efe4 63%); background-size: 400% 100%; animation: skeleton 1.4s ease infinite; border-radius: 20px; height: 148px; }
+      @keyframes skeleton { 0% { background-position: 100% 50%; } 100% { background-position: 0 50%; } }
+
+      .estado-vacio { padding: 3rem 1rem; text-align: center; color: #7d7c69; }
+      .estado-vacio-icono { font-size: 2.2rem; margin-bottom: 0.5rem; }
+      .estado-inicial { padding: 2.5rem 1.5rem; text-align: center; color: #7d7c69; background: #fbfbf8; border: 1px dashed rgba(124, 135, 87, 0.3); border-radius: 20px; }
+
+      .pill-grupo { display: inline-block; font-size: 0.72rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 999px; background: #e9f2e6; color: #345f33; }
+      .detalle-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0.9rem 1.2rem; }
+      .detalle-item .etiqueta { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.03em; color: #8b917f; font-weight: 700; }
+      .detalle-item .valor { font-weight: 700; color: #16263d; }
+
+      /* ---- Modal de detalle de alimento ---- */
+      .modal-alimento-header {
+        position: relative; padding: 2rem 1.75rem 1.5rem; color: #fff;
+        background: linear-gradient(135deg, #7c8f5a 0%, #93a66a 100%);
       }
-      .tabla-alimentos td {
-        padding: 0.65rem 0.75rem;
-        vertical-align: top;
-      }
-      .nombre-alimento {
-        font-weight: 700;
-        color: #16263d;
-      }
-      .pill-grupo {
-        display: inline-block;
-        font-size: 0.72rem;
-        font-weight: 700;
-        padding: 0.2rem 0.6rem;
-        border-radius: 999px;
-        background: #e9f2e6;
-        color: #345f33;
-      }
-      .fila-detalle {
-        display: none;
-        background: #fbfbf8;
-      }
-      .fila-detalle.abierta {
-        display: table-row;
-      }
-      .detalle-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-        gap: 0.6rem 1.2rem;
-        padding: 1rem 0.6rem;
-      }
-      .detalle-item .etiqueta {
-        font-size: 0.7rem;
-        text-transform: uppercase;
-        letter-spacing: 0.03em;
-        color: #8b917f;
-        font-weight: 700;
-      }
-      .detalle-item .valor {
-        font-weight: 700;
-        color: #16263d;
-      }
-      .chev {
-        transition: transform 0.15s ease;
-      }
-      tr.expandida .chev {
-        transform: rotate(180deg);
-      }
-      .estado-vacio {
-        padding: 2.5rem 1rem;
-        text-align: center;
-        color: #7d7c69;
-      }
+      .modal-alimento-header .btn-close { position: absolute; top: 1rem; right: 1rem; opacity: 0.9; }
+      .modal-alimento-icono { width: 52px; height: 52px; border-radius: 16px; background: rgba(255,255,255,.2); display: flex; align-items: center; justify-content: center; font-size: 1.7rem; margin-bottom: 0.6rem; }
+      .macro-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 0.7rem; }
+      .macro-grid .macro-chip { background: #f6f4ea; padding: 0.7rem 0.6rem; border-radius: 14px; }
+      .macro-grid .macro-chip .valor { font-size: 1.15rem; }
 
       /* ---- Calculadora de HC ---- */
-      .calc-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1.5rem;
-        align-items: start;
-      }
-      @media (max-width: 767px) {
-        .calc-grid {
-          grid-template-columns: 1fr;
-        }
-      }
-      .calc-card {
-        background: #fbfbf8;
-        border: 1px solid rgba(124, 135, 87, 0.18);
-        border-radius: 22px;
-        padding: 1.75rem;
-        height: 100%;
-      }
-      .calc-label {
-        display: block;
-        font-weight: 700;
-        color: #16263d;
-        font-size: 0.92rem;
-        margin-bottom: 0.4rem;
-      }
-      .calc-input-wrap {
-        position: relative;
-      }
+      .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: start; }
+      @media (max-width: 767px) { .calc-grid { grid-template-columns: 1fr; } }
+      .calc-card { background: #fbfbf8; border: 1px solid rgba(124, 135, 87, 0.18); border-radius: 22px; padding: 1.75rem; height: 100%; }
+      .calc-label { display: block; font-weight: 700; color: #16263d; font-size: 0.92rem; margin-bottom: 0.4rem; }
+      .calc-input-wrap { position: relative; }
       .calc-input-wrap input {
-        width: 100%;
-        padding: 0.85rem 1rem;
-        border-radius: 12px;
-        border: 1px solid rgba(124, 135, 87, 0.3);
-        font-family: "Nunito", sans-serif;
-        font-size: 1.15rem;
-        font-weight: 700;
-        color: #16263d;
+        width: 100%; padding: 0.85rem 1rem; border-radius: 12px;
+        border: 1px solid rgba(124, 135, 87, 0.3); font-family: "Nunito", sans-serif;
+        font-size: 1.15rem; font-weight: 700; color: #16263d;
       }
-      .calc-input-wrap input:focus {
-        outline: 2px solid #de8404;
-        outline-offset: 1px;
-      }
-      .calc-unidad {
-        display: block;
-        margin-top: 0.3rem;
-        font-size: 0.8rem;
-        color: #8b917f;
-        font-weight: 600;
-      }
-      .calc-vacio {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        min-height: 260px;
-      }
-      .calc-resultado.d-none + .calc-vacio {
-        display: flex;
-      }
-      .regla-tres {
-        background: #fff;
-        border-radius: 16px;
-        border: 2px dashed rgba(222, 132, 4, 0.4);
-        padding: 1.1rem 1rem;
-      }
-      .regla-fila {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: baseline;
-        gap: 0.4rem;
-        font-family: "Nunito", sans-serif;
-        padding: 0.35rem 0;
-      }
-      .regla-num {
-        font-size: 1.15rem;
-        font-weight: 800;
-        color: #16263d;
-        min-width: 1.4rem;
-        text-align: right;
-      }
-      .regla-incognita {
-        color: #de8404;
-      }
-      .regla-unidad {
-        font-size: 0.85rem;
-        color: #5b6d84;
-        margin-right: 0.6rem;
-      }
-      .regla-signo {
-        color: #93a66a;
-        font-weight: 800;
-        margin: 0 0.3rem;
-      }
-      .calc-total {
-        background: #de8404;
-        color: #fff;
-        border-radius: 14px;
-        padding: 1rem 1.2rem;
-        font-size: 1.4rem;
-        font-weight: 800;
-        text-align: center;
-      }
-      .calc-aviso {
-        background: #fff0e7;
-        border: 1px solid rgba(222, 132, 4, 0.35);
-        border-radius: 14px;
-        padding: 1rem 1.2rem;
-        font-size: 0.88rem;
-        color: #7a4a13;
-        line-height: 1.5;
-      }
+      .calc-input-wrap input:focus { outline: 2px solid #de8404; outline-offset: 1px; }
+      .calc-unidad { display: block; margin-top: 0.3rem; font-size: 0.8rem; color: #8b917f; font-weight: 600; }
+      .calc-vacio { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; min-height: 260px; }
+      .calc-resultado.d-none + .calc-vacio { display: flex; }
+      .regla-tres { background: #fff; border-radius: 16px; border: 2px dashed rgba(222, 132, 4, 0.4); padding: 1.1rem 1rem; }
+      .regla-fila { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4rem; font-family: "Nunito", sans-serif; padding: 0.35rem 0; }
+      .regla-num { font-size: 1.15rem; font-weight: 800; color: #16263d; min-width: 1.4rem; text-align: right; }
+      .regla-incognita { color: #de8404; }
+      .regla-unidad { font-size: 0.85rem; color: #5b6d84; margin-right: 0.6rem; }
+      .regla-signo { color: #93a66a; font-weight: 800; margin: 0 0.3rem; }
+      .calc-total { background: #de8404; color: #fff; border-radius: 14px; padding: 1rem 1.2rem; font-size: 1.4rem; font-weight: 800; text-align: center; }
+      .calc-aviso { background: #fff0e7; border: 1px solid rgba(222, 132, 4, 0.35); border-radius: 14px; padding: 1rem 1.2rem; font-size: 0.88rem; color: #7a4a13; line-height: 1.5; }
     </style>
   </head>
   <body>
+
     <!-- ================= CANDADO DE ACCESO ================= -->
     <div id="candado">
       <div class="tarjeta-candado">
         <div class="icono-candado"><i class="bi bi-shield-lock"></i></div>
-        <h2 style="font-size: 1.4rem; color: #16263d">Portal de pacientes</h2>
-        <p style="color: #5b6d84; font-size: 0.95rem; margin-bottom: 0">
-          Este espacio es solo para pacientes de Victoria. Ingresa la contraseña
-          que te compartió para entrar.
+        <h2 style="font-size: 1.4rem; color: #16263d;">Portal de pacientes</h2>
+        <p style="color: #5b6d84; font-size: 0.95rem; margin-bottom: 0;">
+          Este espacio es solo para pacientes de Victoria. Ingresa la contraseña que te
+          compartió para entrar.
         </p>
-        <input
-          id="input-clave"
-          type="password"
-          placeholder="Contraseña"
-          autocomplete="off"
-        />
+        <input id="input-clave" type="password" placeholder="Contraseña" autocomplete="off" />
         <button id="btn-entrar" class="btn-entrar" type="button">Entrar</button>
-        <p id="aviso-error" class="aviso-error">
-          Esa contraseña no es correcta. Intenta de nuevo.
-        </p>
-        <p style="margin-top: 1.25rem; font-size: 0.82rem; color: #8b917f">
+        <p id="aviso-error" class="aviso-error">Esa contraseña no es correcta. Intenta de nuevo.</p>
+        <p style="margin-top: 1.25rem; font-size: 0.82rem; color: #8b917f;">
           ¿No la tienes a la mano? Escríbele por
-          <a
-            href="https://wa.me/523331575751"
-            style="color: #3d6aa1; font-weight: 700"
-            >WhatsApp</a
-          >.
+          <a href="https://wa.me/523331575751" style="color: #3d6aa1; font-weight: 700;">WhatsApp</a>.
         </p>
       </div>
     </div>
 
     <!-- ================= CONTENIDO (visible tras ingresar la contraseña) ================= -->
     <div id="contenido-app">
+
       <!-- NAVBAR -->
       <nav class="navbar-vd">
         <div class="contenedor-nav">
           <a href="index.html" class="marca-nav">
-            <img
-              src="img/logovd.png"
-              alt="Logotipo Nutrióloga Victoria D."
-              width="40"
-              height="40"
-            />
+            <img src="img/logovd.png" alt="Logotipo Nutrióloga Victoria D." width="40" height="40" />
             <span style="color: #fff; font-weight: 700">Victoria VD</span>
           </a>
           <button class="btn-menu-movil" aria-label="Abrir menú">
@@ -564,30 +293,19 @@
       <header class="cabecera-pacientes">
         <div class="container">
           <span class="eyebrow">Tu espacio</span>
-          <h1 class="mt-3" style="max-width: 26ch; color: #16263d">
+          <h1 class="mt-3" style="max-width: 26ch; color: #16263d;">
             ¡Hola! Bienvenido a tu portal 👋
           </h1>
-          <p
-            class="mt-3"
-            style="max-width: 52ch; color: #5b6d84; font-size: 1.05rem"
-          >
-            Aquí puedes practicar lo que revisamos en consulta y consultar la
-            información nutricional de tus alimentos, cuando quieras.
+          <p class="mt-3" style="max-width: 52ch; color: #5b6d84; font-size: 1.05rem;">
+            Aquí puedes practicar lo que revisamos en consulta y consultar la información
+            nutricional de tus alimentos, cuando quieras.
           </p>
 
           <div class="tabs-dashboard">
-            <button class="tab-btn activo" data-tab="inicio" type="button">
-              <i class="bi bi-house-heart"></i> Inicio
-            </button>
-            <button class="tab-btn" data-tab="juegos" type="button">
-              <i class="bi bi-controller"></i> Juegos
-            </button>
-            <button class="tab-btn" data-tab="alimentos" type="button">
-              <i class="bi bi-basket"></i> Base de alimentos
-            </button>
-            <button class="tab-btn" data-tab="calculadora" type="button">
-              <i class="bi bi-calculator"></i> Calculadora de HC
-            </button>
+            <button class="tab-btn activo" data-tab="inicio" type="button"><i class="bi bi-house-heart"></i> Inicio</button>
+            <button class="tab-btn" data-tab="juegos" type="button"><i class="bi bi-controller"></i> Juegos</button>
+            <button class="tab-btn" data-tab="alimentos" type="button"><i class="bi bi-basket"></i> Base de alimentos</button>
+            <button class="tab-btn" data-tab="calculadora" type="button"><i class="bi bi-calculator"></i> Calculadora de HC</button>
           </div>
         </div>
       </header>
@@ -600,57 +318,36 @@
             <h2>¿Qué te gustaría hacer hoy?</h2>
             <div class="row g-4 mt-1">
               <div class="col-md-4">
-                <button
-                  class="tarjeta-inicio juegos"
-                  data-ir-a="juegos"
-                  type="button"
-                >
+                <button class="tarjeta-inicio juegos" data-ir-a="juegos" type="button">
                   <div>
                     <div class="icono">🛒</div>
-                    <h3 class="mt-2" style="color: #fff; font-size: 1.3rem">
-                      Juegos y dinámicas
-                    </h3>
-                    <p class="mb-0" style="color: #dfe9f5; font-size: 0.92rem">
-                      Pon a prueba lo que aprendiste en consulta con actividades
-                      cortas.
+                    <h3 class="mt-2" style="color: #fff; font-size: 1.3rem;">Juegos y dinámicas</h3>
+                    <p class="mb-0" style="color: #dfe9f5; font-size: 0.92rem;">
+                      Pon a prueba lo que aprendiste en consulta con actividades cortas.
                     </p>
                   </div>
                   <div class="flecha">→</div>
                 </button>
               </div>
               <div class="col-md-4">
-                <button
-                  class="tarjeta-inicio alimentos"
-                  data-ir-a="alimentos"
-                  type="button"
-                >
+                <button class="tarjeta-inicio alimentos" data-ir-a="alimentos" type="button">
                   <div>
                     <div class="icono">🥑</div>
-                    <h3 class="mt-2" style="color: #fff; font-size: 1.3rem">
-                      Base de alimentos
-                    </h3>
-                    <p class="mb-0" style="color: #eef4e6; font-size: 0.92rem">
-                      Busca cualquier alimento y consulta su información
-                      nutricional.
+                    <h3 class="mt-2" style="color: #fff; font-size: 1.3rem;">Base de alimentos</h3>
+                    <p class="mb-0" style="color: #eef4e6; font-size: 0.92rem;">
+                      Busca cualquier alimento y consulta su información nutricional.
                     </p>
                   </div>
                   <div class="flecha">→</div>
                 </button>
               </div>
               <div class="col-md-4">
-                <button
-                  class="tarjeta-inicio calculadora"
-                  data-ir-a="calculadora"
-                  type="button"
-                >
+                <button class="tarjeta-inicio calculadora" data-ir-a="calculadora" type="button">
                   <div>
                     <div class="icono">🧮</div>
-                    <h3 class="mt-2" style="color: #fff; font-size: 1.3rem">
-                      Calculadora de HC
-                    </h3>
-                    <p class="mb-0" style="color: #fdecd2; font-size: 0.92rem">
-                      Calcula los hidratos de carbono de una porción a partir de
-                      la etiqueta.
+                    <h3 class="mt-2" style="color: #fff; font-size: 1.3rem;">Calculadora de HC</h3>
+                    <p class="mb-0" style="color: #fdecd2; font-size: 0.92rem;">
+                      Calcula los hidratos de carbono de una porción a partir de la etiqueta.
                     </p>
                   </div>
                   <div class="flecha">→</div>
@@ -662,24 +359,14 @@
               <div class="col-md-7">
                 <div class="tarjeta-tip">
                   <span class="eyebrow">Tip del día</span>
-                  <p
-                    id="tip-del-dia"
-                    class="mt-2 mb-0"
-                    style="color: #16263d; font-size: 1.05rem"
-                  ></p>
+                  <p id="tip-del-dia" class="mt-2 mb-0" style="color: #16263d; font-size: 1.05rem;"></p>
                 </div>
               </div>
               <div class="col-md-5">
-                <div class="tarjeta-tip" style="background: #eef4ff">
+                <div class="tarjeta-tip" style="background: #eef4ff;">
                   <span class="eyebrow">¿Dudas o quieres agendar?</span>
-                  <p class="mt-2 mb-3" style="color: #16263d">
-                    Escríbele a Victoria directamente.
-                  </p>
-                  <a
-                    href="https://wa.me/523331575751"
-                    class="btn-jugar"
-                    style="background: #3d6aa1"
-                  >
+                  <p class="mt-2 mb-3" style="color: #16263d;">Escríbele a Victoria directamente.</p>
+                  <a href="https://wa.me/523331575751" class="btn-jugar" style="background:#3d6aa1;">
                     <i class="bi bi-whatsapp"></i> Escribir por WhatsApp
                   </a>
                 </div>
@@ -696,36 +383,26 @@
             <span class="eyebrow">Actividades</span>
             <h2>Juegos y dinámicas</h2>
             <p class="intro">
-              Pon a prueba lo aprendido en consulta con actividades cortas.
-              Iremos sumando más conforme avancemos en tu proceso.
+              Pon a prueba lo aprendido en consulta con actividades cortas. Iremos sumando
+              más conforme avancemos en tu proceso.
             </p>
 
             <div id="chips-audiencia" class="d-flex flex-wrap gap-2 mt-4"></div>
 
             <div id="grid-juegos" class="row g-4 mt-1">
               <div class="col-lg-4 juego-item" data-categorias="general">
-                <div class="juego-destacado h-100">
+                <div class="juego-destacado h-100 cat-general">
                   <div>
-                    <span class="juego-tag"
-                      >🧩 Nivel 0 · Grupos de alimentos</span
-                    >
-                    <h3 class="mt-3" style="color: #fff; font-size: 1.5rem">
+                    <span class="juego-tag">🧩 Nivel 0 · Grupos de alimentos</span>
+                    <h3 class="mt-3" style="color: #fff; font-size: 1.5rem;">
                       Súper Clasificador
                     </h3>
-                    <p class="mt-2" style="color: #dfe9f5">
-                      Identifica a qué grupo pertenece cada alimento y encuentra
-                      al "intruso" que no encaja. La base antes de contar
-                      carbohidratos.
+                    <p class="mt-2" style="color: #dfe9f5;">
+                      Identifica a qué grupo pertenece cada alimento y encuentra al "intruso"
+                      que no encaja. La base antes de contar carbohidratos.
                     </p>
                     <div class="d-flex flex-wrap gap-2 mb-2">
-                      <span
-                        class="pill-grupo"
-                        style="
-                          background: rgba(255, 255, 255, 0.22);
-                          color: #fff;
-                        "
-                        >Público general</span
-                      >
+                      <span class="pill-grupo" style="background:rgba(255,255,255,.22);color:#fff;">Público general</span>
                     </div>
                   </div>
                   <a class="btn-jugar mt-2" href="juego-grupos-alimentos.html">
@@ -733,69 +410,39 @@
                   </a>
                 </div>
               </div>
-              <div
-                class="col-lg-4 juego-item"
-                data-categorias="general diabetes"
-              >
-                <div class="juego-destacado h-100">
+              <div class="col-lg-4 juego-item" data-categorias="diabetes">
+                <div class="juego-destacado h-100 cat-diabetes">
                   <div>
                     <span class="juego-tag">🔎 Nivel 1 · Lo esencial</span>
-                    <h3 class="mt-3" style="color: #fff; font-size: 1.5rem">
+                    <h3 class="mt-3" style="color: #fff; font-size: 1.5rem;">
                       Detective de Carbohidratos
                     </h3>
-                    <p class="mt-2" style="color: #dfe9f5">
-                      Reconoce qué alimentos sí aportan carbohidratos y practica
-                      sumas sencillas de gramos de HC, sin equivalentes todavía.
+                    <p class="mt-2" style="color: #dfe9f5;">
+                      Reconoce qué alimentos sí aportan carbohidratos y practica sumas
+                      sencillas de gramos de HC, sin equivalentes todavía.
                     </p>
                     <div class="d-flex flex-wrap gap-2 mb-2">
-                      <span
-                        class="pill-grupo"
-                        style="
-                          background: rgba(255, 255, 255, 0.22);
-                          color: #fff;
-                        "
-                        >Público general</span
-                      >
-                      <span
-                        class="pill-grupo"
-                        style="
-                          background: rgba(255, 255, 255, 0.22);
-                          color: #fff;
-                        "
-                        >Diabetes tipo 1</span
-                      >
+                      <span class="pill-grupo" style="background:rgba(255,255,255,.22);color:#fff;">Diabetes tipo 1</span>
                     </div>
                   </div>
-                  <a
-                    class="btn-jugar mt-2"
-                    href="juego-detective-carbohidratos.html"
-                  >
+                  <a class="btn-jugar mt-2" href="juego-detective-carbohidratos.html">
                     <i class="bi bi-controller"></i> Jugar ahora
                   </a>
                 </div>
               </div>
               <div class="col-lg-4 juego-item" data-categorias="diabetes">
-                <div class="juego-destacado h-100">
+                <div class="juego-destacado h-100 cat-diabetes">
                   <div>
-                    <span class="juego-tag"
-                      >🚨 Diabetes tipo 1 · Escenarios</span
-                    >
-                    <h3 class="mt-3" style="color: #fff; font-size: 1.5rem">
+                    <span class="juego-tag">🚨 Diabetes tipo 1 · Escenarios</span>
+                    <h3 class="mt-3" style="color: #fff; font-size: 1.5rem;">
                       Reconoce la Hipoglucemia
                     </h3>
-                    <p class="mt-2" style="color: #dfe9f5">
-                      Identifica señales de glucosa baja y practica qué hacer de
-                      inmediato, con escenarios de la vida diaria.
+                    <p class="mt-2" style="color: #dfe9f5;">
+                      Identifica señales de glucosa baja y practica qué hacer de inmediato,
+                      con escenarios de la vida diaria.
                     </p>
                     <div class="d-flex flex-wrap gap-2 mb-2">
-                      <span
-                        class="pill-grupo"
-                        style="
-                          background: rgba(255, 255, 255, 0.22);
-                          color: #fff;
-                        "
-                        >Diabetes tipo 1</span
-                      >
+                      <span class="pill-grupo" style="background:rgba(255,255,255,.22);color:#fff;">Diabetes tipo 1</span>
                     </div>
                   </div>
                   <a class="btn-jugar mt-2" href="juego-hipoglucemia.html">
@@ -804,28 +451,18 @@
                 </div>
               </div>
               <div class="col-lg-4 juego-item" data-categorias="diabetes">
-                <div class="juego-destacado h-100">
+                <div class="juego-destacado h-100 cat-diabetes">
                   <div>
-                    <span class="juego-tag"
-                      >🛒 Nivel 2 · Sistema Mexicano de Alimentos
-                      Equivalentes</span
-                    >
-                    <h3 class="mt-3" style="color: #fff; font-size: 1.5rem">
+                    <span class="juego-tag">🛒 Nivel 2 · Sistema Mexicano de Alimentos Equivalentes</span>
+                    <h3 class="mt-3" style="color: #fff; font-size: 1.5rem;">
                       Carrito SMAE
                     </h3>
-                    <p class="mt-2" style="color: #dfe9f5">
-                      Recorre seis productos, identifica el grupo de alimentos y
-                      convierte equivalentes a gramos de hidratos de carbono.
+                    <p class="mt-2" style="color: #dfe9f5;">
+                      Recorre seis productos, identifica el grupo de alimentos y convierte
+                      equivalentes a gramos de hidratos de carbono.
                     </p>
                     <div class="d-flex flex-wrap gap-2 mb-2">
-                      <span
-                        class="pill-grupo"
-                        style="
-                          background: rgba(255, 255, 255, 0.22);
-                          color: #fff;
-                        "
-                        >Diabetes tipo 1</span
-                      >
+                      <span class="pill-grupo" style="background:rgba(255,255,255,.22);color:#fff;">Diabetes tipo 1</span>
                     </div>
                   </div>
                   <a class="btn-jugar mt-2" href="juego-carrito-smae.html">
@@ -834,57 +471,38 @@
                 </div>
               </div>
               <div class="col-lg-4 juego-item" data-categorias="general">
-                <div class="juego-destacado h-100">
+                <div class="juego-destacado h-100 cat-general">
                   <div>
                     <span class="juego-tag">🍈 Público general</span>
-                    <h3 class="mt-3" style="color: #fff; font-size: 1.5rem">
+                    <h3 class="mt-3" style="color: #fff; font-size: 1.5rem;">
                       Súper Poderes: frutas y verduras
                     </h3>
-                    <p class="mt-2" style="color: #dfe9f5">
-                      Descubre el beneficio principal de cada fruta y verdura:
-                      por qué la guayaba te ayuda a no enfermarte, la zanahoria
-                      cuida tu vista y más.
+                    <p class="mt-2" style="color: #dfe9f5;">
+                      Descubre el beneficio principal de cada fruta y verdura: por qué la
+                      guayaba te ayuda a no enfermarte, la zanahoria cuida tu vista y más.
                     </p>
                     <div class="d-flex flex-wrap gap-2 mb-2">
-                      <span
-                        class="pill-grupo"
-                        style="
-                          background: rgba(255, 255, 255, 0.22);
-                          color: #fff;
-                        "
-                        >Público general</span
-                      >
+                      <span class="pill-grupo" style="background:rgba(255,255,255,.22);color:#fff;">Público general</span>
                     </div>
                   </div>
-                  <a
-                    class="btn-jugar mt-2"
-                    href="juego-beneficios-frutas-verduras.html"
-                  >
+                  <a class="btn-jugar mt-2" href="juego-beneficios-frutas-verduras.html">
                     <i class="bi bi-controller"></i> Jugar ahora
                   </a>
                 </div>
               </div>
               <div class="col-lg-4 juego-item" data-categorias="general">
-                <div class="juego-destacado h-100">
+                <div class="juego-destacado h-100 cat-general">
                   <div>
                     <span class="juego-tag">🍽️ Público general</span>
-                    <h3 class="mt-3" style="color: #fff; font-size: 1.5rem">
+                    <h3 class="mt-3" style="color: #fff; font-size: 1.5rem;">
                       Arma tu Platillo Completo
                     </h3>
-                    <p class="mt-2" style="color: #dfe9f5">
-                      Practica cómo balancear un plato combinando verduras,
-                      cereales, leguminosas y proteína, siguiendo el Plato del
-                      Bien Comer.
+                    <p class="mt-2" style="color: #dfe9f5;">
+                      Practica cómo balancear un plato combinando verduras, cereales,
+                      leguminosas y proteína, siguiendo el Plato del Bien Comer.
                     </p>
                     <div class="d-flex flex-wrap gap-2 mb-2">
-                      <span
-                        class="pill-grupo"
-                        style="
-                          background: rgba(255, 255, 255, 0.22);
-                          color: #fff;
-                        "
-                        >Público general</span
-                      >
+                      <span class="pill-grupo" style="background:rgba(255,255,255,.22);color:#fff;">Público general</span>
                     </div>
                   </div>
                   <a class="btn-jugar mt-2" href="juego-platillo-completo.html">
@@ -893,26 +511,18 @@
                 </div>
               </div>
               <div class="col-lg-4 juego-item" data-categorias="general">
-                <div class="juego-destacado h-100">
+                <div class="juego-destacado h-100 cat-general">
                   <div>
                     <span class="juego-tag">🍎 Público general</span>
-                    <h3 class="mt-3" style="color: #fff; font-size: 1.5rem">
+                    <h3 class="mt-3" style="color: #fff; font-size: 1.5rem;">
                       Snacks Inteligentes
                     </h3>
-                    <p class="mt-2" style="color: #dfe9f5">
-                      Compara opciones de snacks y descubre cuáles te dejan
-                      satisfecho por más tiempo, sin etiquetar ningún alimento
-                      como prohibido.
+                    <p class="mt-2" style="color: #dfe9f5;">
+                      Compara opciones de snacks y descubre cuáles te dejan satisfecho por
+                      más tiempo, sin etiquetar ningún alimento como prohibido.
                     </p>
                     <div class="d-flex flex-wrap gap-2 mb-2">
-                      <span
-                        class="pill-grupo"
-                        style="
-                          background: rgba(255, 255, 255, 0.22);
-                          color: #fff;
-                        "
-                        >Público general</span
-                      >
+                      <span class="pill-grupo" style="background:rgba(255,255,255,.22);color:#fff;">Público general</span>
                     </div>
                   </div>
                   <a class="btn-jugar mt-2" href="juego-snacks-saludables.html">
@@ -921,34 +531,21 @@
                 </div>
               </div>
               <div class="col-lg-4 juego-item" data-categorias="mamas">
-                <div class="juego-destacado h-100">
+                <div class="juego-destacado h-100 cat-mamas">
                   <div>
-                    <span class="juego-tag"
-                      >👶 Mamás · Alimentación complementaria</span
-                    >
-                    <h3 class="mt-3" style="color: #fff; font-size: 1.5rem">
+                    <span class="juego-tag">👶 Mamás · Alimentación complementaria</span>
+                    <h3 class="mt-3" style="color: #fff; font-size: 1.5rem;">
                       Primeros Bocados
                     </h3>
-                    <p class="mt-2" style="color: #dfe9f5">
-                      Repasa texturas por etapa, cómo armar un platillo completo
-                      para tu bebé, seguridad alimentaria y nutrientes clave
-                      como el hierro.
+                    <p class="mt-2" style="color: #dfe9f5;">
+                      Repasa texturas por etapa, cómo armar un platillo completo para tu
+                      bebé, seguridad alimentaria y nutrientes clave como el hierro.
                     </p>
                     <div class="d-flex flex-wrap gap-2 mb-2">
-                      <span
-                        class="pill-grupo"
-                        style="
-                          background: rgba(255, 255, 255, 0.22);
-                          color: #fff;
-                        "
-                        >Mamás · Alimentación complementaria</span
-                      >
+                      <span class="pill-grupo" style="background:rgba(255,255,255,.22);color:#fff;">Mamás · Alimentación complementaria</span>
                     </div>
                   </div>
-                  <a
-                    class="btn-jugar mt-2"
-                    href="juego-alimentacion-complementaria.html"
-                  >
+                  <a class="btn-jugar mt-2" href="juego-alimentacion-complementaria.html">
                     <i class="bi bi-controller"></i> Jugar ahora
                   </a>
                 </div>
@@ -956,27 +553,19 @@
             </div>
 
             <div id="grid-proximos" class="row g-3 mt-2">
-              <div
-                class="col-lg-6 juego-item"
-                data-categorias="general diabetes mamas"
-              >
+              <div class="col-lg-6 juego-item" data-categorias="general diabetes mamas">
                 <div class="juego-proximo">
-                  <strong style="color: #16263d">Espacio disponible</strong>
-                  <p class="mb-0 mt-2" style="font-size: 0.92rem">
-                    Cuéntame qué tema te gustaría reforzar y armamos una
-                    dinámica para practicarlo aquí.
+                  <strong style="color: #16263d;">Espacio disponible</strong>
+                  <p class="mb-0 mt-2" style="font-size: 0.92rem;">
+                    Cuéntame qué tema te gustaría reforzar y armamos una dinámica para
+                    practicarlo aquí.
                   </p>
                 </div>
               </div>
             </div>
 
-            <p
-              id="aviso-sin-juegos"
-              class="mt-3 mb-0 d-none"
-              style="color: #7d7c69"
-            >
-              Todavía no hay juegos publicados en esta categoría, pero ya está
-              en camino.
+            <p id="aviso-sin-juegos" class="mt-3 mb-0 d-none" style="color: #7d7c69;">
+              Todavía no hay juegos publicados en esta categoría, pero ya está en camino.
             </p>
           </div>
         </div>
@@ -989,82 +578,73 @@
             <span class="eyebrow">Consulta rápida</span>
             <h2>Base de alimentos</h2>
             <p class="intro">
-              Busca un alimento para ver su porción sugerida y su información
-              nutricional. Los valores son aproximados: pueden variar según la
-              marca, la preparación y la edición vigente del SMAE.
+              Busca un alimento para ver su porción sugerida y su información nutricional.
+              Toca cualquier tarjeta para ver el detalle completo. Los valores son
+              aproximados: pueden variar según la marca, la preparación y la edición vigente
+              del SMAE.
             </p>
 
-            <div class="row mt-4 gy-3 align-items-center">
-              <div class="col-md-8">
-                <div class="buscador-alimentos">
-                  <svg
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="#93a66a"
-                    stroke-width="2"
-                  >
-                    <circle cx="11" cy="11" r="7" />
-                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                  </svg>
-                  <input
-                    id="buscador-input"
-                    type="text"
-                    placeholder='Busca un alimento, por ejemplo "aceite" o "aguacate"'
-                  />
-                </div>
-              </div>
-              <div class="col-md-4 text-md-end">
-                <span
-                  id="contador-resultados"
-                  style="font-weight: 700; color: #5f6b42"
-                ></span>
-              </div>
+            <div class="buscador-alimentos mt-4">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#93a66a" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input id="buscador-input" type="text" placeholder='Busca un alimento, por ejemplo "aceite" o "aguacate"' />
             </div>
 
-            <div id="chips-grupo" class="d-flex flex-wrap gap-2 mt-3"></div>
-
-            <div
-              class="mt-4"
-              style="
-                max-height: 560px;
-                overflow-y: auto;
-                overflow-x: auto;
-                border-radius: 14px;
-                border: 1px solid #ede4cf;
-              "
-            >
-              <table class="tabla-alimentos">
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th>Alimento</th>
-                    <th>Porción sugerida</th>
-                    <th>Energía</th>
-                    <th>Proteína</th>
-                    <th>Lípidos</th>
-                    <th>HC</th>
-                    <th>Fibra</th>
-                    <th>Grupo</th>
-                  </tr>
-                </thead>
-                <tbody id="cuerpo-tabla"></tbody>
-              </table>
-              <div id="estado-vacio" class="estado-vacio d-none">
-                No encontramos alimentos con esa búsqueda. Intenta con otro
-                nombre o quita el filtro de grupo.
-              </div>
+            <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mt-3">
+              <div id="chips-grupo" class="d-flex flex-wrap gap-2"></div>
+              <span id="contador-resultados" class="contador-resultados"></span>
             </div>
 
-            <p
-              id="estado-datos"
-              class="mt-3 mb-0"
-              style="font-size: 0.82rem; color: #7d7c69"
-            ></p>
+            <div id="estado-inicial" class="estado-inicial mt-4">
+              <div class="estado-vacio-icono">🥕</div>
+              <p class="m-0 fw-bold" style="color:#16263d;">Escribe un alimento o elige un grupo para empezar</p>
+              <p class="mt-2 mb-0" style="font-size:0.92rem; max-width: 46ch; margin-left:auto; margin-right:auto;">
+                Esta herramienta es útil cuando necesitas algo puntual: la porción de un
+                alimento, a qué grupo pertenece, o revisar algo específico que se te haya
+                pedido cuidar en consulta. No está pensada para revisar todo lo que comes ni
+                para generar presión con los números — tu relación con la comida importa más
+                que cualquier dato aislado.
+              </p>
+            </div>
+
+            <div id="food-loading" class="food-grid mt-4 d-none"></div>
+            <div id="food-grid" class="food-grid mt-4"></div>
+
+            <div id="estado-vacio" class="estado-vacio d-none">
+              <div class="estado-vacio-icono">🔍</div>
+              <p class="m-0 fw-bold" style="color:#16263d;">No encontramos alimentos con esa búsqueda</p>
+              <p class="m-0" style="font-size:0.9rem;">Intenta con otro nombre o quita el filtro de grupo.</p>
+            </div>
+
+            <div class="text-center mt-4">
+              <button id="btn-mostrar-mas" type="button" class="chip-grupo d-none" style="padding:0.6rem 1.4rem;">Mostrar más alimentos</button>
+            </div>
+
+            <p id="estado-datos" class="mt-3 mb-0" style="font-size: 0.82rem; color: #7d7c69;"></p>
           </div>
         </div>
       </section>
+
+      <!-- MODAL: DETALLE DE ALIMENTO -->
+      <div class="modal fade" id="modal-alimento" tabindex="-1" aria-labelledby="modal-alimento-titulo" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content" style="border-radius: 24px; border: none; overflow: hidden;">
+            <div id="modal-alimento-header" class="modal-alimento-header">
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+              <div id="modal-alimento-icono" class="modal-alimento-icono"></div>
+              <span id="modal-alimento-grupo" class="pill-grupo" style="background:rgba(255,255,255,.25); color:#fff;"></span>
+              <h3 id="modal-alimento-titulo" class="mt-2 mb-0" style="color:#fff; font-size:1.5rem;"></h3>
+              <p id="modal-alimento-porcion" class="mb-0" style="color:rgba(255,255,255,.85); font-size:0.95rem;"></p>
+            </div>
+            <div class="modal-body">
+              <div id="modal-alimento-macros" class="macro-grid mb-4"></div>
+              <div id="modal-alimento-detalle" class="detalle-grid px-0"></div>
+              <div id="modal-alimento-link-wrap" class="mt-3 d-none">
+                <a id="modal-alimento-link" href="#" target="_blank" rel="noopener" style="color:#3d6aa1; font-weight:700; text-decoration:underline;">Ver ficha de referencia →</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <!-- PANEL: CALCULADORA DE HC -->
       <section class="seccion panel-dashboard" id="panel-calculadora">
@@ -1073,128 +653,73 @@
             <span class="eyebrow">Diabetes tipo 1 · Herramienta</span>
             <h2>Calculadora de hidratos de carbono</h2>
             <p class="intro">
-              Toma los datos de la etiqueta del producto y calcula cuántos
-              gramos de hidratos de carbono (HC) tiene la porción que vas a
-              comer, usando una regla de 3 directa — la misma que se enseña en
-              consulta.
+              Toma los datos de la etiqueta del producto y calcula cuántos gramos de
+              hidratos de carbono (HC) tiene la porción que vas a comer, usando una regla
+              de 3 directa — la misma que se enseña en consulta.
             </p>
+
+            <div class="calc-aviso mt-3">
+              <i class="bi bi-exclamation-triangle-fill" style="margin-right:0.4rem;"></i>
+              <strong>Antes de usarla:</strong> esta herramienta es de apoyo para practicar el
+              cálculo de hidratos de carbono. No sustituye el plan de manejo ni el ajuste de
+              dosis de insulina indicado por tu médico o educador en diabetes.
+            </div>
 
             <div class="calc-grid mt-4">
               <div class="calc-col">
                 <div class="calc-card">
-                  <label class="calc-label" for="calc-hc"
-                    >1. ¿Cuántos gramos de HC dice la etiqueta?</label
-                  >
+                  <label class="calc-label" for="calc-hc">1. ¿Cuántos gramos de HC dice la etiqueta?</label>
                   <div class="calc-input-wrap">
-                    <input
-                      id="calc-hc"
-                      type="number"
-                      inputmode="decimal"
-                      min="0"
-                      step="any"
-                      placeholder="Ej. 22"
-                    />
+                    <input id="calc-hc" type="number" inputmode="decimal" min="0" step="any" placeholder="Ej. 22" />
                     <span class="calc-unidad">g de HC</span>
                   </div>
 
-                  <label class="calc-label mt-3" for="calc-base"
-                    >2. ¿Por cada cuántos gramos del producto? (lo que diga la
-                    etiqueta: 100 g, 30 g, una porción...)</label
-                  >
+                  <label class="calc-label mt-3" for="calc-base">2. ¿Por cada cuántos gramos del producto? (lo que diga la etiqueta: 100 g, 30 g, una porción...)</label>
                   <div class="calc-input-wrap">
-                    <input
-                      id="calc-base"
-                      type="number"
-                      inputmode="decimal"
-                      min="0.01"
-                      step="any"
-                      value="100"
-                    />
+                    <input id="calc-base" type="number" inputmode="decimal" min="0.01" step="any" value="100" />
                     <span class="calc-unidad">g de producto</span>
                   </div>
 
-                  <label class="calc-label mt-3" for="calc-porcion"
-                    >3. ¿Cuántos gramos vas a comer tú?</label
-                  >
+                  <label class="calc-label mt-3" for="calc-porcion">3. ¿Cuántos gramos vas a comer tú?</label>
                   <div class="calc-input-wrap">
-                    <input
-                      id="calc-porcion"
-                      type="number"
-                      inputmode="decimal"
-                      min="0"
-                      step="any"
-                      placeholder="Ej. 45"
-                    />
+                    <input id="calc-porcion" type="number" inputmode="decimal" min="0" step="any" placeholder="Ej. 45" />
                     <span class="calc-unidad">g que vas a comer</span>
                   </div>
 
-                  <button
-                    id="calc-btn"
-                    type="button"
-                    class="btn-jugar mt-4"
-                    style="background: #de8404"
-                  >
+                  <button id="calc-btn" type="button" class="btn-jugar mt-4" style="background:#de8404;">
                     <i class="bi bi-calculator"></i> Calcular
                   </button>
-                  <p
-                    id="calc-error"
-                    class="mt-3 mb-0 d-none"
-                    style="color: #b3261e; font-weight: 700; font-size: 0.9rem"
-                  >
-                    Revisa que los 3 campos tengan un número válido (los gramos
-                    del producto deben ser mayores a 0).
+                  <p id="calc-error" class="mt-3 mb-0 d-none" style="color:#b3261e; font-weight:700; font-size:0.9rem;">
+                    Revisa que los 3 campos tengan un número válido (los gramos del producto deben ser mayores a 0).
                   </p>
                 </div>
               </div>
 
               <div class="calc-col">
-                <div
-                  id="calc-resultado"
-                  class="calc-card calc-resultado d-none"
-                >
+                <div id="calc-resultado" class="calc-card calc-resultado d-none">
                   <span class="eyebrow">Tu regla de 3</span>
                   <div class="regla-tres mt-3">
                     <div class="regla-fila">
-                      <span id="rt-hc" class="regla-num"></span
-                      ><span class="regla-unidad">g HC</span>
+                      <span id="rt-hc" class="regla-num"></span><span class="regla-unidad">g HC</span>
                       <span class="regla-signo">—</span>
-                      <span id="rt-base" class="regla-num"></span
-                      ><span class="regla-unidad">g producto</span>
+                      <span id="rt-base" class="regla-num"></span><span class="regla-unidad">g producto</span>
                     </div>
                     <div class="regla-fila">
-                      <span class="regla-num regla-incognita">?</span
-                      ><span class="regla-unidad">g HC</span>
+                      <span class="regla-num regla-incognita">?</span><span class="regla-unidad">g HC</span>
                       <span class="regla-signo">—</span>
-                      <span id="rt-porcion" class="regla-num"></span
-                      ><span class="regla-unidad">g que comerás</span>
+                      <span id="rt-porcion" class="regla-num"></span><span class="regla-unidad">g que comerás</span>
                     </div>
                   </div>
-                  <p
-                    id="rt-formula"
-                    class="mt-3 mb-1"
-                    style="color: #5b6d84; font-size: 0.95rem"
-                  ></p>
+                  <p id="rt-formula" class="mt-3 mb-1" style="color:#5b6d84; font-size:0.95rem;"></p>
                   <div class="calc-total mt-2">
                     <span id="rt-resultado">0</span> g de HC en tu porción
                   </div>
                 </div>
                 <div id="calc-vacio" class="calc-card calc-vacio">
-                  <i
-                    class="bi bi-calculator"
-                    style="font-size: 2rem; color: #c9c2ab"
-                  ></i>
-                  <p class="mt-3 mb-0" style="color: #8b917f">
-                    Llena los 3 campos y presiona Calcular para ver tu resultado
-                    aquí.
-                  </p>
+                  <i class="bi bi-calculator" style="font-size:2rem; color:#c9c2ab;"></i>
+                  <p class="mt-3 mb-0" style="color:#8b917f;">Llena los 3 campos y presiona Calcular para ver tu resultado aquí.</p>
                 </div>
               </div>
-            </div>
-
-            <div class="calc-aviso mt-4">
-              Esta herramienta es de apoyo para practicar el cálculo de hidratos
-              de carbono. No sustituye el plan de manejo ni el ajuste de dosis
-              de insulina indicado por tu médico o educador en diabetes.
             </div>
           </div>
         </div>
@@ -1207,146 +732,60 @@
         <div class="container">
           <div class="row gy-4">
             <div class="col-lg-4">
-              <a
-                href="index.html"
-                class="marca-nav mb-3 d-inline-flex"
-                style="text-decoration: none"
-              >
-                <img
-                  src="img/logovd.png"
-                  alt="Logotipo Victoria D."
-                  style="width: 44px; height: 44px"
-                />
-                <span style="color: #fff"
-                  >Nutrióloga Victoria Villalpando Dávalos.</span
-                >
+              <a href="index.html" class="marca-nav mb-3 d-inline-flex" style="text-decoration: none">
+                <img src="img/logovd.png" alt="Logotipo Victoria D." style="width: 44px; height: 44px" />
+                <span style="color: #fff">Nutrióloga Victoria Villalpando Dávalos.</span>
               </a>
               <p class="mt-3" style="max-width: 320px; color: #fff">
-                Nutrición basada en evidencia, cercanía y respeto por tu
-                historia. Consulta online y presencial.
+                Nutrición basada en evidencia, cercanía y respeto por tu historia.
+                Consulta online y presencial.
               </p>
               <div class="redes-footer mt-3">
-                <a
-                  href="https://www.instagram.com/nutrivictoriavd/"
-                  aria-label="Instagram"
-                  style="text-decoration: none; color: #fff"
-                  ><i class="bi bi-instagram"></i
-                ></a>
-                <a
-                  href="https://www.tiktok.com/@nutvictoriavd"
-                  aria-label="TikTok"
-                  style="text-decoration: none; color: #fff"
-                  ><i class="bi bi-tiktok"></i
-                ></a>
-                <a
-                  href="https://wa.me/523331575751"
-                  aria-label="WhatsApp"
-                  style="text-decoration: none; color: #fff"
-                  ><i class="bi bi-whatsapp"></i
-                ></a>
+                <a href="https://www.instagram.com/nutrivictoriavd/" aria-label="Instagram" style="text-decoration: none; color: #fff"><i class="bi bi-instagram"></i></a>
+                <a href="https://www.tiktok.com/@nutvictoriavd" aria-label="TikTok" style="text-decoration: none; color: #fff"><i class="bi bi-tiktok"></i></a>
+                <a href="https://wa.me/523331575751" aria-label="WhatsApp" style="text-decoration: none; color: #fff"><i class="bi bi-whatsapp"></i></a>
               </div>
             </div>
             <div class="col-6 col-lg-2">
               <h5 style="color: #fff; margin-bottom: 0.75rem">Explorar</h5>
               <ul style="list-style: none; padding: 0; margin: 0">
-                <li style="margin-bottom: 0.5rem">
-                  <a
-                    href="sobre-mi.html"
-                    style="text-decoration: none; color: #fff"
-                    >Sobre mí</a
-                  >
-                </li>
-                <li style="margin-bottom: 0.5rem">
-                  <a
-                    href="consulta.html"
-                    style="text-decoration: none; color: #fff"
-                    >Consulta</a
-                  >
-                </li>
-                <li style="margin-bottom: 0.5rem">
-                  <a
-                    href="pacientes.html"
-                    style="text-decoration: none; color: #fff"
-                    >Pacientes</a
-                  >
-                </li>
-                <li style="margin-bottom: 0.5rem">
-                  <a href="blog.html" style="text-decoration: none; color: #fff"
-                    >Blog</a
-                  >
-                </li>
+                <li style="margin-bottom: 0.5rem"><a href="sobre-mi.html" style="text-decoration: none; color: #fff">Sobre mí</a></li>
+                <li style="margin-bottom: 0.5rem"><a href="consulta.html" style="text-decoration: none; color: #fff">Consulta</a></li>
+                <li style="margin-bottom: 0.5rem"><a href="pacientes.html" style="text-decoration: none; color: #fff">Pacientes</a></li>
+                <li style="margin-bottom: 0.5rem"><a href="blog.html" style="text-decoration: none; color: #fff">Blog</a></li>
               </ul>
             </div>
             <div class="col-lg-4">
               <h5 style="color: #fff">Contacto</h5>
               <ul style="list-style: none; padding: 0">
-                <li style="color: #fff">
-                  <i class="bi bi-envelope me-2"></i> nut.victoriavd@gmail.com
-                </li>
-                <li style="color: #fff">
-                  <i class="bi bi-geo-alt me-2"></i> Colomos 2181, Ayuntamiento,
-                  44500 Gdl, Jal.
-                </li>
-                <li style="color: #fff">
-                  <i class="bi bi-whatsapp me-2"></i> Agenda por WhatsApp
-                </li>
+                <li style="color: #fff"><i class="bi bi-envelope me-2"></i> nut.victoriavd@gmail.com</li>
+                <li style="color: #fff"><i class="bi bi-geo-alt me-2"></i> Colomos 2181, Ayuntamiento, 44500 Gdl, Jal.</li>
+                <li style="color: #fff"><i class="bi bi-whatsapp me-2"></i> Agenda por WhatsApp</li>
               </ul>
             </div>
           </div>
           <hr class="footer-divisor" />
           <div class="footer-legal">
-            <span style="color: #fff"
-              >© 2026 Nutrióloga Victoria Villalpando Dávalos. Todos los
-              derechos reservados.</span
-            >
+            <span style="color: #fff">© 2026 Nutrióloga Victoria Villalpando Dávalos. Todos los derechos reservados.</span>
             <div class="enlaces-legales">
-              <a
-                href="aviso-privacidad.html"
-                style="text-decoration: none; color: #fff"
-                >Aviso de privacidad</a
-              >
-              <a
-                href="politica-cookies.html"
-                style="text-decoration: none; color: #fff"
-                >Política de cookies</a
-              >
+              <a href="aviso-privacidad.html" style="text-decoration: none; color: #fff">Aviso de privacidad</a>
+              <a href="politica-cookies.html" style="text-decoration: none; color: #fff">Política de cookies</a>
             </div>
           </div>
         </div>
       </footer>
 
-      <a
-        href="https://wa.me/523331575751"
-        class="whatsapp-flotante"
-        aria-label="Escribir por WhatsApp"
-        title="Escríbenos por WhatsApp"
-        style="
-          position: fixed;
-          right: 16px;
-          bottom: 24px;
-          z-index: 9999;
-          width: 64px;
-          height: 64px;
-          background: #25d366;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 28px;
-          color: #fff;
-          box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
-        "
-      >
+      <a href="https://wa.me/523331575751" class="whatsapp-flotante" aria-label="Escribir por WhatsApp" title="Escríbenos por WhatsApp"
+        style="position: fixed; right: 16px; bottom: 24px; z-index: 9999; width: 64px; height: 64px; background: #25d366; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; color: #fff; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);">
         <i class="bi bi-whatsapp"></i>
       </a>
-    </div>
-    <!-- /#contenido-app -->
+    </div><!-- /#contenido-app -->
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/main.js"></script>
 
     <script>
-      /* =========================================================================
+    /* =========================================================================
        CANDADO DE ACCESO
        -------------------------------------------------------------------------
        Esto NO es seguridad de nivel bancario: es una contraseña compartida que
@@ -1366,8 +805,7 @@
              .map(x => x.toString(16).padStart(2,'0')).join('')))
        y pega el resultado en CLAVE_HASH abajo.
        ========================================================================= */
-      const CLAVE_HASH =
-        "086635fbac324f4fd646adfbf065623c72536f2d53f61c922d828f5c4e46888b";
+      const CLAVE_HASH = "086635fbac324f4fd646adfbf065623c72536f2d53f61c922d828f5c4e46888b";
       const LLAVE_ALMACENAMIENTO = "vd_pacientes_autenticado";
 
       const candado = document.getElementById("candado");
@@ -1377,13 +815,8 @@
       const avisoError = document.getElementById("aviso-error");
 
       async function sha256Hex(texto) {
-        const buffer = await crypto.subtle.digest(
-          "SHA-256",
-          new TextEncoder().encode(texto),
-        );
-        return Array.from(new Uint8Array(buffer))
-          .map((b) => b.toString(16).padStart(2, "0"))
-          .join("");
+        const buffer = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(texto));
+        return Array.from(new Uint8Array(buffer)).map(b => b.toString(16).padStart(2, "0")).join("");
       }
 
       function mostrarApp() {
@@ -1407,9 +840,7 @@
       }
 
       btnEntrar.addEventListener("click", intentarEntrar);
-      inputClave.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") intentarEntrar();
-      });
+      inputClave.addEventListener("keydown", e => { if (e.key === "Enter") intentarEntrar(); });
 
       if (localStorage.getItem(LLAVE_ALMACENAMIENTO) === "1") {
         mostrarApp();
@@ -1419,42 +850,35 @@
     </script>
 
     <script>
-      /* =========================================================================
+    /* =========================================================================
        TABS DEL DASHBOARD
        ========================================================================= */
       const botonesTab = document.querySelectorAll(".tab-btn");
       const paneles = document.querySelectorAll(".panel-dashboard");
 
       function irATab(nombre) {
-        botonesTab.forEach((b) =>
-          b.classList.toggle("activo", b.dataset.tab === nombre),
-        );
-        paneles.forEach((p) =>
-          p.classList.toggle("activo", p.id === "panel-" + nombre),
-        );
+        botonesTab.forEach(b => b.classList.toggle("activo", b.dataset.tab === nombre));
+        paneles.forEach(p => p.classList.toggle("activo", p.id === "panel-" + nombre));
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
 
-      botonesTab.forEach((b) =>
-        b.addEventListener("click", () => irATab(b.dataset.tab)),
-      );
-      document.querySelectorAll("[data-ir-a]").forEach((el) => {
+      botonesTab.forEach(b => b.addEventListener("click", () => irATab(b.dataset.tab)));
+      document.querySelectorAll("[data-ir-a]").forEach(el => {
         el.addEventListener("click", () => irATab(el.dataset.irA));
       });
 
       const TIPS = [
         "Comer despacio y sin pantallas ayuda a reconocer mejor tus señales de hambre y saciedad.",
-        'No hay alimentos "prohibidos": hay contextos, porciones y frecuencias.',
+        "No hay alimentos \"prohibidos\": hay contextos, porciones y frecuencias.",
         "Tomar agua a lo largo del día apoya la digestión y la energía, no solo cuando tienes sed.",
         "Incluir una fuente de proteína en cada comida ayuda a mantenerte satisfecho por más tiempo.",
         "Planear tus comidas con ant\u00edcipación reduce el estrés de decidir qué comer a última hora.",
       ];
-      document.getElementById("tip-del-dia").textContent =
-        TIPS[new Date().getDate() % TIPS.length];
+      document.getElementById("tip-del-dia").textContent = TIPS[new Date().getDate() % TIPS.length];
     </script>
 
     <script>
-      /* =========================================================================
+    /* =========================================================================
        FILTRO DE JUEGOS POR PÚBLICO
        -------------------------------------------------------------------------
        Para clasificar un nuevo juego, agrégale data-categorias="general" y/o
@@ -1469,34 +893,26 @@
       let audienciaActiva = "todos";
 
       const chipsAudiencia = document.getElementById("chips-audiencia");
-      const itemsJuegos = document.querySelectorAll(
-        "#grid-juegos .juego-item, #grid-proximos .juego-item",
-      );
+      const itemsJuegos = document.querySelectorAll("#grid-juegos .juego-item, #grid-proximos .juego-item");
       const avisoSinJuegos = document.getElementById("aviso-sin-juegos");
 
       function construirChipsAudiencia() {
         chipsAudiencia.innerHTML = "";
-        AUDIENCIAS.forEach((a) => {
+        AUDIENCIAS.forEach(a => {
           const chip = document.createElement("button");
           chip.type = "button";
-          chip.className =
-            "chip-grupo" + (a.valor === audienciaActiva ? " activo" : "");
+          chip.className = "chip-grupo" + (a.valor === audienciaActiva ? " activo" : "");
           chip.textContent = a.etiqueta;
-          chip.addEventListener("click", () => {
-            audienciaActiva = a.valor;
-            construirChipsAudiencia();
-            filtrarJuegos();
-          });
+          chip.addEventListener("click", () => { audienciaActiva = a.valor; construirChipsAudiencia(); filtrarJuegos(); });
           chipsAudiencia.appendChild(chip);
         });
       }
 
       function filtrarJuegos() {
         let visibles = 0;
-        itemsJuegos.forEach((item) => {
+        itemsJuegos.forEach(item => {
           const categorias = (item.dataset.categorias || "").split(" ");
-          const coincide =
-            audienciaActiva === "todos" || categorias.includes(audienciaActiva);
+          const coincide = audienciaActiva === "todos" || categorias.includes(audienciaActiva);
           item.classList.toggle("d-none", !coincide);
           if (coincide) visibles++;
         });
@@ -1508,7 +924,7 @@
     </script>
 
     <script>
-      /* =========================================================================
+    /* =========================================================================
        BASE DE ALIMENTOS — conectada a tu Google Sheet "BASEDEALIMENTOS"
        -------------------------------------------------------------------------
        Mientras la hoja siga compartida como "Cualquier persona con el enlace
@@ -1522,112 +938,157 @@
 
       let TODOS_LOS_ALIMENTOS = [];
       let grupoActivo = "Todos";
+      let visibles = 24;
+      const PASO_PAGINACION = 24;
 
-      const tbody = document.getElementById("cuerpo-tabla");
+      const grid = document.getElementById("food-grid");
+      const loadingGrid = document.getElementById("food-loading");
+      const estadoInicial = document.getElementById("estado-inicial");
       const inputBusqueda = document.getElementById("buscador-input");
       const chipsWrap = document.getElementById("chips-grupo");
       const estadoVacio = document.getElementById("estado-vacio");
       const contador = document.getElementById("contador-resultados");
       const estadoDatos = document.getElementById("estado-datos");
+      const btnMostrarMas = document.getElementById("btn-mostrar-mas");
 
       function num(v) {
-        return v === null || v === undefined || isNaN(v)
-          ? "—"
-          : (Math.round(v * 10) / 10).toString().replace(".", ",");
+        return (v === null || v === undefined || isNaN(v)) ? "—" : (Math.round(v * 10) / 10).toString().replace(".", ",");
+      }
+
+      function iconoDeGrupo(grupo) {
+        const g = (grupo || "").toLowerCase();
+        if (g.includes("fruta")) return "🍎";
+        if (g.includes("verdura")) return "🥦";
+        if (g.includes("cereal") || g.includes("tubérculo") || g.includes("tuberculo")) return "🌽";
+        if (g.includes("legumin")) return "🫘";
+        if (g.includes("leche")) return "🥛";
+        if (g.includes("aceite") || g.includes("grasa")) return "🫒";
+        if (g.includes("aoa") || g.includes("animal") || g.includes("proteína") || g.includes("proteina")) return "🍗";
+        if (g.includes("azúcar") || g.includes("azucar")) return "🍬";
+        return "🍽️";
+      }
+
+      function mostrarSkeletons() {
+        loadingGrid.innerHTML = "";
+        for (let i = 0; i < 8; i++) {
+          const sk = document.createElement("div");
+          sk.className = "food-skeleton";
+          loadingGrid.appendChild(sk);
+        }
+        loadingGrid.classList.remove("d-none");
+        grid.classList.add("d-none");
+        estadoInicial.classList.add("d-none");
+      }
+
+      function ocultarSkeletons() {
+        loadingGrid.classList.add("d-none");
+        grid.classList.remove("d-none");
       }
 
       function construirChips() {
-        const grupos = [
-          "Todos",
-          ...new Set(TODOS_LOS_ALIMENTOS.map((f) => f.grupo).filter(Boolean)),
-        ].sort((a, b) =>
-          a === "Todos" ? -1 : b === "Todos" ? 1 : a.localeCompare(b, "es"),
-        );
+        const grupos = ["Todos", ...new Set(TODOS_LOS_ALIMENTOS.map(f => f.grupo).filter(Boolean))].sort((a,b)=> a==="Todos" ? -1 : b==="Todos" ? 1 : a.localeCompare(b,"es"));
         chipsWrap.innerHTML = "";
-        grupos.forEach((g) => {
+        grupos.forEach(g => {
           const chip = document.createElement("button");
           chip.type = "button";
           chip.className = "chip-grupo" + (g === grupoActivo ? " activo" : "");
           chip.textContent = g;
-          chip.addEventListener("click", () => {
-            grupoActivo = g;
-            construirChips();
-            renderTabla();
-          });
+          chip.addEventListener("click", () => { grupoActivo = g; visibles = PASO_PAGINACION; construirChips(); renderGrid(); });
           chipsWrap.appendChild(chip);
         });
       }
 
       function detalleGrid(f) {
         const items = [
-          ["AG saturados", num(f.agSat) + " g"],
-          ["AG monoinsat.", num(f.agMono) + " g"],
-          ["AG poliinsat.", num(f.agPoli) + " g"],
-          ["Colesterol", num(f.colesterol) + " mg"],
-          ["Azúcar", num(f.azucar) + " g"],
-          ["Fibra", num(f.fibra) + " g"],
-          ["Vitamina A", num(f.vitA) + " mg RE"],
-          ["Ác. ascórbico", num(f.vitC) + " mg"],
-          ["Ác. fólico", num(f.folato) + " mcg"],
-          ["Calcio", num(f.calcio) + " mg"],
-          ["Hierro", num(f.hierro) + " mg"],
-          ["Potasio", num(f.potasio) + " mg"],
-          ["Sodio", num(f.sodio) + " mg"],
-          ["Fósforo", num(f.fosforo) + " mg"],
-          ["Índice glicémico", num(f.ig)],
-          ["Carga glicémica", num(f.cargaGlicemica)],
-          ["Densidad energética", num(f.densidad) + " kcal/g"],
+          ["AG saturados", num(f.agSat) + " g"], ["AG monoinsat.", num(f.agMono) + " g"], ["AG poliinsat.", num(f.agPoli) + " g"],
+          ["Colesterol", num(f.colesterol) + " mg"], ["Vitamina A", num(f.vitA) + " mg RE"], ["Ác. ascórbico", num(f.vitC) + " mg"],
+          ["Ác. fólico", num(f.folato) + " mcg"], ["Calcio", num(f.calcio) + " mg"], ["Hierro", num(f.hierro) + " mg"],
+          ["Potasio", num(f.potasio) + " mg"], ["Sodio", num(f.sodio) + " mg"], ["Fósforo", num(f.fosforo) + " mg"],
+          ["Índice glicémico", num(f.ig)], ["Carga glicémica", num(f.cargaGlicemica)], ["Densidad energética", num(f.densidad) + " kcal/g"]
         ];
-        return items
-          .map(
-            ([label, value]) =>
-              `<div class="detalle-item"><div class="etiqueta">${label}</div><div class="valor">${value}</div></div>`,
-          )
-          .join("");
+        return items.map(([label, value]) => `<div class="detalle-item"><div class="etiqueta">${label}</div><div class="valor">${value}</div></div>`).join("");
       }
 
-      function renderTabla() {
-        const q = inputBusqueda.value.trim().toLowerCase();
-        const filtrados = TODOS_LOS_ALIMENTOS.filter((f) => {
-          const coincideBusqueda = !q || f.alimento.toLowerCase().includes(q);
-          const coincideGrupo =
-            grupoActivo === "Todos" || f.grupo === grupoActivo;
-          return coincideBusqueda && coincideGrupo;
-        }).slice(0, 400);
+      let modalAlimento;
+      function abrirModal(f) {
+        document.getElementById("modal-alimento-icono").textContent = iconoDeGrupo(f.grupo);
+        document.getElementById("modal-alimento-grupo").textContent = f.grupo || "Sin grupo";
+        document.getElementById("modal-alimento-titulo").textContent = f.alimento;
+        document.getElementById("modal-alimento-porcion").textContent = `Porción sugerida: ${f.cantidad || "—"} ${f.unidad || ""}`;
+        document.getElementById("modal-alimento-macros").innerHTML = `
+          <div class="macro-chip"><span class="valor">${num(f.energia)}</span><span class="etiqueta">kcal</span></div>
+          <div class="macro-chip"><span class="valor">${num(f.proteina)} g</span><span class="etiqueta">Proteína</span></div>
+          <div class="macro-chip"><span class="valor">${num(f.lipidos)} g</span><span class="etiqueta">Lípidos</span></div>
+          <div class="macro-chip"><span class="valor">${num(f.hc)} g</span><span class="etiqueta">HC</span></div>
+          <div class="macro-chip"><span class="valor">${num(f.azucar)} g</span><span class="etiqueta">Azúcar</span></div>
+          <div class="macro-chip"><span class="valor">${num(f.fibra)} g</span><span class="etiqueta">Fibra</span></div>
+        `;
+        document.getElementById("modal-alimento-detalle").innerHTML = detalleGrid(f);
+        const linkWrap = document.getElementById("modal-alimento-link-wrap");
+        if (f.link) {
+          document.getElementById("modal-alimento-link").href = f.link;
+          linkWrap.classList.remove("d-none");
+        } else {
+          linkWrap.classList.add("d-none");
+        }
+        if (!modalAlimento) modalAlimento = new bootstrap.Modal(document.getElementById("modal-alimento"));
+        modalAlimento.show();
+      }
 
-        contador.textContent =
-          filtrados.length +
-          (filtrados.length === 1 ? " alimento" : " alimentos");
-        tbody.innerHTML = "";
+      function renderGrid() {
+        const q = inputBusqueda.value.trim().toLowerCase();
+        const hayBusquedaActiva = q.length > 0 || grupoActivo !== "Todos";
+
+        if (!hayBusquedaActiva) {
+          grid.innerHTML = "";
+          grid.classList.add("d-none");
+          estadoVacio.classList.add("d-none");
+          estadoInicial.classList.remove("d-none");
+          btnMostrarMas.classList.add("d-none");
+          contador.textContent = "";
+          return;
+        }
+        estadoInicial.classList.add("d-none");
+        grid.classList.remove("d-none");
+
+        const filtrados = TODOS_LOS_ALIMENTOS.filter(f => {
+          const coincideBusqueda = !q || f.alimento.toLowerCase().includes(q);
+          const coincideGrupo = grupoActivo === "Todos" || f.grupo === grupoActivo;
+          return coincideBusqueda && coincideGrupo;
+        });
+
+        contador.textContent = filtrados.length + (filtrados.length === 1 ? " alimento encontrado" : " alimentos encontrados");
+        grid.innerHTML = "";
         estadoVacio.classList.toggle("d-none", filtrados.length !== 0);
 
-        filtrados.forEach((f) => {
-          const fila = document.createElement("tr");
-          fila.className = "fila-alimento";
-          fila.innerHTML = `
-            <td><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#93a66a" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></td>
-            <td class="nombre-alimento">${f.alimento}</td>
-            <td>${f.cantidad ?? "—"} ${f.unidad ?? ""}</td>
-            <td>${num(f.energia)} kcal</td>
-            <td>${num(f.proteina)} g</td>
-            <td>${num(f.lipidos)} g</td>
-            <td>${num(f.hc)} g</td>
-            <td>${num(f.fibra)} g</td>
-            <td><span class="pill-grupo">${f.grupo || "Sin grupo"}</span></td>
+        const paraMostrar = filtrados.slice(0, visibles);
+        paraMostrar.forEach(f => {
+          const card = document.createElement("button");
+          card.type = "button";
+          card.className = "food-card";
+          card.innerHTML = `
+            <div class="food-card-top">
+              <div class="food-icon">${iconoDeGrupo(f.grupo)}</div>
+              <div>
+                <div class="food-card-nombre">${f.alimento}</div>
+                <div class="food-card-porcion">${f.cantidad || "—"} ${f.unidad || ""}</div>
+                <div class="food-card-grupo mt-1">${f.grupo || "Sin grupo"}</div>
+              </div>
+            </div>
+            <div class="macro-row">
+              <div class="macro-chip"><span class="valor">${num(f.energia)}</span><span class="etiqueta">kcal</span></div>
+              <div class="macro-chip"><span class="valor">${num(f.proteina)}g</span><span class="etiqueta">Prot.</span></div>
+              <div class="macro-chip"><span class="valor">${num(f.hc)}g</span><span class="etiqueta">HC</span></div>
+            </div>
           `;
-          const detalle = document.createElement("tr");
-          detalle.className = "fila-detalle";
-          detalle.innerHTML = `<td colspan="9"><div class="detalle-grid">${detalleGrid(f)}${f.link ? `<div class="detalle-item"><div class="etiqueta">Referencia</div><a class="valor" style="color:#3d6aa1;text-decoration:underline;" href="${f.link}" target="_blank" rel="noopener">Ver ficha</a></div>` : ""}</div></td>`;
-
-          fila.addEventListener("click", () => {
-            const abierta = detalle.classList.toggle("abierta");
-            fila.classList.toggle("expandida", abierta);
-          });
-
-          tbody.appendChild(fila);
-          tbody.appendChild(detalle);
+          card.addEventListener("click", () => abrirModal(f));
+          grid.appendChild(card);
         });
+
+        btnMostrarMas.classList.toggle("d-none", filtrados.length <= visibles);
       }
+
+      btnMostrarMas.addEventListener("click", () => { visibles += PASO_PAGINACION; renderGrid(); });
 
       function aNumero(raw) {
         if (raw === undefined || raw === null) return null;
@@ -1638,112 +1099,98 @@
         return isNaN(n) ? null : n;
       }
 
+      // Para campos como la porción sugerida, que pueden venir como fracción (ej. "1/3"):
+      // se conserva el texto tal cual viene en la hoja, sin convertirlo a número.
+      function aTexto(raw) {
+        if (raw === undefined || raw === null) return "";
+        const v = String(raw).trim();
+        if (!v || v.toUpperCase() === "ND" || v === "#DIV/0!") return "";
+        return v;
+      }
+
       function parseCSV(texto) {
         const filas = [];
-        let fila = [],
-          campo = "",
-          entreComillas = false;
+        let fila = [], campo = "", entreComillas = false;
         for (let i = 0; i < texto.length; i++) {
           const c = texto[i];
           if (entreComillas) {
-            if (c === '"' && texto[i + 1] === '"') {
-              campo += '"';
-              i++;
-            } else if (c === '"') {
-              entreComillas = false;
-            } else {
-              campo += c;
-            }
+            if (c === '"' && texto[i + 1] === '"') { campo += '"'; i++; }
+            else if (c === '"') { entreComillas = false; }
+            else { campo += c; }
           } else {
             if (c === '"') entreComillas = true;
-            else if (c === ",") {
-              fila.push(campo);
-              campo = "";
-            } else if (c === "\n") {
-              fila.push(campo);
-              filas.push(fila);
-              fila = [];
-              campo = "";
-            } else if (c === "\r") {
-              /* saltar */
-            } else campo += c;
+            else if (c === ',') { fila.push(campo); campo = ""; }
+            else if (c === '\n') { fila.push(campo); filas.push(fila); fila = []; campo = ""; }
+            else if (c === '\r') { /* saltar */ }
+            else campo += c;
           }
         }
-        if (campo.length || fila.length) {
-          fila.push(campo);
-          filas.push(fila);
-        }
-        return filas.filter((f) => f.some((c) => c.trim() !== ""));
+        if (campo.length || fila.length) { fila.push(campo); filas.push(fila); }
+        return filas.filter(f => f.some(c => c.trim() !== ""));
       }
 
       function filasAAlimentos(filas) {
-        const encabezado = filas[0].map((h) => h.trim());
-        const idx = (nombre) => encabezado.indexOf(nombre);
-        return filas
-          .slice(1)
-          .map((cols) => {
-            const get = (nombre) => {
-              const i = idx(nombre);
-              return i === -1 ? undefined : cols[i];
-            };
-            return {
-              alimento: (get("ALIMENTO") || "").trim(),
-              cantidad: aNumero(get("Cantidad sugerida")),
-              unidad: (get("Unidad") || "").trim(),
-              energia: aNumero(get("Energía (kcal)")),
-              proteina: aNumero(get("Proteína (g)")),
-              lipidos: aNumero(get("Lípidos (g)")),
-              hc: aNumero(get("Hidratos de carbono (g)")),
-              agSat: aNumero(get("AG saturados (g)")),
-              agMono: aNumero(get("AG monoinsaturados (g)")),
-              agPoli: aNumero(get("AG poliinsaturados (g)")),
-              colesterol: aNumero(get("Colesterol (mg)")),
-              azucar: aNumero(get("Azúcar (g)")),
-              fibra: aNumero(get("Fibra (g)")),
-              vitA: aNumero(get("Vitamina A (mg RE)")),
-              vitC: aNumero(get("Ácido Ascórbico (mg)")),
-              folato: aNumero(get("Ácido Fólico (mcg)")),
-              calcio: aNumero(get("Calcio (mg)")),
-              hierro: aNumero(get("Hierro (mg)")),
-              potasio: aNumero(get("Potasio (mg)")),
-              sodio: aNumero(get("Sodio (mg)")),
-              fosforo: aNumero(get("Fósforo (mg)")),
-              etanol: aNumero(get("Etanol (g)")),
-              ig: aNumero(get("IG")),
-              cargaGlicemica: aNumero(get("Carga glicémica")),
-              potencialCetogenico: aNumero(get("potencial cetogénico")),
-              densidad: aNumero(get("densidad energérica  kcal: g")),
-              link: (get("Link") || "").trim(),
-              grupo: (get("Grupo alimenticio") || "").trim(),
-            };
-          })
-          .filter((f) => f.alimento);
+        const encabezado = filas[0].map(h => h.trim());
+        const idx = nombre => encabezado.indexOf(nombre);
+        return filas.slice(1).map(cols => {
+          const get = nombre => { const i = idx(nombre); return i === -1 ? undefined : cols[i]; };
+          return {
+            alimento: (get("ALIMENTO") || "").trim(),
+            cantidad: aTexto(get("Cantidad sugerida")),
+            unidad: (get("Unidad") || "").trim(),
+            energia: aNumero(get("Energía (kcal)")),
+            proteina: aNumero(get("Proteína (g)")),
+            lipidos: aNumero(get("Lípidos (g)")),
+            hc: aNumero(get("Hidratos de carbono (g)")),
+            agSat: aNumero(get("AG saturados (g)")),
+            agMono: aNumero(get("AG monoinsaturados (g)")),
+            agPoli: aNumero(get("AG poliinsaturados (g)")),
+            colesterol: aNumero(get("Colesterol (mg)")),
+            azucar: aNumero(get("Azúcar (g)")),
+            fibra: aNumero(get("Fibra (g)")),
+            vitA: aNumero(get("Vitamina A (mg RE)")),
+            vitC: aNumero(get("Ácido Ascórbico (mg)")),
+            folato: aNumero(get("Ácido Fólico (mcg)")),
+            calcio: aNumero(get("Calcio (mg)")),
+            hierro: aNumero(get("Hierro (mg)")),
+            potasio: aNumero(get("Potasio (mg)")),
+            sodio: aNumero(get("Sodio (mg)")),
+            fosforo: aNumero(get("Fósforo (mg)")),
+            etanol: aNumero(get("Etanol (g)")),
+            ig: aNumero(get("IG")),
+            cargaGlicemica: aNumero(get("Carga glicémica")),
+            potencialCetogenico: aNumero(get("potencial cetogénico")),
+            densidad: aNumero(get("densidad energérica  kcal: g")),
+            link: (get("Link") || "").trim(),
+            grupo: (get("Grupo alimenticio") || "").trim(),
+          };
+        }).filter(f => f.alimento);
       }
 
       async function cargarDatos() {
+        mostrarSkeletons();
         try {
           const res = await fetch(SHEET_CSV_URL, { cache: "no-store" });
           if (!res.ok) throw new Error("No se pudo cargar la hoja");
           const texto = await res.text();
           const alimentos = filasAAlimentos(parseCSV(texto));
-          if (!alimentos.length)
-            throw new Error("La hoja no tiene alimentos válidos");
+          if (!alimentos.length) throw new Error("La hoja no tiene alimentos válidos");
           TODOS_LOS_ALIMENTOS = alimentos;
           estadoDatos.textContent = `Base de datos conectada a tu Google Sheet · ${alimentos.length} alimentos.`;
         } catch (err) {
-          estadoDatos.textContent =
-            'No se pudo cargar tu Google Sheet en este momento. Verifica que siga compartida como "Cualquier persona con el enlace puede ver" y refresca la página.';
+          estadoDatos.textContent = "No se pudo cargar tu Google Sheet en este momento. Verifica que siga compartida como \"Cualquier persona con el enlace puede ver\" y refresca la página.";
         }
+        ocultarSkeletons();
         construirChips();
-        renderTabla();
+        renderGrid();
       }
 
-      inputBusqueda.addEventListener("input", renderTabla);
+      inputBusqueda.addEventListener("input", () => { visibles = PASO_PAGINACION; renderGrid(); });
       cargarDatos();
     </script>
 
     <script>
-      /* =========================================================================
+    /* =========================================================================
        CALCULADORA DE HIDRATOS DE CARBONO (regla de 3 directa)
        ? = (HC_etiqueta × gramos_a_comer) / gramos_base_etiqueta
        ========================================================================= */
@@ -1764,13 +1211,7 @@
         const base = parseFloat(calcBase.value);
         const porcion = parseFloat(calcPorcion.value);
 
-        const valido =
-          !isNaN(hc) &&
-          !isNaN(base) &&
-          !isNaN(porcion) &&
-          hc >= 0 &&
-          base > 0 &&
-          porcion >= 0;
+        const valido = !isNaN(hc) && !isNaN(base) && !isNaN(porcion) && hc >= 0 && base > 0 && porcion >= 0;
         if (!valido) {
           calcError.classList.remove("d-none");
           calcResultado.classList.add("d-none");
@@ -1783,22 +1224,18 @@
 
         document.getElementById("rt-hc").textContent = formatearNumero(hc);
         document.getElementById("rt-base").textContent = formatearNumero(base);
-        document.getElementById("rt-porcion").textContent =
-          formatearNumero(porcion);
+        document.getElementById("rt-porcion").textContent = formatearNumero(porcion);
         document.getElementById("rt-formula").textContent =
           `? = (${formatearNumero(hc)} × ${formatearNumero(porcion)}) ÷ ${formatearNumero(base)}`;
-        document.getElementById("rt-resultado").textContent =
-          formatearNumero(resultado);
+        document.getElementById("rt-resultado").textContent = formatearNumero(resultado);
 
         calcVacio.classList.add("d-none");
         calcResultado.classList.remove("d-none");
       }
 
       calcBtn.addEventListener("click", calcularHC);
-      [calcHc, calcBase, calcPorcion].forEach((input) => {
-        input.addEventListener("keydown", (e) => {
-          if (e.key === "Enter") calcularHC();
-        });
+      [calcHc, calcBase, calcPorcion].forEach(input => {
+        input.addEventListener("keydown", e => { if (e.key === "Enter") calcularHC(); });
       });
     </script>
   </body>
