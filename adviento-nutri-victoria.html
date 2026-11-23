@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Adviento Nutri Victoria</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* VOICE infantil y navideño, cálido
+   IDEA posada mexicana: papel picado y 25 regalitos, piñatas, frutas y juguetes
+   PICTURE la cuadrícula de objetos ilustrados, cada uno es una puerta
+   COLOUR verde profundo dominante, naranja acento, azul de apoyo, blanco
+   TYPE Fredoka para números y títulos + Nunito para texto
+   LAYOUT banda verde con título y progreso; cuadrícula 5×5 debajo; en móvil igual de 5 columnas, más compacta */
+:root{color-scheme:light dark;
+--bg:light-dark(#ffffff,#0f1d16);
+--ink:light-dark(#16241c,#eef5f0);
+--soft:light-dark(#4b5c52,#b7c9bd);
+--green:light-dark(#1f6b46,#2f8a5c);
+--greenD:light-dark(#174f34,#143a27);
+--green2:light-dark(#e6f2ea,#173225);
+--orange:light-dark(#ef7d22,#f39243);
+--orange2:light-dark(#fff0e2,#3a2614);
+--blue:light-dark(#2364aa,#5b98dd);
+--blue2:light-dark(#e5eefa,#14263c);
+--card:light-dark(#ffffff,#15281e);
+--line:light-dark(#d9e5dd,#2a4334);
+--tile:light-dark(#eaf5ff,#14283a);
+--tileS:light-dark(#cfe3f5,#0d1c2a);
+--sun:light-dark(#ffe9a8,#5a4413)}
+:root[data-theme=light]{color-scheme:light}
+:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.55 Nunito,system-ui,sans-serif;overflow-x:clip}
+h1,h2,h3,.num{font-family:Fredoka,Nunito,sans-serif;font-weight:600;letter-spacing:-.01em}
+.band{padding-block:clamp(24px,4vw,52px);padding-inline:max(5vw,16px)}
+.wrap{max-width:1040px;margin:0 auto}
+header{background:var(--green);color:#fff;position:relative;overflow:hidden;padding-top:0}
+header .wrap{padding-top:clamp(14px,2vw,24px)}
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,300px);gap:24px;align-items:center}
+.big{width:100%;aspect-ratio:1;overflow:visible}
+@media(max-width:700px){.hero{grid-template-columns:minmax(0,1fr)}.big{display:none}}
+.snow{position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(circle,rgba(255,255,255,.35) 2px,transparent 2.5px),radial-gradient(circle,rgba(255,255,255,.2) 1.5px,transparent 2px);background-size:60px 60px,37px 37px;background-position:0 0,18px 26px}
+header>*{position:relative}
+header svg.deco{position:absolute;right:-30px;top:-20px;width:260px;height:260px;opacity:.16;pointer-events:none}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:15px;color:#fff}
+.brand i{width:34px;height:34px;border-radius:50%;background:var(--orange);display:grid;place-items:center;font-style:normal;font-family:Fredoka,sans-serif;font-size:15px}
+h1{font-size:clamp(30px,5vw,48px);line-height:1.05;margin:16px 0 10px;text-wrap:balance;max-width:16ch}
+.intro{max-width:58ch;margin:0;color:#e3f2e8;font-size:17px}
+.status{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center;margin-top:22px}
+.meter{flex:1 1 240px;max-width:420px}
+.meter b{display:block;font-size:15px;margin-bottom:6px}
+.track{height:12px;border-radius:99px;background:rgba(255,255,255,.22);overflow:hidden}
+.track span{display:block;height:100%;width:0;background:var(--orange);border-radius:99px;transition:width .4s}
+.pill{background:rgba(255,255,255,.14);border-radius:99px;padding:8px 16px;font-weight:700;font-size:15px}
+.preview{background:var(--orange2);color:var(--ink);border-bottom:1px solid var(--line);padding:10px max(5vw,16px);font-size:15px;display:none}
+.preview.on{display:block}
+main.band{padding-top:clamp(22px,3vw,40px);background-image:radial-gradient(circle,var(--tile) 2px,transparent 2.5px),radial-gradient(circle,var(--tile) 1.5px,transparent 2px);background-size:46px 46px,29px 29px;background-position:0 0,14px 20px}
+.grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:clamp(8px,1.6vw,16px)}
+.door{position:relative;aspect-ratio:1;border:0;padding:0;background:var(--tile);border-radius:22px;cursor:pointer;font:inherit;color:inherit;display:block;box-shadow:inset 0 -5px 0 var(--tileS)}
+.door:focus-visible{outline:3px solid var(--orange);outline-offset:3px}
+.door:hover .art{transform:translateY(-4px) rotate(-3deg)}
+.art{position:absolute;inset:6% 6% 10%;transition:transform .25s}
+.art svg{width:100%;height:100%;overflow:visible}
+.badge{position:absolute;right:6%;bottom:6%;width:clamp(28px,4.6vw,46px);height:clamp(28px,4.6vw,46px);border-radius:50%;background:#fff;color:#16241c;display:grid;place-items:center;font-family:Fredoka,sans-serif;font-weight:600;font-size:clamp(14px,2.4vw,24px);box-shadow:0 2px 0 rgba(0,0,0,.18);border:3px solid var(--orange)}
+.door.open .badge{background:var(--orange);color:#fff;border-color:#fff}
+.door.done .badge{background:var(--green);color:#fff;border-color:#fff}
+.door.locked{cursor:default;box-shadow:inset 0 -5px 0 var(--tileS)}
+.door.locked .art{filter:grayscale(1);opacity:.35}
+.door.locked:hover .art{transform:none}
+.door.locked .badge{border-color:var(--line);color:var(--soft)}
+.when{position:absolute;left:8%;top:7%;font-size:clamp(11px,1.3vw,13px);font-weight:800;color:var(--soft)}
+.door.today{background:var(--sun)}
+.door.today .when{color:#7a3d00}
+.door.hop .art{animation:hop .5s ease}
+@keyframes hop{0%{transform:none}30%{transform:translateY(-14px) rotate(-8deg) scale(1.06)}60%{transform:translateY(0) rotate(6deg)}100%{transform:none}}
+.bunting{display:block;width:100%;height:clamp(46px,7vw,70px)}
+.legend{display:flex;flex-wrap:wrap;gap:10px 22px;margin:26px 0 0;padding:0;list-style:none;color:var(--soft);font-size:15px}
+.legend li{display:flex;align-items:center;gap:8px}
+.legend svg{width:22px;height:22px}
+footer{background:var(--green2);border-top:1px solid var(--line)}
+footer .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:22px}
+footer h3{margin:0 0 6px;font-size:20px}
+footer p{margin:0 0 6px;font-size:15px;color:var(--soft)}
+footer a{color:var(--blue);font-weight:700}
+dialog{border:0;padding:0;border-radius:22px;width:min(560px,calc(100vw - 24px));max-height:calc(100dvh - 32px);background:var(--card);color:var(--ink);box-shadow:0 20px 60px rgba(0,0,0,.3)}
+dialog::backdrop{background:rgba(10,30,20,.55)}
+.dhead{padding:22px 24px 18px;color:#fff;position:relative}
+.dhead.reto{background:var(--green)}.dhead.mente{background:var(--blue)}.dhead.dato{background:#6a4fb0}.dhead.receta{background:var(--orange)}.dhead.navidad{background:linear-gradient(135deg,var(--green),var(--blue))}
+.dhead .tag{display:inline-flex;align-items:center;gap:6px;font-weight:800;font-size:14px;background:rgba(255,255,255,.2);padding:4px 12px;border-radius:99px}
+.dhead .tag svg{width:16px;height:16px}
+.dhead h2{margin:10px 0 0;font-size:clamp(24px,4vw,30px);line-height:1.1;text-wrap:balance}
+.dhead .day{font-size:14px;opacity:.9;margin-top:4px}
+.x{position:absolute;top:12px;right:12px;width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.2);color:#fff;font-size:24px;cursor:pointer;line-height:1}
+.x:focus-visible,.btn:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.dbody{padding:20px 24px 24px;overflow:auto}
+.dbody p{margin:0 0 12px}
+.dbody h3{font-size:18px;margin:16px 0 6px}
+.dbody ul,.dbody ol{margin:0 0 12px;padding-left:22px}
+.dbody li{margin-bottom:4px}
+.act{background:var(--green2);border-radius:14px;padding:14px 16px;margin:14px 0}
+.act b{display:block;color:var(--green);margin-bottom:4px}
+.rowb{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-top:16px}
+.check{display:flex;align-items:center;gap:10px;font-weight:700;cursor:pointer;min-height:44px}
+.check input{width:22px;height:22px;accent-color:var(--green)}
+.btn{min-height:44px;padding:0 20px;border-radius:99px;border:2px solid var(--green);background:var(--green);color:#fff;font:700 16px Nunito,sans-serif;cursor:pointer}
+.note{font-size:13px;color:var(--soft);margin-top:14px}
+@media(max-width:600px){.door{border-radius:14px}.when{display:none}.badge{border-width:2px}}
+@media(prefers-reduced-motion:reduce){.art,.track span{transition:none}.door.hop .art{animation:none}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="i-reto" viewBox="0 0 24 24"><path d="M5 19c0-8 6-14 15-14-1 9-6 14-13 14H5z" fill="currentColor" opacity=".85"/><path d="M5 19c3-4 6-7 10-9" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round"/></symbol>
+<symbol id="i-mente" viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" fill="currentColor"/></symbol>
+<symbol id="i-dato" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0-3.6 10.8c.6.5 1 1.2 1 2V17h5.2v-1.2c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z" fill="currentColor"/><rect x="9.4" y="18.4" width="5.2" height="2.4" rx="1.2" fill="currentColor" opacity=".7"/></symbol>
+<symbol id="i-receta" viewBox="0 0 24 24"><path d="M3 11h18a9 9 0 0 1-18 0z" fill="currentColor"/><path d="M9 8c0-2 2-2 2-4M14 8c0-2 2-2 2-4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" opacity=".7"/></symbol>
+<symbol id="i-navidad" viewBox="0 0 24 24"><path d="M12 2l2.9 6.2 6.6.7-5 4.5 1.4 6.6L12 16.7 6.1 20l1.4-6.6-5-4.5 6.6-.7z" fill="currentColor"/></symbol>
+</svg>
+
+<header class="band">
+<div class="snow"></div><svg class="bunting" id="bunting" aria-hidden="true"></svg>
+<div class="wrap">
+<div class="hero"><div><div class="brand"><i id="logo" style="cursor:pointer" title="">VD</i>Nutri Victoria Villalpando Dávalos</div>
+<h1>Adviento para nutrir cuerpo y mente</h1>
+<p class="intro">Del 1 al 25 de diciembre se abre una puertita cada día: un reto pequeño, un ejercicio para tu bienestar emocional, un dato curioso o una receta sencilla. Sin dietas, sin culpa y a tu ritmo.</p>
+<div class="status">
+<div class="meter"><b id="prog-t">0 de 25 completados</b><div class="track"><span id="prog"></span></div></div>
+<div class="pill" id="count">Cargando…</div>
+</div></div><svg class="big" id="big" viewBox="0 0 100 100" aria-hidden="true"></svg></div>
+</div>
+</header>
+<div class="preview" id="pv">Vista previa activada: todas las puertas se pueden abrir para que revises el contenido. Tus pacientes verán solo las de cada día. Toca el círculo “VD” 5 veces para salir.</div>
+
+<main class="band">
+<div class="wrap">
+<div class="grid" id="grid"></div>
+<ul class="legend">
+<li><svg style="color:var(--green)"><use href="#i-reto"/></svg>Reto del día</li>
+<li><svg style="color:var(--blue)"><use href="#i-mente"/></svg>Salud mental</li>
+<li><svg style="color:#6a4fb0"><use href="#i-dato"/></svg>¿Sabías que…?</li>
+<li><svg style="color:var(--orange)"><use href="#i-receta"/></svg>Receta</li>
+</ul>
+</div>
+</main>
+
+<footer class="band">
+<div class="wrap cols">
+<div><h3>¿Quieres acompañamiento?</h3><p>Consultas en línea y presenciales en Guadalajara. Agenda por WhatsApp: <a href="https://wa.me/523312931633">33 1293 1633</a></p><p>Instagram <a href="https://instagram.com/nutrivictoriavd">@nutrivictoriavd</a> · <a href="https://nutriologavictoriavd.netlify.app/">nutriologavictoriavd.netlify.app</a></p></div>
+<div><h3>Un recordatorio importante</h3><p>Este calendario es educativo y no sustituye tu consulta. Si estás pasando por un momento muy difícil, llama a la Línea de la Vida: 800 911 2000 (gratis, las 24 horas).</p></div>
+</div>
+</footer>
+
+<dialog id="dlg" aria-labelledby="d-title">
+<div class="dhead" id="d-head"><button class="x" id="d-x" aria-label="Cerrar">×</button><span class="tag" id="d-tag"></span><h2 id="d-title"></h2><div class="day" id="d-day"></div></div>
+<div class="dbody"><div id="d-body"></div>
+<div class="rowb"><label class="check"><input type="checkbox" id="d-done">¡Lo hice!</label><button class="btn" id="d-close">Cerrar</button></div>
+</div>
+</dialog>
+
+<script>
+{
+const T={reto:"Reto del día",mente:"Salud mental",dato:"¿Sabías que…?",receta:"Receta",navidad:"Feliz Navidad"};
+const D=[
+{t:"reto",h:"Una comida sin pantallas",b:"<p>Comer con el celular o la tele hace que el cerebro registre menos lo que comemos: notamos menos sabores y menos señales de saciedad.</p>",a:"Elige una comida de hoy y hazla sin pantallas. Fíjate en tres cosas: un color, una textura y un sabor."},
+{t:"mente",h:"Respira más largo de lo que inhalas",b:"<p>Cuando exhalamos más lento de lo que inhalamos, el cuerpo recibe una señal de calma. Es una herramienta que puedes usar en cualquier lugar.</p><ol><li>Inhala por la nariz contando 4.</li><li>Exhala por la boca, despacio, contando 6.</li><li>Repite 6 veces.</li></ol>",a:"Hazlo hoy en un momento de prisa o estrés, aunque sea en el tráfico o antes de una junta."},
+{t:"dato",h:"Tu intestino platica con tu cerebro",b:"<p>Intestino y cerebro están conectados por nervios, hormonas y el sistema inmune: se le llama eje intestino-cerebro. Por eso el estrés puede sentirse en la panza, y la panza también influye en cómo nos sentimos.</p><p>Gran parte de la serotonina del cuerpo se produce en el intestino. Ahí cumple funciones digestivas, pero la salud de tu intestino sí forma parte de tu bienestar general.</p>",a:"Hoy, cuando sientas nervios, nota si aparecen en tu estómago. Solo obsérvalo, sin juzgarlo."},
+{t:"receta",h:"Ponche de frutas tibio",b:"<h3>Ingredientes (6 tazas)</h3><ul><li>2 litros de agua</li><li>2 rajas de canela</li><li>6 tejocotes y 4 guayabas en trozos</li><li>1 manzana picada y 1 trozo de caña pelada en tiras</li><li>Un puño de flor de jamaica y unas ciruelas pasa</li><li>Piloncillo al gusto</li></ul><h3>Preparación</h3><ol><li>Hierve el agua con la canela y la jamaica 10 minutos.</li><li>Agrega las frutas y cocina a fuego bajo 20 minutos.</li><li>Endulza a tu gusto y sirve con trocitos de fruta.</li></ol>",a:"La fruta aporta fibra y vitamina C. Compártelo con alguien y disfrútenlo calientito."},
+{t:"reto",h:"Tu vaso a la vista",b:"<p>Incluso una deshidratación leve puede hacernos sentir más cansados, con menos concentración o de peor humor. A veces confundimos sed con hambre o con cansancio.</p>",a:"Deja hoy un vaso o botella de agua donde lo veas (escritorio, cocina, coche) y toma cada vez que lo mires."},
+{t:"mente",h:"Tres cosas buenas",b:"<p>Escribir cada noche tres cosas buenas del día entrena a la mente para notar lo positivo, que suele pasarse de largo cuando estamos cansados o estresados.</p>",a:"Antes de dormir anota tres cosas buenas de hoy, por pequeñas que sean, y por qué crees que pasaron."},
+{t:"dato",h:"La fibra alimenta a tus bacterias",b:"<p>Las bacterias del intestino fermentan la fibra de frutas, verduras, leguminosas y cereales integrales. Al hacerlo producen ácidos grasos de cadena corta, que ayudan a cuidar la pared intestinal y a regular la inflamación.</p>",a:"Agrega hoy una fuente de fibra a algo que ya comes: frijoles a tu taco, avena a tu licuado o fruta a tu desayuno."},
+{t:"receta",h:"Vasito de yogur, fruta y avena",b:"<h3>Ingredientes (1 vaso)</h3><ul><li>1 taza de yogur natural</li><li>½ taza de fruta de temporada (mandarina, guayaba, granada)</li><li>3 cucharadas de avena</li><li>1 cucharada de nuez picada</li><li>Canela al gusto</li></ul><h3>Preparación</h3><ol><li>En un vaso, alterna capas de yogur, fruta y avena.</li><li>Termina con nuez y canela.</li></ol>",a:"El yogur aporta bacterias benéficas y la avena y la fruta, fibra para alimentarlas. Perfecto para un desayuno con prisa."},
+{t:"reto",h:"¿Del 1 al 10, qué tanta hambre tengo?",b:"<p>Escuchar al cuerpo es una habilidad que se practica. Una escala sencilla ayuda: 1 es mucha hambre, 5 es neutral y 10 es demasiado lleno.</p><p>No se trata de calificarte ni de llegar a un número “correcto”, solo de conocerte mejor.</p>",a:"Antes y después de dos comidas de hoy, pregúntate en qué número estás. Solo observa."},
+{t:"mente",h:"5, 4, 3, 2, 1",b:"<p>Cuando la ansiedad sube, ayuda traer la atención al presente a través de los sentidos. Nombra:</p><ul><li>5 cosas que ves</li><li>4 cosas que puedes tocar</li><li>3 sonidos que escuchas</li><li>2 olores</li><li>1 sabor</li></ul>",a:"Practícalo una vez hoy, aunque estés tranquilo. Así será más fácil usarlo cuando lo necesites."},
+{t:"dato",h:"El “hambre enojona” es real",b:"<p>Pasar muchas horas sin comer puede hacernos sentir irritables, ansiosos o con poca paciencia. Además, llegar con mucha hambre a la siguiente comida hace más difícil comer con calma y escuchar la saciedad.</p><p>Comer con cierta regularidad le da estabilidad a tu energía y a tu ánimo.</p>",a:"Revisa tu día de hoy: ¿hay algún bloque de muchas horas sin comer? Piensa qué podrías llevar contigo."},
+{t:"reto",h:"Diez minutos de luz natural",b:"<p>La luz del día ayuda a regular el reloj interno, que influye en el sueño, la energía y el ánimo. En invierno los días son más cortos y lo notamos.</p>",a:"Sal a caminar 10 minutos de día, sin prisa. Si puedes, deja el celular en la bolsa."},
+{t:"receta",h:"Ensalada de Nochebuena",b:"<h3>Ingredientes (4 porciones)</h3><ul><li>2 betabeles cocidos en cubos</li><li>1 jícama mediana en bastones</li><li>2 naranjas en gajos y 1 manzana picada</li><li>½ taza de cacahuate natural</li><li>Granada, lechuga y jugo de 1 naranja con limón</li></ul><h3>Preparación</h3><ol><li>Acomoda la lechuga y encima las frutas, la jícama y el betabel.</li><li>Baña con el jugo de naranja y limón.</li><li>Termina con cacahuate y granada.</li></ol>",a:"Un clásico mexicano lleno de color, fibra y frescura. Ideal para llevar a una posada."},
+{t:"mente",h:"Háblate como a una amiga",b:"<p>Muchas veces nos decimos cosas que jamás le diríamos a alguien que queremos. La autocompasión no es conformismo: está relacionada con más motivación y menos ansiedad.</p>",a:"Piensa en algo que hoy te esté pesando. Escríbelo y después responde como le responderías a tu mejor amiga o amigo."},
+{t:"dato",h:"Dormir poco despierta antojos",b:"<p>Cuando dormimos poco cambian las hormonas que regulan el hambre: tiende a subir la grelina, que da hambre, y a bajar la leptina, que ayuda a sentir saciedad. Por eso tras una mala noche es normal tener más antojos.</p><p>No es falta de fuerza de voluntad, es biología.</p>",a:"Si hoy tienes más antojos después de una mala noche, sé amable contigo y adelanta un poco tu hora de dormir."},
+{t:"reto",h:"Suma un color",b:"<p>Comer más variado no tiene que ver con quitar, sino con agregar. Cada color en frutas y verduras se relaciona con distintos compuestos que cuidan tu cuerpo.</p>",a:"Agrega hoy un color más a uno de tus platos: zanahoria rallada, un puño de espinaca, unas rodajas de jitomate o fruta."},
+{t:"mente",h:"Límites amables en las reuniones",b:"<p>En las fiestas son comunes los comentarios sobre el cuerpo o lo que alguien come. Tienes derecho a no participar en esas conversaciones. Algunas frases que pueden ayudarte:</p><ul><li>“Prefiero no hablar de cuerpos hoy. ¿Cómo te fue en el trabajo?”</li><li>“Estoy disfrutando mi plato, gracias.”</li><li>“Estoy trabajando en tener una relación tranquila con la comida.”</li></ul>",a:"Elige la frase que más te acomode y ensáyala en voz alta. Tenerla lista da mucha seguridad."},
+{t:"receta",h:"Chocolate caliente con canela",b:"<h3>Ingredientes (2 tazas)</h3><ul><li>2 tazas de leche o bebida vegetal</li><li>2 cucharadas de cacao en polvo</li><li>1 raja de canela</li><li>Endulzante al gusto y una pizca de sal</li></ul><h3>Preparación</h3><ol><li>Calienta la leche con la canela a fuego bajo.</li><li>Disuelve el cacao con un poco de leche y agrégalo.</li><li>Bate hasta que espume y endulza a tu gusto.</li></ol>",a:"Prepáralo para una pausa de verdad: siéntate, abraza la taza y date cinco minutos solo para ti."},
+{t:"dato",h:"Lo que comes también acompaña a tu ánimo",b:"<p>Los estudios han asociado patrones de alimentación ricos en verduras, frutas, leguminosas, pescado, nueces y aceite de oliva con menos síntomas de depresión. Las grasas omega 3 (pescados como sardina o salmón, nuez, chía, linaza) son parte importante de las membranas del cerebro.</p><p>La comida no reemplaza el tratamiento, pero sí es un apoyo real.</p>",a:"Esta semana incluye una fuente de omega 3: un puño de nueces, chía en tu agua o una lata de sardina."},
+{t:"reto",h:"Arma tu snack de rescate",b:"<p>Diciembre trae días largos y desordenados. Tener a la mano algo práctico evita llegar con hambre extrema a la siguiente comida.</p><p>Una buena combinación junta fruta o verdura con algo de proteína o grasa: manzana con crema de cacahuate, pepino con queso, mandarina con nueces.</p>",a:"Prepara hoy un snack de rescate y déjalo en tu bolsa, mochila o escritorio."},
+{t:"mente",h:"La noche más larga del año",b:"<p>Hoy es el solsticio de invierno, la noche más larga del año. Una buena invitación para bajar el ritmo y descansar.</p><p>Un ritual sencillo antes de dormir le avisa al cuerpo que el día terminó: luz tenue, sin pantallas media hora antes, algo calientito y una lectura ligera.</p>",a:"Esta noche crea tu propio ritual de 20 minutos antes de dormir."},
+{t:"receta",h:"Hummus de betabel para compartir",b:"<h3>Ingredientes (1 tazón)</h3><ul><li>1 ½ tazas de garbanzo cocido</li><li>1 betabel cocido</li><li>2 cucharadas de tahini o ajonjolí</li><li>Jugo de 1 limón, 1 diente de ajo</li><li>2 cucharadas de aceite de oliva, sal y comino</li></ul><h3>Preparación</h3><ol><li>Licúa todo con un chorrito de agua hasta que quede cremoso.</li><li>Sirve con aceite de oliva y semillas encima.</li><li>Acompaña con verduras, tostadas o pan pita.</li></ol>",a:"Su color rosa intenso luce mucho en la mesa navideña y aporta proteína y fibra de las leguminosas."},
+{t:"dato",h:"Comer acompañados también nutre",b:"<p>Compartir la mesa se relaciona con más bienestar emocional y sensación de pertenencia. La comida es nutrientes, y también es cultura, memoria y conexión con otras personas.</p>",a:"Comparte hoy una comida o un café con alguien y pregúntale por su recuerdo favorito de estas fechas."},
+{t:"mente",h:"Una Nochebuena en paz",b:"<p>Esta noche no hay comida “prohibida” ni nada que compensar mañana. Las comidas de las fiestas son parte de una alimentación flexible y de la vida.</p><ul><li>Sirve lo que de verdad se te antoje.</li><li>Come despacio y disfruta los sabores de tu familia.</li><li>Mañana simplemente vuelve a tu rutina, sin castigos.</li></ul>",a:"Antes de cenar, respira profundo tres veces y elige estar presente."},
+{t:"navidad",h:"¡Feliz Navidad!",b:"<p>Gracias por acompañarte durante este mes. Cada puertita que abriste fue un momento que te regalaste a ti.</p><p>Cuidarte no se trata de comer perfecto ni de hacerlo todo bien, sino de tratarte con cariño, una y otra vez. Eso ya lo estás haciendo.</p><p>Te deseo una Navidad llena de calma, buena compañía y sabores que te hagan feliz. Aquí estaré para acompañarte en el año que viene.</p><p><b>Con cariño, Victoria</b></p>",a:"Tu último reto: mira las puertas que abriste y elige el hábito que más te gustó para llevarlo contigo a 2027."}
+];
+
+const dk='rgba(0,0,0,.16)',lt='rgba(255,255,255,.45)';
+const sh='<ellipse cx="50" cy="94" rx="30" ry="5" fill="rgba(0,0,0,.12)"/>';
+const S={
+gift:(c,r)=>`${sh}<rect x="18" y="42" width="64" height="48" rx="6" fill="${c}"/><rect x="60" y="42" width="22" height="48" rx="6" fill="${dk}"/><rect x="12" y="32" width="76" height="16" rx="5" fill="${c}"/><rect x="12" y="32" width="76" height="5" rx="3" fill="${lt}"/><rect x="45" y="32" width="10" height="58" fill="${r}"/><ellipse cx="39" cy="24" rx="12" ry="8" transform="rotate(-25 39 24)" fill="${r}"/><ellipse cx="61" cy="24" rx="12" ry="8" transform="rotate(25 61 24)" fill="${r}"/><circle cx="50" cy="29" r="6" fill="${r}"/><circle cx="48" cy="27" r="2" fill="${lt}"/>`,
+pinata:(c,r,k)=>{let o=sh+'<path d="M50 6v8" stroke="#8a6a3a" stroke-width="2"/>';const cs=[c,r,'#ffc93c','#ff6fa5','#2f7fd0','#2e9a5c','#f07f1f'];for(let i=0;i<7;i++){const a=i/7*Math.PI*2-Math.PI/2,a1=a-.34,a2=a+.34,R=18,T=k?46:42;const x1=50+R*Math.cos(a1),y1=54+R*Math.sin(a1),x2=50+R*Math.cos(a2),y2=54+R*Math.sin(a2),tx=50+T*Math.cos(a),ty=54+T*Math.sin(a);o+=`<path d="M${x1.toFixed(1)} ${y1.toFixed(1)}L${tx.toFixed(1)} ${ty.toFixed(1)}L${x2.toFixed(1)} ${y2.toFixed(1)}Z" fill="${cs[i%7]}"/><path d="M${tx.toFixed(1)} ${ty.toFixed(1)}l-3 7M${tx.toFixed(1)} ${ty.toFixed(1)}l3 7" stroke="${cs[(i+2)%7]}" stroke-width="2.4" stroke-linecap="round"/>`}return o+`<circle cx="50" cy="54" r="21" fill="${c}"/><path d="M33 50h34M31 58h38" stroke="${r}" stroke-width="4"/><path d="M33 50h34" stroke="#fff" stroke-width="1.6" stroke-dasharray="3 3"/><circle cx="43" cy="45" r="4" fill="${lt}"/>`},
+mandarina:(c)=>`${sh}<circle cx="50" cy="58" r="31" fill="#f58a1f"/><path d="M50 89a31 31 0 0 0 31-31a31 31 0 0 1-31 31z" fill="${dk}"/><circle cx="38" cy="46" r="7" fill="${lt}"/><path d="M50 28c-1-6 1-10 4-12" stroke="#6b4a2a" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M53 22c8-10 20-8 22-4-6 8-16 8-22 4z" fill="#2e9a5c"/><circle cx="62" cy="64" r="1.6" fill="${dk}"/><circle cx="44" cy="72" r="1.6" fill="${dk}"/><circle cx="66" cy="50" r="1.6" fill="${dk}"/>`,
+manzana:(c)=>`${sh}<path d="M50 34c-10-8-34-6-34 20 0 22 16 38 26 36 4-1 6-3 8-3s4 2 8 3c10 2 26-14 26-36 0-26-24-28-34-20z" fill="#e2453c"/><path d="M74 46c4 20-10 42-20 44 12 2 26-14 26-36 0-3 0-6-1-8z" fill="${dk}"/><ellipse cx="32" cy="50" rx="5" ry="9" transform="rotate(20 32 50)" fill="${lt}"/><path d="M50 34c0-8 2-14 6-18" stroke="#6b4a2a" stroke-width="3.4" fill="none" stroke-linecap="round"/><path d="M54 24c6-10 18-10 22-6-6 9-16 10-22 6z" fill="#2e9a5c"/>`,
+trompo:(c,r)=>`${sh}<rect x="45" y="10" width="10" height="16" rx="4" fill="#b5793d"/><path d="M50 92L24 52c0-18 52-18 52 0z" fill="${c}"/><path d="M50 92L64 40c8 2 12 6 12 12z" fill="${dk}"/><path d="M26 50c8 6 40 6 48 0M30 62c8 5 32 5 40 0M36 74c6 3 22 3 28 0" stroke="${r}" stroke-width="4" fill="none" stroke-linecap="round"/><ellipse cx="50" cy="38" rx="26" ry="8" fill="${r}"/><ellipse cx="44" cy="36" rx="8" ry="2.5" fill="${lt}"/><path d="M50 92v4" stroke="#555" stroke-width="3" stroke-linecap="round"/>`,
+pelota:(c,r)=>`${sh}<circle cx="50" cy="56" r="34" fill="${c}"/><path d="M50 22c-14 10-14 58 0 68" stroke="#fff" stroke-width="7" fill="none"/><path d="M50 22c14 10 14 58 0 68" stroke="${r}" stroke-width="7" fill="none"/><path d="M17 50c14 6 52 6 66 0" stroke="#fff" stroke-width="5" fill="none"/><path d="M50 90a34 34 0 0 0 34-34 34 34 0 0 1-34 34z" fill="${dk}"/><circle cx="36" cy="38" r="6" fill="${lt}"/>`,
+esfera:(c,r)=>`${sh}<path d="M50 6v12" stroke="#c9a227" stroke-width="2.4"/><rect x="42" y="18" width="16" height="10" rx="2" fill="#e4b93a"/><circle cx="50" cy="58" r="32" fill="${c}"/><path d="M20 52l10 8 10-8 10 8 10-8 10 8 10-8" stroke="#fff" stroke-width="4" fill="none" stroke-linejoin="round"/><path d="M22 66h56" stroke="${r}" stroke-width="5"/><path d="M50 90a32 32 0 0 0 32-32 32 32 0 0 1-32 32z" fill="${dk}"/><circle cx="37" cy="42" r="6" fill="${lt}"/>`,
+pera:(c)=>`${sh}<path d="M50 24c-8 0-10 10-12 20-2 9-16 14-16 30 0 12 12 18 28 18s28-6 28-18c0-16-14-21-16-30-2-10-4-20-12-20z" fill="#8cc63f"/><path d="M62 44c2 9 16 14 16 30 0 12-12 18-28 18 20-4 22-30 12-48z" fill="${dk}"/><ellipse cx="36" cy="66" rx="5" ry="10" transform="rotate(15 36 66)" fill="${lt}"/><path d="M50 24c0-6 2-10 5-13" stroke="#6b4a2a" stroke-width="3.4" fill="none" stroke-linecap="round"/><path d="M54 16c6-8 16-6 18-2-6 6-12 6-18 2z" fill="#2e9a5c"/>`,
+jarrito:(c)=>`${sh}<path d="M40 16c-4 6 4 8 0 14M54 12c-4 6 4 8 0 14" stroke="${c}" stroke-width="3" fill="none" stroke-linecap="round" opacity=".55"/><path d="M74 50c14-2 14 22 0 22" stroke="#b85a2a" stroke-width="7" fill="none"/><path d="M22 36h56l-4 46c-1 6-6 10-12 10H38c-6 0-11-4-12-10z" fill="#d06b34"/><path d="M60 36h18l-4 46c-1 6-6 10-12 10h-4c8-4 6-40 2-56z" fill="${dk}"/><rect x="18" y="30" width="64" height="9" rx="4.5" fill="#e07b42"/><path d="M28 54h44" stroke="#fff" stroke-width="3" stroke-dasharray="2 5" stroke-linecap="round"/><path d="M30 64c6-5 10 5 16 0s10 5 16 0 8 4 10 2" stroke="#ffc93c" stroke-width="3" fill="none" stroke-linecap="round"/>`
+};
+const P=[['gift','#e2453c','#ffc93c'],['mandarina'],['trompo','#2f7fd0','#ffc93c'],['pinata','#ff6fa5','#2f7fd0'],['manzana'],['esfera','#2e9a5c','#e2453c'],['pelota','#f07f1f','#2f7fd0'],['jarrito','#d06b34'],['gift','#2f7fd0','#ff6fa5'],['pera'],['pinata','#ffc93c','#e2453c'],['esfera','#2f7fd0','#ffc93c'],['trompo','#e2453c','#2e9a5c'],['gift','#2e9a5c','#e2453c'],['pelota','#2e9a5c','#ffc93c'],['mandarina'],['pinata','#2f7fd0','#ff6fa5'],['jarrito','#d06b34'],['gift','#ff6fa5','#2e9a5c'],['manzana'],['esfera','#e2453c','#ffc93c'],['trompo','#ffc93c','#e2453c'],['pera'],['gift','#f07f1f','#2f7fd0'],['pinata','#e2453c','#2e9a5c',1]];
+const art=d=>{const[k,c,r,big]=P[d-1];return `<svg viewBox="0 0 100 100">${S[k](c,r,big)}</svg>`};
+document.getElementById('big').innerHTML=S.pinata('#ff6fa5','#ffc93c',1).replace(/rgba\(0,0,0,\.12\)/,'rgba(0,0,0,.25)');
+const B=document.getElementById('bunting');
+const drawB=()=>{const W=B.clientWidth||800,n=Math.max(7,Math.round(W/70)),w=W/n,cs=['#f07f1f','#ffc93c','#ff6fa5','#2f7fd0','#ffffff','#e2453c'];let o=`<path d="M0 4Q${W/2} 16 ${W} 4" stroke="rgba(255,255,255,.7)" stroke-width="2" fill="none"/>`;const H=B.clientHeight||60;for(let i=0;i<n;i++){const x=i*w+3,y=4+12*(1-((i+.5)/n*2-1)**2)*.5,fw=w-6,fh=H-y-4;o+=`<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)})"><path d="M0 0H${fw.toFixed(1)}V${(fh-8).toFixed(1)}L${(fw*.75).toFixed(1)} ${fh.toFixed(1)}L${(fw*.5).toFixed(1)} ${(fh-8).toFixed(1)}L${(fw*.25).toFixed(1)} ${fh.toFixed(1)}L0 ${(fh-8).toFixed(1)}Z" fill="${cs[i%6]}"/><circle cx="${(fw/2).toFixed(1)}" cy="${(fh*.42).toFixed(1)}" r="${(Math.min(fw,fh)*.16).toFixed(1)}" fill="var(--green)"/><path d="M${(fw*.2).toFixed(1)} ${(fh*.2).toFixed(1)}l4 4-4 4-4-4zM${(fw*.8).toFixed(1)} ${(fh*.2).toFixed(1)}l4 4-4 4-4-4z" fill="var(--green)"/></g>`}B.innerHTML=o};
+const roB=new ResizeObserver(drawB);roB.observe(B);
+const grid=document.getElementById('grid');
+let pv=location.hash==='#vista-previa';
+const now=new Date();
+const yr=now.getMonth()===0?now.getFullYear()-1:now.getFullYear();
+const isOpenable=d=>pv||now.getMonth()===0||now>=new Date(yr,11,d);
+const isToday=d=>now.getFullYear()===yr&&now.getMonth()===11&&now.getDate()===d;
+const KEY='adviento-vvd-'+yr;
+let st={o:[],c:[]};
+try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&Array.isArray(s.o))st=s}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}};
+const render=()=>{
+grid.innerHTML=D.map((x,i)=>{const d=i+1,ok=isOpenable(d),op=ok&&st.o.includes(d),dn=st.c.includes(d);
+const tdy=isToday(d);return `<button class="door ${ok?'':'locked'} ${op?'open':''} ${dn?'done':''} ${tdy?'today':''}" data-d="${d}" aria-label="Día ${d}${ok?(op?': '+x.h:''):', se abre el '+d+' de diciembre'}" ${ok?'':'aria-disabled="true"'}><span class="when">${tdy?'¡Hoy!':(ok?'':d+' dic')}</span><span class="art">${art(d)}</span><span class="badge">${dn?'✓':d}</span></button>`}).join('');
+const n=st.c.length;
+document.getElementById('prog-t').textContent=`${n} de 25 completados`;
+document.getElementById('prog').style.width=(n/25*100)+'%';
+const c=document.getElementById('count');
+const dec1=new Date(yr,11,1);
+if(pv)c.textContent='Vista previa';
+else if(now<dec1){const k=Math.ceil((dec1-now)/864e5);c.textContent=`Empieza el 1 de diciembre · faltan ${k} ${k===1?'día':'días'}`}
+else if(now.getMonth()===11&&now.getDate()<25)c.textContent=`Hoy se abre la puerta ${now.getDate()}`;
+else c.textContent='¡Feliz Navidad! Todas las puertas abiertas';
+};
+const dlg=document.getElementById('dlg');
+let cur=0;
+const show=d=>{const x=D[d-1];cur=d;
+document.getElementById('d-head').className='dhead '+x.t;
+document.getElementById('d-tag').innerHTML=`<svg><use href="#i-${x.t}"/></svg>${T[x.t]}`;
+document.getElementById('d-title').textContent=x.h;
+document.getElementById('d-day').textContent=`${d} de diciembre`;
+document.getElementById('d-body').innerHTML=x.b+`<div class="act"><b>${d===25?'Para cerrar':'Para hoy'}</b>${x.a}</div>`;
+document.getElementById('d-done').checked=st.c.includes(d);
+if(dlg.showModal)dlg.showModal();else dlg.setAttribute('open','');
+};
+grid.addEventListener('click',e=>{const b=e.target.closest('.door');if(!b)return;const d=+b.dataset.d;
+if(!isOpenable(d))return;
+b.classList.remove('hop');void b.offsetWidth;b.classList.add('hop');if(!st.o.includes(d)){st.o.push(d);save();b.classList.add('open')}setTimeout(()=>show(d),matchMedia('(prefers-reduced-motion: reduce)').matches?0:480)});
+const close=()=>{if(dlg.close)dlg.close();else dlg.removeAttribute('open')};
+document.getElementById('d-x').addEventListener('click',close);
+document.getElementById('d-close').addEventListener('click',close);
+dlg.addEventListener('click',e=>{if(e.target===dlg)close()});
+document.getElementById('d-done').addEventListener('change',e=>{st.c=st.c.filter(v=>v!==cur);if(e.target.checked)st.c.push(cur);save();render()});
+if(pv)document.getElementById('pv').classList.add('on');
+let taps=0,tt;
+document.getElementById('logo').addEventListener('click',()=>{taps++;clearTimeout(tt);tt=setTimeout(()=>taps=0,1500);if(taps>=5){taps=0;pv=!pv;document.getElementById('pv').classList.toggle('on',pv);render();if(pv)document.getElementById('pv').scrollIntoView({block:'nearest'})}});
+window.addEventListener('hashchange',()=>{pv=location.hash==='#vista-previa';document.getElementById('pv').classList.toggle('on',pv);render()});
+render();
+}
+</script>
+</body>
+</html>
